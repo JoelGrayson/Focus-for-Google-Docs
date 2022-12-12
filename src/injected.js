@@ -1,12 +1,6 @@
 (()=>{ //IIFE for not polluting global namespace with const variables
-    const sleep=(seconds)=>{
-        return new Promise((resolve, reject)=>{
-            setTimeout(()=>{
-                resolve();
-            }, seconds);
-        });
-    };
-    
+    const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
+
     //* Hide stuff    
     //** Fullscreen
     // Hide header by navigating menu: View > Fullscreen
