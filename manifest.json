@@ -21,11 +21,16 @@
     "content_scripts": [
         {
             "matches": ["https://docs.google.com/document/*"],
-            "js": ["src/injected.js"]
+            "js": ["code/injected.js"]
         }
+    ],
+    "permissions":[
+        "background",
+        "tabs",
+        "storage"
     ],
     
     "background": {
-      "service_worker": "src/background.js"
+      "service_worker": "code/background.js"
     }
 }
