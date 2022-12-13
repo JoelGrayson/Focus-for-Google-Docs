@@ -13,8 +13,8 @@
                 .then(()=>{ //hide `Controls hidden. Press ESC to show controls.` Google Docs message
                     setTimeout(()=>{
                         const messageEl=document.querySelector('.jfk-butterBar');
-                        console.log(messageEl);
-                        messageEl.style.display='none';
+                        if (messageEl)
+                            messageEl.style.display='none';
                     }, 300);
                 })
 
