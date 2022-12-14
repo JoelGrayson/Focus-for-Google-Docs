@@ -2,26 +2,29 @@
 
 type tabStatusT='on' | 'off';
 type tabId=number;
-const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
 
 const VERSION='VERSION_INSERTED_HERE_BY_BUILD_SH';
 
 chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default settings
     chrome.storage.sync.set({
         settings: {
-            fullscreen: false,
-            autoOn: false
+            fullScreen: false,
+            autoOn: false,
+            printLayout: false
         }
     });
 });
 
 chrome.action.onClicked.addListener(tab=>{ //when icon clicked
+    const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
     const tabId=tab.id || chrome.tabs.TAB_ID_NONE;
     
     chrome.storage.sync.get('settings', ({settings})=>{ //pass in settings as message
         chrome.tabs.sendMessage(tabId, {settings}, setStorage);
 
         async function setStorage(response) { //tell tab to toggle on/off
+            console.log('Received response', response);
+            
             if (response===undefined) { //script not injected into tab, so reload and try again.
                 chrome.tabs.reload(tabId);
                 await sleep(2000);
@@ -40,7 +43,7 @@ chrome.action.onClicked.addListener(tab=>{ //when icon clicked
     
             setExtensionIcon(response.status);
         }
-    })
+    });
 });
 
 chrome.tabs.onActivated.addListener(({tabId, windowId})=>{ //switch tabs (active tab changes)

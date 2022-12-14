@@ -3,9 +3,11 @@
 (async ()=>{ //IIFE to not pollute global namespace with variables
     let status: 'on' | 'off'='off'; // 'on' | 'off'
     const version='VERSION_INSERTED_HERE_BY_BUILD_SH';
+    const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{ //toggle viewer status and send back status ('on' | 'off') for extension to change its icon
-        console.log(`Message `, message);
+        console.log(`Message`, message);
+        const settings=message.settings;
 
         // toggle status
         status=status==='on' ? 'off' : 'on';
@@ -14,7 +16,7 @@
         // change DOM based on status
         if (status==='on') {
             //* Hide stuff
-            toggleGoogleDocsFullScreen()
+            setFullScreenStatus('on', settings)
                 .then(()=>{ //hide `Controls hidden. Press ESC to show controls.` Google Docs message
                     setTimeout(()=>{
                         const messageEl=document.querySelector('.jfk-butterBar') as HTMLElement;
@@ -32,7 +34,7 @@
         
             //* Editor
             const editor=document.querySelector('.kix-appview-editor') as HTMLElement;
-                editor.style.height='100vh'; //make app fullscreen
+                editor.style.height='100vh'; //make app full screen
                 editor.style.backgroundColor='#fff'; //whatever background color
                 editor.style.filter='brightness(0.9)';
 
@@ -45,44 +47,37 @@
             formatCanvases();
             setInterval(formatCanvases, 1000);
 
-            if (message.settings.fullscreen) {
+            if (settings.fullScreen) {
                 // Enter full screen only if requested to do so
-                const fullscreenBtn=document.createElement('div');
-                fullscreenBtn.style.position='absolute';
-                fullscreenBtn.style.top='25%';
-                fullscreenBtn.style.left='calc(50% - 125px)';
-                fullscreenBtn.style.width='250px';
-                fullscreenBtn.style.height='60px';
-                fullscreenBtn.style.backgroundColor='#fff6d8';
-                fullscreenBtn.style.border='2px solid black';
-                fullscreenBtn.style.borderRadius='12px';
-                fullscreenBtn.style.cursor='pointer';
-                fullscreenBtn.style.display='flex';
-                fullscreenBtn.style.justifyContent='center';
-                fullscreenBtn.style.alignItems='center';
-                fullscreenBtn.style.fontSize='20px';
-                fullscreenBtn.style.boxShadow='0px 2px 12px -1px';
+                const fullScreenBtn=document.createElement('div');
+                fullScreenBtn.style.position='absolute';
+                fullScreenBtn.style.top='25%';
+                fullScreenBtn.style.left='calc(50% - 125px)';
+                fullScreenBtn.style.width='250px';
+                fullScreenBtn.style.height='60px';
+                fullScreenBtn.style.backgroundColor='#fff6d8';
+                fullScreenBtn.style.border='2px solid black';
+                fullScreenBtn.style.borderRadius='12px';
+                fullScreenBtn.style.cursor='pointer';
+                fullScreenBtn.style.display='flex';
+                fullScreenBtn.style.justifyContent='center';
+                fullScreenBtn.style.alignItems='center';
+                fullScreenBtn.style.fontSize='20px';
+                fullScreenBtn.style.boxShadow='0px 2px 12px -1px';
 
-                fullscreenBtn.innerText='Click to go fullscreen';
-                fullscreenBtn.addEventListener('click', ()=>{ //hide
+                fullScreenBtn.innerText='Click to go full screen';
+                fullScreenBtn.addEventListener('click', ()=>{ //hide
                     document.body.requestFullscreen();
-                    fullscreenBtn.parentNode?.removeChild(fullscreenBtn);
+                    fullScreenBtn.parentNode?.removeChild(fullScreenBtn);
                 });
-                document.body.appendChild(fullscreenBtn);
-                
-                // document.addEventListener('mousemove', fullscreenListener); //request for fullscreen needs to come from user.
-                
-                // function fullscreenListener() {
-                //     document.body.requestFullscreen();
-                //     document.removeEventListener('mousemove', fullscreenListener);
-                // }
+                document.body.appendChild(fullScreenBtn);
             }
 
             //* Pomodoro Widget
             // TODO: Add a pomodoro timer widget in the top right
         }
         if (status==='off') { //turn off full screen and reload page
-            toggleGoogleDocsFullScreen()
+            setFullScreenStatus('off', settings)
                 .then(()=>{
                     window.location.reload();
                 });
@@ -93,24 +88,59 @@
             version: version || 'unknown'
         }); //default to on if code is not fully injected yet (loading page)
     })
-
-    function toggleGoogleDocsFullScreen() { //Hide/show header by navigating menu: View > Fullscreen
-        return new Promise<void>((resolve)=>{
-            function clickElement(element) { //google docs elements are triggered by mousedown and mouseup
-                element.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
-                element.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
-            }
-            clickElement(document.getElementById('docs-view-menu'));
-            
-            setTimeout(async ()=>{
-                const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
     
-                clickElement(document.querySelector('span[aria-label*="Full screen"]')!.parentNode!.parentNode);
-                await sleep(100);
-                clickElement(document.querySelector('span[aria-label*="Full screen"]')!.parentNode!.parentNode);
-                await sleep(100);
-                resolve();
-            }, 200);
-        });
+    async function setFullScreenStatus(status, settings) { //Hide/show header by navigating menu: View > Full screen
+        async function clickElement(element) { //google docs elements are triggered by mousedown and mouseup
+            element.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+            await sleep(5);
+            element.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+        }
+
+        // Full Screen
+        const fullScreenEl=document.querySelector('span[aria-label*="Full screen"]') as HTMLSpanElement;
+        const isInFullScreen=(()=>{
+            const display=(document.getElementById('docs-header') as HTMLDivElement).style.display;
+            if (display==='none')
+                return true;
+            else if (display==='') {
+                return false;
+            } else {
+                console.log('PROBLEM! isInFullScreen.style.display is unknown value:', fullScreenEl.style.display);
+                return true;
+            }
+        })();
+        console.log('status', status, 'isFullScreen', isInFullScreen);
+        if ( //need to change full screen status
+            (status==='on'  && !isInFullScreen)
+                ||
+            (status==='off' && isInFullScreen)
+        )
+            await clickElement(fullScreenEl);
+
+        // Print Layout
+        if (settings.printLayout===false) { // need to change print layout status
+            const printLayoutEl=document.querySelector('span[aria-label*="Show print layout"]')!.parentNode!.parentNode as HTMLElement;
+
+            const isInPrintLayout=(()=>{ //ariaChecked means print layout is on. Turn status on means turn off ariaChecked
+                if (printLayoutEl.ariaChecked==='true')
+                    return true;
+                if (printLayoutEl.ariaChecked==='false' || !printLayoutEl.ariaChecked)
+                    return false;
+                return true;
+            })();
+
+            if ( //need to change status
+                (status==='on'  &&  isInPrintLayout)
+                    ||
+                (status==='off' && !isInPrintLayout)
+            ) {
+                //turn off print layout, meaning there is a seamless page transition
+                await sleep(50);
+                await clickElement(printLayoutEl);
+            }
+        }
+
+        await sleep(1000); //give time for changes
+        return;
     }
 })();
