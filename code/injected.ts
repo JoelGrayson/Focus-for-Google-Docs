@@ -2,8 +2,11 @@
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
     let status: 'on' | 'off'='off'; // 'on' | 'off'
+    const version='VERSION_INSERTED_HERE_BY_BUILD_SH';
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{ //toggle viewer status and send back status ('on' | 'off') for extension to change its icon
+        console.log(`Message `, message);
+
         // toggle status
         status=status==='on' ? 'off' : 'on';
         console.log(`Turning ${status} Focus`);
@@ -42,8 +45,38 @@
             formatCanvases();
             setInterval(formatCanvases, 1000);
 
-            // Optional: enter full screen on computer
-            // document.body.requestFullscreen();
+            if (message.settings.fullscreen) {
+                // Enter full screen only if requested to do so
+                const fullscreenBtn=document.createElement('div');
+                fullscreenBtn.style.position='absolute';
+                fullscreenBtn.style.top='25%';
+                fullscreenBtn.style.left='calc(50% - 125px)';
+                fullscreenBtn.style.width='250px';
+                fullscreenBtn.style.height='60px';
+                fullscreenBtn.style.backgroundColor='#fff6d8';
+                fullscreenBtn.style.border='2px solid black';
+                fullscreenBtn.style.borderRadius='12px';
+                fullscreenBtn.style.cursor='pointer';
+                fullscreenBtn.style.display='flex';
+                fullscreenBtn.style.justifyContent='center';
+                fullscreenBtn.style.alignItems='center';
+                fullscreenBtn.style.fontSize='20px';
+                fullscreenBtn.style.boxShadow='0px 2px 12px -1px';
+
+                fullscreenBtn.innerText='Click to go fullscreen';
+                fullscreenBtn.addEventListener('click', ()=>{ //hide
+                    document.body.requestFullscreen();
+                    fullscreenBtn.parentNode?.removeChild(fullscreenBtn);
+                });
+                document.body.appendChild(fullscreenBtn);
+                
+                // document.addEventListener('mousemove', fullscreenListener); //request for fullscreen needs to come from user.
+                
+                // function fullscreenListener() {
+                //     document.body.requestFullscreen();
+                //     document.removeEventListener('mousemove', fullscreenListener);
+                // }
+            }
 
             //* Pomodoro Widget
             // TODO: Add a pomodoro timer widget in the top right
@@ -55,7 +88,10 @@
                 });
         }
 
-        sendResponse(status || 'on'); //default to on if code is not fully injected yet (loading page)
+        sendResponse({
+            status: status || 'on',
+            version: version || 'unknown'
+        }); //default to on if code is not fully injected yet (loading page)
     })
 
     function toggleGoogleDocsFullScreen() { //Hide/show header by navigating menu: View > Fullscreen

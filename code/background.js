@@ -1,23 +1,39 @@
 /// <reference types="chrome"/>
-chrome.action.onClicked.addListener(tab => {
-    const theTabId = tab.id || chrome.tabs.TAB_ID_NONE;
-    chrome.tabs.sendMessage(theTabId, null, setStorage);
-    function setStorage(response) {
-        if (response === undefined) { //script not injected into tab, so reload and try again.
-            chrome.tabs.reload(theTabId);
-            setTimeout(() => {
-                chrome.tabs.sendMessage(theTabId, null, setStorage);
-            }, 1000);
+const sleep = seconds => new Promise(resolve => setTimeout(resolve, seconds));
+const VERSION = "1.0";
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.sync.set({
+        settings: {
+            fullscreen: false,
+            autoOn: false
         }
-        const setTo = {};
-        setTo[`tabId-${theTabId}`] = response;
-        chrome.storage.sync.set(setTo); //store tab's status
-        setExtensionIcon(response);
-    }
+    });
+});
+chrome.action.onClicked.addListener(tab => {
+    const tabId = tab.id || chrome.tabs.TAB_ID_NONE;
+    chrome.storage.sync.get('settings', ({ settings }) => {
+        chrome.tabs.sendMessage(tabId, { settings }, setStorage);
+        async function setStorage(response) {
+            if (response === undefined) { //script not injected into tab, so reload and try again.
+                chrome.tabs.reload(tabId);
+                await sleep(2000);
+                chrome.tabs.sendMessage(tabId, { settings }, setStorage);
+            }
+            if (response.version !== VERSION) { //version mismatch, so reload and try again.
+                chrome.tabs.reload(tabId);
+                await sleep(2000);
+                chrome.tabs.sendMessage(tabId, { settings }, setStorage);
+            }
+            const setTo = {};
+            setTo[`tabId-${tabId}`] = response.status;
+            chrome.storage.sync.set(setTo); //store tab's status
+            setExtensionIcon(response.status);
+        }
+    });
 });
 chrome.tabs.onActivated.addListener(({ tabId, windowId }) => {
-    chrome.storage.sync.get(`tabId-${tabId}`, (kvStatus) => {
-        const status = kvStatus[`tabId-${tabId}`];
+    chrome.storage.sync.get(`tabId-${tabId}`, kvStatus => {
+        const status = kvStatus[`tabId-${tabId}`] || 'off';
         console.log('status of', status);
         setExtensionIcon(status);
     });
@@ -35,6 +51,6 @@ function setExtensionIcon(status) {
         });
     }
     else {
-        throw new Error(`Unknown status: ^${status}$`);
+        throw new Error(`Unknown status: ^${JSON.stringify(status)}$`);
     }
 }

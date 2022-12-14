@@ -8,6 +8,7 @@
     "manifest_version": 3,
 
     "homepage_url": "https://joelgrayson.com/focus",
+    "options_page": "options/index.html",
     "action": {
         "default_icon": "icons/off-128.png"
     },
