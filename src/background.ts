@@ -67,3 +67,4 @@ function setExtensionIcon(status: tabStatusT) {
         throw new Error(`Unknown status: ^${JSON.stringify(status)}$`);
     }
 }
+

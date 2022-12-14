@@ -22,7 +22,7 @@
     "content_scripts": [
         {
             "matches": ["https://docs.google.com/document/*"],
-            "js": ["code/injected.js"]
+            "js": ["dist/injected.js"]
         }
     ],
     "permissions":[
@@ -32,6 +32,6 @@
     ],
     
     "background": {
-      "service_worker": "code/background.js"
+      "service_worker": "dist/background.js"
     }
 }
