@@ -1,0 +1,60 @@
+#pomodoro-container {
+    position: absolute;
+    cursor: pointer;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+}
+
+#start-hover-children {
+    min-width: 80px;
+    padding: 8px 10px;
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    padding: 6px 10px;
+    border: 2px solid #333;
+    border-radius: 5px;
+}
+
+.hidden { /* added/removed from classList */
+    display: none !important;
+}
+
+#start-hover-triangle {
+    position: absolute;
+    bottom: 65px;
+    right: 20px;
+}
+
+#middle-hover {
+    position: absolute;
+    display: flex;
+    cursor: pointer;
+    bottom: 60px;
+    right: 20px;
+    background-color: #fafafa;
+}
+
+#middle-hover-status {
+    border: 2px solid #333;
+    border-right-width: 1px;
+    border-radius: 5px 0 0 5px;
+}
+
+#middle-hover-end-btn {
+    border: 2px solid #333;
+    border-left-width: 1px;
+    border-radius: 0 5px 5px 0;
+}
+
+#end-hover {
+}
+
+#done-message {
+    position: absolute;
+    bottom: 60px;
+    right: 10px;
+}
+

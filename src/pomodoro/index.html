@@ -1,0 +1,285 @@
+<link rel="stylesheet" href="./focus.css">
+
+<div id="focus-app">
+    <div id="pomodoro-container">
+        <svg id="pomodoro" viewbox="0 0 100 100"> <!-- rotate so time starts upright -->
+            <g id="background"> <!-- light color (always full) -->
+                <!-- border (slightly larger and underneath) -->
+                <path id="background-border-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#5e73ab" stroke-width='11px' fill="#fafafa" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                <path id="background-border-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#5e73ab" stroke-width='11px' fill="#fafafa" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                
+                <!-- background light color -->
+                <path id="background-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                <path id="background-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+            </g>
+            <g id="foreground" style="transform: rotate(90deg); translate: 100px"> <!-- darker color overlay (starts at zero) -->
+                <path id="top-arc"    d="M 10 50 A 40 40 0 0 1 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
+                <path id="bottom-arc" d="M 10 50 A 40 40 0 0 0 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
+            </g>
+    
+            <g id="status-dependent">
+                <!-- start -->
+                <g id='focus-text' class="hidden">
+                    <text x="50" y="56" text-anchor="middle" font-size="23px" font-family="helvetica">Focus</text>
+                </g>
+
+                <!-- end -->
+                <g id="smiley-face" class="hidden">
+                    <circle cx="40" cy="40" r='4' fill="#00943c" stroke="none "/>
+                    <circle cx="60" cy="40" r='4' fill="#00943c" stroke="none" />
+                    <path d="M 30 60 A 20 10 0 0 0 70 60" stroke="#00943c" stroke-width="3" fill="none" />
+                </g>
+            </g>
+            
+    
+            <text id='time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica"><!-- time left inserted here by JS --></text>
+        </svg>
+    </div>
+
+    <div id="start-hover">
+        <!-- <svg id="start-hover-speech-bubble">
+
+        </svg> -->
+        <div id="start-hover-children">
+            <div>
+                <input type="number" id='minutes' value="15" style='width: 6ch' />
+                <label for="minutes">minutes</label>
+            </div>
+            <button id="start-btn" style="margin: 2px auto; display: block">Start</button>
+        </div>
+        <svg id="start-hover-triangle" width="50px" height="25px" viewbox="0 0 50 10">
+            <path d="M 20 0 L 25 10, 30 0" stroke="#222" stroke-width="2" fill="#fafafa" />
+        </svg>
+    </div>
+
+    <div id="middle-hover" class="hidden"> <!-- 'running' or 'paused' -->
+        <svg id="middle-hover-status" viewbox="10 10 80 80" width="20px" height="20px">
+            <g id="running-icon" class="hidden">
+                <rect x="33" y="30" width="12" height="40" rx="2" fill="#111" />
+                <rect x="53" y="30" width="12" height="40" rx="2" fill="#111" />
+            </g>
+            <g id="paused-icon" class="hidden">
+                <polygon points="36 30, 36 70, 73 50" fill='#111' />
+            </g>
+        </svg>
+        <div id="middle-hover-end-btn">End</div>
+    </div>
+    
+    <div id="end-hover">
+        <!-- TODO -->
+    </div>
+
+    <!-- part of end -->
+    <svg id="done-message" viewbox="0 0 150 70" width="150px" height="70px" class="hidden">
+        <polygon points="
+            2 2, 148 2, 148 50,
+            117 50, 107 60, 97 50,
+            2 50" stroke="#ccc" stroke-width="2px" fill="#fafafa" />
+        <text x="52" y="21" font-size="14px">Nice job!</text>
+        <text x="23" y="43" font-size="14px">It&apos;s time for a break</text>
+    </svg>
+</div>
+
+<script>
+    const THEME={ //color theme
+        GREEN: '#00943c',
+        DARKGRAY: '#333',
+        WHITE: '#fafafa',
+        BLUE: 'royalblue',
+    }
+    
+    const $i=query=>document.getElementById(query);
+    const $i_show=query=>$i(query).classList.remove('hidden');
+    const $i_hide=query=>$i(query).classList.add('hidden');
+    
+    //# SVG API
+    const circumference=Math.PI*2*40; //251.4
+    const pomodoroEl=$i('pomodoro');
+    const topEl=$i('top-arc'); //foreground
+    const bottomEl=$i('bottom-arc');
+    const textEl=$i('time-left-text');
+
+    function setCompletePercent(percent) {
+        const scaledAmount=percent/100*circumference;
+        topEl.style.strokeDashoffset=-scaledAmount;
+        bottomEl.style.strokeDashoffset=scaledAmount;
+    }
+
+    //# Timer Utils
+    let pausedStartedAt=-1; //-1 (not paused) or unix time (paused)
+    let startTime;
+    let endTime;
+    let clockInterval;
+
+    function runTimer(durationMinutes) {
+        resetClockColorTheme();
+
+        startTime=Date.now(); //in millis (unix time)
+        endTime=Date.now()+durationMinutes*60*1000; //in millis
+        const millisDuration=endTime-startTime;
+
+        function updateClock() { //compute logic & render DOM
+            const millisPassed=Date.now()-startTime;
+            const percentComplete=millisPassed/millisDuration*100;
+            const minutesLeft=(endTime-Date.now())/1000/60;
+
+            if (minutesLeft<0)
+                return setTimerComplete();
+
+            if (minutesLeft>=1) //display minutes left
+                textEl.innerHTML=Math.floor(minutesLeft);
+
+            if (minutesLeft<1 && minutesLeft>0) { //display seconds left
+                let secondsLeft=Math.floor(minutesLeft*60).toString();
+                while (secondsLeft.length<2) //make sure at least two digits
+                    secondsLeft='0'+secondsLeft;
+                
+                textEl.style.fontSize='30px';
+                textEl.innerHTML='0:'+secondsLeft;
+            }
+
+            setCompletePercent(percentComplete);
+        }
+        
+        updateClock();
+        clockInterval=setInterval(()=>{
+            if (pausedStartedAt===-1)
+                updateClock();
+        }, 100);
+    }
+
+    function killClock() { //resets clock like starting state
+        clearInterval(clockInterval);
+        clockInterval=-1;
+        pausedStartedAt=-1;
+        setCompletePercent(0);
+        textEl.innerHTML='';
+    }
+
+    function resetClockColorTheme() {
+        topEl.style.stroke=THEME.BLUE;
+        bottomEl.style.stroke=THEME.BLUE;
+
+        $i('background-border-top').style.stroke='#5e73ab';
+        $i('background-border-bottom').style.stroke='#5e73ab';
+
+        $i('background-top').style.stroke='#d4daeb';
+        $i('background-bottom').style.stroke='#d4daeb';
+    }
+
+    function setTimerComplete() { //sets timer complete (green)
+        killClock();
+        setCompletePercent(100);
+        textEl.innerHTML='';
+        topEl.style.stroke=THEME.GREEN;
+        bottomEl.style.stroke=THEME.GREEN;
+        setStatus('done');
+    }
+
+    function hideAll() { //hides all status-dependent elements
+        [
+            'start-hover',
+            'middle-hover',
+            'end-hover',
+            'focus-text',
+            'running-icon',
+            'paused-icon',
+            'smiley-face'
+        ].forEach($i_hide);
+    }
+
+    function addEventListeners() { // adds event listeners to elements
+        //# Mouseup
+        // For start
+        $i('start-btn').addEventListener('mouseup', ()=>{
+            runTimer($i('minutes').value);
+            setStatus('running');
+        });
+        $i('minutes').addEventListener('keypress', e=>{
+            if (e.key==='Enter') //simulate mouseup on start button
+                $i('start-btn').dispatchEvent(new Event('mouseup'));
+        });
+
+        // For middle
+        //     running
+        $i('middle-hover-status').addEventListener('mouseup', ()=>{
+            if (status==='running') {
+                setStatus('paused');
+            }
+            else if (status==='paused') {
+                const pausedForMillis=Date.now()-pausedStartedAt;
+                startTime+=pausedForMillis;
+                endTime+=pausedForMillis;
+                pausedStartedAt=-1; //resume
+                setStatus('running');
+            }
+        });
+        //     paused
+        $i('middle-hover-end-btn').addEventListener('mouseup', ()=>{
+            killClock();
+            setStatus('start');
+        });
+
+        // end (done)
+        ['mouseleave', 'mouseup'].forEach(l=>$i('done-message').addEventListener(l, ()=>{
+            $i_hide('done-message');
+        }));
+
+        
+        //# Hover
+        pomodoroEl.addEventListener('mouseenter', ()=>{
+            if (status==='start' || status==='done') { //ready to start
+                $i_show('start-hover');
+            } else if (status==='running') { //in the middle
+                $i_show('middle-hover');
+                $i_show('running-icon');
+            } else if (status==='paused') { //in the middle
+                $i_show('middle-hover');
+                $i_show('paused-icon');
+            } else if (status==='done') { //finished a session
+
+            } else {
+                throw new Error(`Invalid timer status: ^${status}$`);
+            }
+        });
+        $i('focus-app').addEventListener('mouseleave', ()=>{
+            if (status==='start') { //ready to start
+            } else if (status==='running') { //in the middle
+            } else if (status==='paused') { //in the middle
+
+            } else if (status==='done') { //finished a session
+
+            } else {
+                throw new Error(`Invalid timer status: ^${status}$`);
+            }
+        });
+    }
+    
+    //# Timer Main
+    let status='start';
+    
+    function setStatus(newStatus) { //update DOM to match status
+        status=newStatus;
+        hideAll();
+        console.log('Setting status to', status);
+        if (status==='start') {
+            $i_show('focus-text');
+        } else if (status==='running') { //in the middle
+            pausedStartedAt=-1; //not paused
+        } else if (status==='paused') { //in the middle
+            pausedStartedAt=Date.now();
+        } else if (status==='done') { //finished a session
+            $i_show('smiley-face');
+            $i_show('done-message');
+        } else {
+            throw new Error(`Invalid timer status: ^${status}$`);
+        }
+    }
+
+    function main() {
+        setStatus('start');
+        addEventListeners();
+    }
+
+    main();
+</script>

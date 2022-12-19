@@ -6,7 +6,6 @@
     const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{ //toggle viewer status and send back status ('on' | 'off') for extension to change its icon
-        console.log(`Message`, message);
         const settings=message.settings;
 
         // toggle status
@@ -109,7 +108,6 @@
                 return true;
             }
         })();
-        console.log('status', status, 'isFullScreen', isInFullScreen);
         if ( //need to change full screen status
             (status==='on'  && !isInFullScreen)
                 ||
@@ -143,4 +141,10 @@
         await sleep(1000); //give time for changes
         return;
     }
+
+    document.addEventListener('keydown', e=>{
+        if (e.key==='j' && e.metaKey) {
+            console.log('command j');
+        }
+    }, true);
 })();

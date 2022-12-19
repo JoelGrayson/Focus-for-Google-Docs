@@ -23,7 +23,7 @@ chrome.action.onClicked.addListener(tab=>{ //when icon clicked
         chrome.tabs.sendMessage(tabId, {settings}, setStorage);
 
         async function setStorage(response) { //tell tab to toggle on/off
-            console.log('Received response', response);
+            // console.log('Received response', response);
             
             if (response===undefined) { //script not injected into tab, so reload and try again.
                 chrome.tabs.reload(tabId);
@@ -49,14 +49,12 @@ chrome.action.onClicked.addListener(tab=>{ //when icon clicked
 chrome.tabs.onActivated.addListener(({tabId, windowId})=>{ //switch tabs (active tab changes)
     chrome.storage.sync.get(`tabId-${tabId}`, kvStatus=>{
         const status=kvStatus[`tabId-${tabId}`] || 'off';
-        console.log('status of', status);
         setExtensionIcon(status);
     });
 });
 
-
 function setExtensionIcon(status: tabStatusT) {
-    console.log(`Setting icon to ^${status}$`);
+    // console.log(`Setting icon to ^${status}$`);
     if (status==='on') {
         chrome.action.setIcon({
             path: '/icons/on-128.png'
@@ -70,4 +68,3 @@ function setExtensionIcon(status: tabStatusT) {
         throw new Error(`Unknown status: ^${JSON.stringify(status)}$`);
     }
 }
-
