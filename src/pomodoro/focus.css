@@ -1,3 +1,8 @@
+#focus-app {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
 #pomodoro-container {
     position: absolute;
     cursor: pointer;
@@ -7,6 +12,18 @@
     height: 50px;
 }
 
+.hidden { /* added/removed from classList */
+    display: none !important;
+}
+
+.btn {
+    border: 2px solid #333;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+
 #start-hover-children {
     min-width: 80px;
     padding: 8px 10px;
@@ -15,17 +32,17 @@
     right: 20px;
     padding: 6px 10px;
     border: 2px solid #333;
-    border-radius: 5px;
 }
-
-.hidden { /* added/removed from classList */
-    display: none !important;
-}
-
 #start-hover-triangle {
     position: absolute;
     bottom: 65px;
     right: 20px;
+
+}
+#start-btn {
+    margin: 5px auto 1px auto;
+    display: block;
+    padding: 2px;
 }
 
 #middle-hover {
@@ -40,29 +57,23 @@
 }
 #middle-hover-status, #middle-hover-end-btn { /* children of middle items*/
     height: 20px;
-    background-color: #fafafa;
     width: 25px;
     cursor: pointer;
     user-select: none;
 }
-
+/* special button border override */
 #middle-hover-status {
-    border: 2px solid #333;
     border-right-width: 1px;
     border-radius: 5px 0 0 5px;
 }
-
 #middle-hover-end-btn {
-    border: 2px solid #333;
     border-left-width: 1px;
     border-radius: 0 5px 5px 0;
 }
-
-#end-hover {}
 
 #done-message {
     position: absolute;
     bottom: 60px;
     right: 10px;
+    cursor: pointer;
 }
-
