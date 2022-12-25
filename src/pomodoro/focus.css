@@ -1,6 +1,7 @@
 #focus-app {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14px;
+    user-select: none;
 }
 
 #pomodoro-container {
@@ -22,6 +23,12 @@
     border-radius: 5px;
     background-color: #fafafa;
 }
+.btn:hover {
+    background-color: #eee;
+}
+.btn:active {
+    background-color: #ddd;
+}
 
 
 #start-hover-children {
@@ -31,15 +38,17 @@
     bottom: 80px;
     right: 20px;
     padding: 6px 10px;
-    border: 2px solid #333;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    background-color: #fafafa;
 }
 #start-hover-triangle {
     position: absolute;
     bottom: 65px;
-    right: 20px;
-
+    right: 30px;
 }
 #start-btn {
+    filter: brightness(0.98); /* slightly darker bg */
     margin: 5px auto 1px auto;
     display: block;
     padding: 2px;
