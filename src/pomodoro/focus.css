@@ -31,10 +31,19 @@
 #middle-hover {
     position: absolute;
     display: flex;
-    cursor: pointer;
-    bottom: 60px;
-    right: 20px;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 58px; /* a little higher than the 50px real padding */
+    justify-content: center;
+    align-items: flex-start;
+}
+#middle-hover-status, #middle-hover-end-btn { /* children of middle items*/
+    height: 20px;
     background-color: #fafafa;
+    width: 25px;
+    cursor: pointer;
+    user-select: none;
 }
 
 #middle-hover-status {
@@ -49,8 +58,7 @@
     border-radius: 0 5px 5px 0;
 }
 
-#end-hover {
-}
+#end-hover {}
 
 #done-message {
     position: absolute;

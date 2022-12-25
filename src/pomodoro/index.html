@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="./focus.css">
 
 <div id="focus-app">
+    <!-- pomo timer -->
     <div id="pomodoro-container">
         <svg id="pomodoro" viewbox="0 0 100 100"> <!-- rotate so time starts upright -->
             <g id="background"> <!-- light color (always full) -->
@@ -36,6 +37,7 @@
         </svg>
     </div>
 
+    <!-- hover overlays -->
     <div id="start-hover">
         <!-- <svg id="start-hover-speech-bubble">
 
@@ -69,7 +71,7 @@
         <!-- TODO -->
     </div>
 
-    <!-- part of end -->
+    <!-- ending message -->
     <svg id="done-message" viewbox="0 0 150 70" width="150px" height="70px" class="hidden">
         <polygon points="
             2 2, 148 2, 148 50,
@@ -81,6 +83,9 @@
 </div>
 
 <script>
+    const ENV='dev';
+    // const ENV='prod';
+    
     const THEME={ //color theme
         GREEN: '#00943c',
         DARKGRAY: '#333',
@@ -91,6 +96,8 @@
     const $i=query=>document.getElementById(query);
     const $i_show=query=>$i(query).classList.remove('hidden');
     const $i_hide=query=>$i(query).classList.add('hidden');
+    const devPrint=(...args)=>{ if (ENV==='dev') console.log('', ...args) }; //avoid printing during production
+    const prodPrint=(...args)=>console.log('<Focus>', ...args); //prints during development and production showing watermark
     
     //# SVG API
     const circumference=Math.PI*2*40; //251.4
@@ -261,7 +268,7 @@
     function setStatus(newStatus) { //update DOM to match status
         status=newStatus;
         hideAll();
-        console.log('Setting status to', status);
+        devPrint('Setting status to', status);
         if (status==='start') {
             $i_show('focus-text');
         } else if (status==='running') { //in the middle
