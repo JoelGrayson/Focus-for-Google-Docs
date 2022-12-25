@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="./focus.css">
 
+
 <div id="focus-app">
     <!-- pomo timer -->
     <div id="pomodoro-container">
@@ -13,7 +14,7 @@
                 <path id="background-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
                 <path id="background-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
             </g>
-            <g id="foreground" style="transform: rotate(90deg); translate: 100px"> <!-- darker color overlay (starts at zero) -->
+            <g id="foreground"> <!-- darker color overlay (starts at zero) -->
                 <path id="top-arc"    d="M 10 50 A 40 40 0 0 1 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
                 <path id="bottom-arc" d="M 10 50 A 40 40 0 0 0 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
             </g>
@@ -31,9 +32,8 @@
                     <path d="M 30 60 A 20 10 0 0 0 70 60" stroke="#00943c" stroke-width="3" fill="none" />
                 </g>
             </g>
-            
     
-            <text id='time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica"><!-- time left inserted here by JS --></text>
+            <text id='time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica"/> <!-- time left innerText value inserted by JS -->
         </svg>
     </div>
 
@@ -62,7 +62,7 @@
             </g>
         </svg>
         <div id="middle-hover-end-btn" class="btn">
-            <span style="position: relative; top: 1.2px">End</span>
+            <span>End</span>
         </div>
     </div>
 
@@ -77,24 +77,27 @@
     </svg>
 </div>
 
+
 <script>
+    // Configuration
     const ENV='dev';
     // const ENV='prod';
     
     const THEME={ //color theme
-        GREEN: '#00943c',
-        DARKGRAY: '#333',
+        DARKGRAY: '#444',
+        GRAY: '#ccc',
         WHITE: '#fafafa',
         BLUE: 'royalblue',
-    }
+        GREEN: '#00943c'
+    };
     
+    //# SVG API
     const $i=query=>document.getElementById(query);
     const $i_show=query=>$i(query).classList.remove('hidden');
     const $i_hide=query=>$i(query).classList.add('hidden');
     const devPrint=(...args)=>{ if (ENV==='dev') console.log('', ...args) }; //avoid printing during production
     const prodPrint=(...args)=>console.log('<Focus>', ...args); //prints during development and production showing watermark
-    
-    //# SVG API
+
     const circumference=Math.PI*2*40; //251.4
     const pomodoroEl=$i('pomodoro');
     const topEl=$i('top-arc'); //foreground
@@ -219,6 +222,10 @@
                 pausedStartedAt=-1; //resume
                 setStatus('running');
             }
+        });
+        textEl.addEventListener('mouseup', e=>{
+            // textEl.classList.add('hidden');
+            textEl.contentEditable='true';
         });
         //     paused
         $i('middle-hover-end-btn').addEventListener('mouseup', ()=>{

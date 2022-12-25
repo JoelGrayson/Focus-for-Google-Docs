@@ -13,12 +13,18 @@
     height: 50px;
 }
 
+#foreground {
+    transform: rotate(90deg);
+    translate: 100px;
+}
+
 .hidden { /* added/removed from classList */
     display: none !important;
+    z-index: -1;
 }
 
 .btn {
-    border: 2px solid #333;
+    border: 2px solid #444;
     cursor: pointer;
     border-radius: 5px;
     background-color: #fafafa;
@@ -52,17 +58,20 @@
     margin: 5px auto 1px auto;
     display: block;
     padding: 2px;
+    border-color: #aaa;
 }
 
 #middle-hover {
     position: absolute;
     display: flex;
-    bottom: 30px;
+    bottom: 64px;
     right: 30px;
     width: 50px;
-    height: 58px; /* a little higher than the 50px real padding */
-    justify-content: center;
-    align-items: flex-start;
+    height: 25px; /* a little higher than the 50px real padding */
+}
+#time-left-text {
+    z-index: 2;
+    cursor: text;
 }
 #middle-hover-status, #middle-hover-end-btn { /* children of middle items*/
     height: 20px;
@@ -78,6 +87,10 @@
 #middle-hover-end-btn {
     border-left-width: 1px;
     border-radius: 0 5px 5px 0;
+}
+#middle-hover-end-btn>span {
+    position: relative;
+    top: 1.2px;
 }
 
 #done-message {
