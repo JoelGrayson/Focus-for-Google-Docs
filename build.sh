@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# # TypeScript Files
 # Compile Source
 cd src
 tsc --target ES2020 background.ts injected.ts
@@ -15,3 +16,6 @@ rm background.js.tmp injected.js.tmp
 # Move to dist
 mv injected.js ../dist
 mv background.js ../dist
+
+# # Pomodoro
+cp -R pomodoro ../dist

@@ -7,3 +7,7 @@ HashMap of `tabId-${number}` and `settings`. Examples:
         autoOn: boolean;
         printLayout: boolean;
     }
+
+# Pomodoro
+* Developed in `/developing/pomodoro/`
+* Bundled into functions in `/src/pomodoro/`
