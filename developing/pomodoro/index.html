@@ -33,15 +33,17 @@
                 </g>
             </g>
     
-            <text id='focus__time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica"/> <!-- time left innerText value inserted by JS -->
+            <text id='focus__time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica" /> <!-- time left innerText value inserted by JS -->
         </svg>
     </div>
+
+    <input type="number" min="0" max="9999" id="focus__time-left-editable" class="focus__hidden" />
 
     <!-- hover overlays -->
     <div id="focus__start-hover">
         <div id="focus__start-hover-children">
             <div>
-                <input type="number" id='focus__minutes' value="15" style='width: 6ch' />
+                <input type="number" min="0" max="9999" id='focus__minutes' value="15" style='width: 6ch' />
                 <label for="focus__minutes">minutes</label>
             </div>
             <button id="focus__start-btn" class="focus__btn">Start</button>
@@ -79,6 +81,8 @@
 
 
 <script>
+    'use strict';
+
     // Configuration
     const ENV='dev';
     // const ENV='prod';
@@ -103,6 +107,8 @@
     const topEl=$i('focus__top-arc'); //foreground
     const bottomEl=$i('focus__bottom-arc');
     const textEl=$i('focus__time-left-text');
+    const editableTextEl=$i('focus__time-left-editable');
+    const uMinutesEl=$i('focus__minutes'); //user's input for minutes
 
     function setCompletePercent(percent /** out of 100 */) {
         const scaledAmount=percent/100*circumference;
@@ -171,7 +177,7 @@
         $i('focus__background-bottom').style.stroke='#d4daeb';
         
         // Width
-        $i('focus__minutes').style.width='6ch';
+        uMinutesEl.style.width='6ch';
     }
 
     function setTimerComplete() { //sets timer complete (green)
@@ -188,9 +194,10 @@
             'focus__start-hover',
             'focus__middle-hover',
             'focus__focus-text',
+            'focus__time-left-editable',
             'focus__running-icon',
             'focus__paused-icon',
-            'focus__smiley-face'
+            'focus__smiley-face',
         ].forEach($i_hide);
     }
     
@@ -198,18 +205,52 @@
         //# Mouseup
         // For start
         $i('focus__start-btn').addEventListener('mouseup', ()=>{
-            runTimer($i('focus__minutes').value);
+            runTimer(uMinutesEl.value);
             setStatus('running');
         });
-        $i('focus__minutes').addEventListener('keypress', e=>{
-            if (e.key==='Enter') //simulate mouseup on start button
+        uMinutesEl.addEventListener('keypress', e=>{ //enter key triggers start
+            if (e.key==='Enter') //enter key -> simulate mouseup on start button
                 $i('focus__start-btn').dispatchEvent(new Event('mouseup'));
-
-            const inputNumChars=$i('focus__minutes').value.length || 1;
-            $i('focus__minutes').style.width=`${inputNumChars+5}ch`;
         });
+        uMinutesEl.addEventListener('input', e=>{
+            const inputNumChars=uMinutesEl.value.length || 1; //change width to match input size
+            uMinutesEl.style.width=`${inputNumChars+5}ch`;
+            document.querySelector('label[for="focus__minutes"]').innerHTML=e.target.value==='1' ? 'minute' : 'minutes'; //minute or minutes reflects u_input
+        })
 
         // For middle
+        // Editing time left (click on time)
+        let isEditingTimeLeft=false;
+        function setIsEditingTimeLeft(newIsEditingTimeLeft) {
+            isEditingTimeLeft=newIsEditingTimeLeft;
+            hideAll();
+            if (isEditingTimeLeft) { //setting to true
+                textEl.classList.add('focus__hidden');
+                // start with current timer value
+                const currValue=textEl.innerHTML;
+                if (currValue.includes(':'))
+                    editableTextEl.value=currValue.split(':')[0]+1; //just minutes
+                else
+                    editableTextEl.value=currValue;
+                
+                editableTextEl.classList.remove('focus__hidden');
+                pausedStartedAt=Date.now(); //start pausing
+            } else { //setting to false
+                const newValue=editableTextEl.value;
+                textEl.classList.remove('focus__hidden');
+                editableTextEl.classList.add('focus__hidden');
+                startTime=Date.now();
+                endTime=Date.now()+newValue*60*1000; //user's input minutes ahead of now
+                pausedStartedAt=-1;
+            }
+        }
+        
+        textEl.addEventListener('mouseup', _=>setIsEditingTimeLeft(true));
+        editableTextEl.addEventListener('keypress', e=>{
+            if (e.key==='Enter') //finished because hit enter key
+                setIsEditingTimeLeft(false);
+        });
+
         //     running
         $i('focus__middle-hover-status').addEventListener('mouseup', ()=>{
             if (status==='running') {
@@ -223,16 +264,14 @@
                 setStatus('running');
             }
         });
-        textEl.addEventListener('mouseup', e=>{
-            // textEl.classList.add('hidden');
-            textEl.contentEditable='true';
-        });
+
         //     paused
         $i('focus__middle-hover-end-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
         });
 
+        
         // end (done)
         ['mouseleave', 'mouseup'].forEach(l=>$i('focus__done-message').addEventListener(l, ()=>{
             $i_hide('focus__done-message');
@@ -241,13 +280,14 @@
         
         //# Hover
         pomodoroEl.addEventListener('mouseenter', ()=>{
+            if (!isEditingTimeLeft && (status==='running' || status==='paused'))
+                $i_show('focus__middle-hover');
+            
             if (status==='start' || status==='done') { //ready to start
                 $i_show('focus__start-hover');
             } else if (status==='running') { //in the middle
-                $i_show('focus__middle-hover');
                 $i_show('focus__running-icon');
             } else if (status==='paused') { //in the middle
-                $i_show('focus__middle-hover');
                 $i_show('focus__paused-icon');
             } else if (status==='done') { //finished a session
 
@@ -295,8 +335,8 @@
     }
 
     function main() {
-        setStatus('start');
         addEventListeners();
+        setStatus('start');
     }
 
     main();

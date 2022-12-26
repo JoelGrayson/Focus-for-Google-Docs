@@ -73,6 +73,15 @@
     z-index: 2;
     cursor: text;
 }
+#focus__time-left-editable { /* appears when editing #focus__time-left-text */
+    position: absolute;
+    bottom: 38px;
+    right: 32px;
+    width: 3.5ch;
+    font-size: 24px;
+    font-family: Helvetica;
+    text-align: center;
+}
 #focus__middle-hover-status, #focus__middle-hover-end-btn { /* children of middle items*/
     height: 20px;
     width: 25px;
