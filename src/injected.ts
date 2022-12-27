@@ -73,9 +73,6 @@
                     });
                     document.body.appendChild(fullScreenBtn);
                 }
-    
-                //* Pomodoro Widget
-                // TODO: Add a pomodoro timer widget in the top right
             }
             if (status==='off') { //turn off full screen and reload page
                 setFullScreenStatus('off', settings)
@@ -147,7 +144,8 @@
     
     //# Pomodoro Timer
     (async ()=>{
-        document.body.innerHTML+= //copied from developing/pomodoro/index.html
+        const focusEl=document.createElement('focus-extension');
+        focusEl.innerHTML= //copied from developing/pomodoro/index.html
             `   <div id="focus__focus-app">
                     <!-- pomo timer -->
                     <div id="focus__pomodoro-container">
@@ -226,7 +224,8 @@
                     </svg>
                 </div>
             `;
-        
+        document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
+
         // Start pomodoro.js
         /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
         // End pomodoro.js

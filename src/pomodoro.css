@@ -1,3 +1,5 @@
+/*! Copied from developing/pomodoro/pomodoro.css */
+
 #focus__focus-app {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14px;
@@ -11,6 +13,10 @@
     right: 30px;
     width: 50px;
     height: 50px;
+}
+
+#focus__focus-app>* { /* children need to have z-index because parent has position: static */
+    z-index: 10000; /* Covers up the Grammarly extension which sits in the same place. Take that, Grammarly! */
 }
 
 #focus__foreground {
@@ -36,7 +42,9 @@
     background-color: #ddd;
 }
 
-
+#focus__start-hover>* {
+    z-index: 10000;
+}
 #focus__start-hover-children {
     min-width: 80px;
     padding: 8px 10px;
@@ -70,7 +78,7 @@
     height: 25px; /* a little higher than the 50px real padding */
 }
 #focus__time-left-text {
-    z-index: 2;
+    z-index: 10002;
     cursor: text;
 }
 #focus__time-left-editable { /* appears when editing #focus__time-left-text */

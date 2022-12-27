@@ -1,2 +1,3 @@
+- [ ] Include pomodoro in settings page
 - [ ] Film demo video
 - [ ] Publish
