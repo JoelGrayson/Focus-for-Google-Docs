@@ -22,7 +22,8 @@
     "content_scripts": [
         {
             "matches": ["https://docs.google.com/document/*"],
-            "js": ["dist/injected.js"]
+            "js": ["dist/injected.js"],
+            "css": ["dist/pomodoro.css"]
         }
     ],
     "permissions":[

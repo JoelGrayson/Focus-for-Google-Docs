@@ -148,73 +148,75 @@
     //# Pomodoro Timer
     (async ()=>{
         document.body.innerHTML+= //copied from developing/pomodoro/index.html
-            `   <div id="focus-app">
+            `   <div id="focus__focus-app">
                     <!-- pomo timer -->
-                    <div id="pomodoro-container">
-                        <svg id="pomodoro" viewbox="0 0 100 100"> <!-- rotate so time starts upright -->
-                            <g id="background"> <!-- light color (always full) -->
+                    <div id="focus__pomodoro-container">
+                        <svg id="focus__pomodoro" viewbox="0 0 100 100"> <!-- rotate so time starts upright -->
+                            <g id="focus__background"> <!-- light color (always full) -->
                                 <!-- border (slightly larger and underneath) -->
-                                <path id="background-border-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#5e73ab" stroke-width='11px' fill="#fafafa" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
-                                <path id="background-border-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#5e73ab" stroke-width='11px' fill="#fafafa" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                                <path id="focus__background-border-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#5e73ab" stroke-width='11px' fill="#fafafa" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                                <path id="focus__background-border-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#5e73ab" stroke-width='11px' fill="#fafafa" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
                                 
                                 <!-- background light color -->
-                                <path id="background-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
-                                <path id="background-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                                <path id="focus__background-top" d="M 10 50 A 40 40 0 0 1 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
+                                <path id="focus__background-bottom" d="M 10 50 A 40 40 0 0 0 90 50" stroke="#d4daeb" stroke-width='10px' fill="transparent" stroke-dashoffset="251.4" stroke-dasharray="0 251.4 0"/>
                             </g>
-                            <g id="foreground"> <!-- darker color overlay (starts at zero) -->
-                                <path id="top-arc"    d="M 10 50 A 40 40 0 0 1 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
-                                <path id="bottom-arc" d="M 10 50 A 40 40 0 0 0 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
+                            <g id="focus__foreground"> <!-- darker color overlay (starts at zero) -->
+                                <path id="focus__top-arc"    d="M 10 50 A 40 40 0 0 1 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
+                                <path id="focus__bottom-arc" d="M 10 50 A 40 40 0 0 0 90 50" stroke="royalblue" stroke-width='10px' fill="transparent" stroke-dashoffset="0" stroke-dasharray="0 251.4 0"/>
                             </g>
                     
-                            <g id="status-dependent">
+                            <g id="focus__status-dependent">
                                 <!-- start -->
-                                <g id='focus-text' class="hidden">
+                                <g id='focus__focus-text' class="focus__hidden">
                                     <text x="50" y="56" text-anchor="middle" font-size="23px" font-family="helvetica">Focus</text>
                                 </g>
                 
                                 <!-- end -->
-                                <g id="smiley-face" class="hidden">
-                                    <circle cx="40" cy="40" r='4' fill="#00943c" stroke="none "/>
+                                <g id="focus__smiley-face" class="focus__hidden">
+                                    <circle cx="40" cy="40" r='4' fill="#00943c" stroke="none" />
                                     <circle cx="60" cy="40" r='4' fill="#00943c" stroke="none" />
                                     <path d="M 30 60 A 20 10 0 0 0 70 60" stroke="#00943c" stroke-width="3" fill="none" />
                                 </g>
                             </g>
                     
-                            <text id='time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica"/> <!-- time left innerText value inserted by JS -->
+                            <text id='focus__time-left-text' x="50" y="61" text-anchor="middle" font-size="40px" font-family="helvetica" /> <!-- time left innerText value inserted by JS -->
                         </svg>
                     </div>
                 
+                    <input type="number" min="0" max="9999" id="focus__time-left-editable" class="focus__hidden" />
+                
                     <!-- hover overlays -->
-                    <div id="start-hover">
-                        <div id="start-hover-children">
+                    <div id="focus__start-hover">
+                        <div id="focus__start-hover-children">
                             <div>
-                                <input type="number" id='minutes' value="15" style='width: 6ch' />
-                                <label for="minutes">minutes</label>
+                                <input type="number" min="0" max="9999" id='focus__minutes' value="15" style='width: 6ch' />
+                                <label for="focus__minutes">minutes</label>
                             </div>
-                            <button id="start-btn" class="btn">Start</button>
+                            <button id="focus__start-btn" class="focus__btn">Start</button>
                         </div>
-                        <svg id="start-hover-triangle" width="50px" height="25px" viewbox="0 0 50 10">
+                        <svg id="focus__start-hover-triangle" width="50px" height="25px" viewbox="0 0 50 10">
                             <path d="M 18 0 L 25 10, 32 0" stroke="#ccc" stroke-width="2" fill="#fafafa" />
                         </svg>
                     </div>
                 
-                    <div id="middle-hover" class="hidden"> <!-- 'running' or 'paused' -->
-                        <svg id="middle-hover-status" class="btn" viewbox="10 10 80 80" width="20px" height="20px">
-                            <g id="running-icon" class="hidden">
+                    <div id="focus__middle-hover" class="focus__hidden"> <!-- 'running' or 'paused' -->
+                        <svg id="focus__middle-hover-status" class="focus__btn" viewbox="10 10 80 80" width="20px" height="20px">
+                            <g id="focus__running-icon" class="focus__hidden">
                                 <rect x="33" y="30" width="12" height="40" rx="2" fill="#111" />
                                 <rect x="53" y="30" width="12" height="40" rx="2" fill="#111" />
                             </g>
-                            <g id="paused-icon" class="hidden">
+                            <g id="focus__paused-icon" class="focus__hidden">
                                 <polygon points="36 30, 36 70, 73 50" fill='#111' />
                             </g>
                         </svg>
-                        <div id="middle-hover-end-btn" class="btn">
+                        <div id="focus__middle-hover-end-btn" class="focus__btn">
                             <span>End</span>
                         </div>
                     </div>
                 
                     <!-- ending message -->
-                    <svg id="done-message" viewBox="0 0 120 75" width="120px" height="75px" class="hidden">
+                    <svg id="focus__done-message" viewBox="0 0 120 75" width="120px" height="75px" class="focus__hidden">
                         <polygon points="
                             2 2, 118 2, 118 55,
                             85 55, 75 65, 65 55,
@@ -224,5 +226,9 @@
                     </svg>
                 </div>
             `;
+        
+        // Start pomodoro.js
+        /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
+        // End pomodoro.js
     })();
 })();

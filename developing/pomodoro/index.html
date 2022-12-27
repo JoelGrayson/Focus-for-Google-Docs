@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="./focus.css">
+<link rel="stylesheet" href="./pomodoro.css">
 
 
 <div id="focus__focus-app">
@@ -112,8 +112,8 @@
 
     function setCompletePercent(percent /** out of 100 */) {
         const scaledAmount=percent/100*circumference;
-        topEl.style.strokeDashoffset=-scaledAmount;
-        bottomEl.style.strokeDashoffset=scaledAmount;
+        topEl.style.strokeDashoffset=(-scaledAmount).toString();
+        bottomEl.style.strokeDashoffset=scaledAmount.toString();
     }
 
     //# Timer Utils
@@ -136,7 +136,7 @@
                 return setTimerComplete();
 
             if (minutesLeft>=1) //display minutes left
-                textEl.innerHTML=Math.floor(minutesLeft);
+                textEl.innerHTML=Math.floor(minutesLeft).toString();
 
             if (minutesLeft<1 && minutesLeft>0) { //display seconds left
                 let secondsLeft=Math.floor(minutesLeft*60).toString();

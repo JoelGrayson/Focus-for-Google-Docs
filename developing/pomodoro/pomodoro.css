@@ -1,0 +1,110 @@
+#focus__focus-app {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    user-select: none;
+}
+
+#focus__pomodoro-container {
+    position: absolute;
+    cursor: pointer;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+}
+
+#focus__foreground {
+    transform: rotate(90deg);
+    translate: 100px;
+}
+
+.focus__hidden { /* added/removed from classList */
+    display: none !important;
+    z-index: -1;
+}
+
+.focus__btn {
+    border: 2px solid #444;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+.focus__btn:hover {
+    background-color: #eee;
+}
+.focus__btn:active {
+    background-color: #ddd;
+}
+
+
+#focus__start-hover-children {
+    min-width: 80px;
+    padding: 8px 10px;
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    padding: 6px 10px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    background-color: #fafafa;
+}
+#focus__start-hover-triangle {
+    position: absolute;
+    bottom: 65px;
+    right: 30px;
+}
+#focus__start-btn {
+    filter: brightness(0.98); /* slightly darker bg */
+    margin: 5px auto 1px auto;
+    display: block;
+    padding: 2px;
+    border-color: #aaa;
+}
+
+#focus__middle-hover {
+    position: absolute;
+    display: flex;
+    bottom: 64px;
+    right: 30px;
+    width: 50px;
+    height: 25px; /* a little higher than the 50px real padding */
+}
+#focus__time-left-text {
+    z-index: 2;
+    cursor: text;
+}
+#focus__time-left-editable { /* appears when editing #focus__time-left-text */
+    position: absolute;
+    bottom: 38px;
+    right: 32px;
+    width: 3.5ch;
+    font-size: 24px;
+    font-family: Helvetica;
+    text-align: center;
+}
+#focus__middle-hover-status, #focus__middle-hover-end-btn { /* children of middle items*/
+    height: 20px;
+    width: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+/* special button border override */
+#focus__middle-hover-status {
+    border-right-width: 1px;
+    border-radius: 5px 0 0 5px;
+}
+#focus__middle-hover-end-btn {
+    border-left-width: 1px;
+    border-radius: 0 5px 5px 0;
+}
+#focus__middle-hover-end-btn>span {
+    position: relative;
+    top: 1.2px;
+}
+
+#focus__done-message {
+    position: absolute;
+    bottom: 60px;
+    right: 10px;
+    cursor: pointer;
+}

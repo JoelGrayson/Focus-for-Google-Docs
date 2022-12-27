@@ -16,9 +16,11 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
 });
 
 chrome.action.onClicked.addListener(tab=>{ //when icon clicked
+    if (!tab.url!.includes('docs.google.com/document/')) return; //only run on valid tab
+
     const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
     const tabId=tab.id || chrome.tabs.TAB_ID_NONE;
-    
+
     chrome.storage.sync.get('settings', ({settings})=>{ //pass in settings as message
         chrome.tabs.sendMessage(tabId, {settings}, setStorage);
 
