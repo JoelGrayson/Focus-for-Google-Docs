@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head><title>Focus for Google Docs Options</title></head>
+<head>
+    <title>Focus for Google Docs Options</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <link rel="stylesheet" href="./ucjg.v2.css" />
+</head>
 <body>
     <h1>Focus for Google Docs Options</h1>
+    <h3>General</h3>
     <div>
-        <div>
-            <label for="fullScreen">Enters full screen</label>
-            <input type="checkbox" id="fullScreen"/>
-        </div>
-        <!-- <div>
-            <label for="autoOn">Automatically turn on focus mode when opening a Google Doc.</label>
-            <input type="checkbox" id="autoOn"/>
-        </div> -->
-        <div>
-            <label for="printLayout">Show print layout instead of seamless page transitions.</label>
-            <input type="checkbox" id="printLayout"/>
-        </div>
-        <br/>
-        <button id="save">Save</button>
-        <button id="restoreDefaults">Restore Defaults</button>
-        <div id="status"></div>
+        <label for="fullScreen">Enters full screen</label>
+        <input type="checkbox" id="fullScreen"/>
     </div>
+    <div>
+        <label for="printLayout">Show print layout instead of seamless page transitions.</label>
+        <input type="checkbox" id="printLayout"/>
+    </div>
+    <br/>
+    <h3>Pomodoro 🍅</h3>
+    <div>
+        <label for="pomodoroEnabled">Pomodoro timer enabled</label>
+        <input type="checkbox" id="pomodoroEnabled" />
+    </div>
+    
+    <br/><br/>
 
-    <script src="options.js"></script>
+    <button id="restoreDefaults">Restore Defaults</button>
+    <div id="status"></div>
+
+    <script src="./options.js"></script>
 </body>
 </html>

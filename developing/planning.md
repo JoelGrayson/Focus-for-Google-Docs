@@ -4,8 +4,8 @@ HashMap of `tabId-${number}` and `settings`. Examples:
     * `tabId-936794680`
     * `settings`: {
         fullScreen: boolean;
-        autoOn: boolean;
         printLayout: boolean;
+        pomodoroEnabled: boolean;
     }
 
 # Pomodoro

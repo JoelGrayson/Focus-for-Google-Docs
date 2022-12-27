@@ -9,8 +9,8 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
     chrome.storage.sync.set({
         settings: {
             fullScreen: false,
-            autoOn: false,
-            printLayout: false
+            printLayout: false,
+            pomodoroEnabled: true
         }
     });
 });
@@ -25,8 +25,6 @@ chrome.action.onClicked.addListener(tab=>{ //when icon clicked
         chrome.tabs.sendMessage(tabId, {settings}, setStorage);
 
         async function setStorage(response) { //tell tab to toggle on/off
-            // console.log('Received response', response);
-            
             if (response===undefined) { //script not injected into tab, so reload and try again.
                 chrome.tabs.reload(tabId);
                 await sleep(2000);
@@ -56,17 +54,14 @@ chrome.tabs.onActivated.addListener(({tabId, windowId})=>{ //switch tabs (active
 });
 
 function setExtensionIcon(status: tabStatusT) {
-    // console.log(`Setting icon to ^${status}$`);
-    if (status==='on') {
+    if (status==='on')
         chrome.action.setIcon({
             path: '/icons/on-128.png'
         });
-    }
-    else if (status==='off') {
+    else if (status==='off')
         chrome.action.setIcon({
             path: '/icons/off-128.png'
         });
-    } else {
+    else
         throw new Error(`Unknown status: ^${JSON.stringify(status)}$`);
-    }
 }
