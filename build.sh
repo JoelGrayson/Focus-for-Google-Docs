@@ -17,7 +17,9 @@ rm background.js.tmp injected.js.tmp
 echo '''
 open(FH, "<", "injected.js") or die "No file injected.js found";
 while (my $line = <FH>) {
-    if ($line=~"POMODORO_JS_INSERTED_HERE_BY_BUILD_SH") {
+    if ($line=~"POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH") {
+        system("cat pomodoro.html");
+    } elsif ($line=~"POMODORO_JS_INSERTED_HERE_BY_BUILD_SH") {
         system("cat pomodoro.js");
     } else {
         print $line;
