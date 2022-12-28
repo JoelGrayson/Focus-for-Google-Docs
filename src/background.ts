@@ -38,30 +38,30 @@ chrome.action.onClicked.addListener(tab=>{ //when icon clicked
             }
     
             const setTo={};
-            setTo[`tabId-${tabId}`]=response.status;
-            chrome.storage.sync.set(setTo); //store tab's status
+            setTo[`tabId-${tabId}`]=response.focusStatus;
+            chrome.storage.sync.set(setTo); //store tab's focusStatus
     
-            setExtensionIcon(response.status);
+            setExtensionIcon(response.focusStatus);
         }
     });
 });
 
 chrome.tabs.onActivated.addListener(({tabId, windowId})=>{ //switch tabs (active tab changes)
     chrome.storage.sync.get(`tabId-${tabId}`, kvStatus=>{
-        const status=kvStatus[`tabId-${tabId}`] || 'off';
-        setExtensionIcon(status);
+        const focusStatus=kvStatus[`tabId-${tabId}`] || 'off';
+        setExtensionIcon(focusStatus);
     });
 });
 
-function setExtensionIcon(status: tabStatusT) {
-    if (status==='on')
+function setExtensionIcon(focusStatus: tabStatusT) {
+    if (focusStatus==='on')
         chrome.action.setIcon({
             path: '/icons/on-128.png'
         });
-    else if (status==='off')
+    else if (focusStatus==='off')
         chrome.action.setIcon({
             path: '/icons/off-128.png'
         });
     else
-        throw new Error(`Unknown status: ^${JSON.stringify(status)}$`);
+        throw new Error(`Unknown focusStatus: ^${JSON.stringify(focusStatus)}$`);
 }

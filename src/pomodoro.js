@@ -125,6 +125,7 @@
         //# Mouseup
         // For start
         $i('focus__start-btn').addEventListener('mouseup', ()=>{
+            resetClockStyling();
             runTimer(uMinutesEl.value);
             setStatus('running');
         });

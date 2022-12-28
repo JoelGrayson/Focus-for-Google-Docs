@@ -1,5 +1,3 @@
-- [ ] Click focus pomodoro timer to enter/exit focus mode
-    - [ ] Counts as click to go full screen
 - [ ] Film demo video
 - [ ] Publish
     - [ ] Write as a reply on old extension reviews
