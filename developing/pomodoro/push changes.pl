@@ -15,7 +15,7 @@ print FH $pomodoro_css;
 # Pomodoro.html
 my $file_contents=read_file("./index.html");
 $file_contents =~ /<!-- BEGIN Focus HTML -->(.*)<!-- END Focus HTML -->/s;
-my $pomodoro_html="<!--! Copied from developing/pomodoro/index.html's <div id=\"focus__focus-app\"> tag -->\n\n$1";
+my $pomodoro_html="<!--! Copied from developing/pomodoro/index.html's <div id=\"focus__app\"> tag -->\n\n$1";
 open(FH, '>', '../../src/pomodoro.html');
 print FH $pomodoro_html;
 

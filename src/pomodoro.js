@@ -29,6 +29,7 @@
     const textEl=$i('focus__time-left-text');
     const editableTextEl=$i('focus__time-left-editable');
     const uMinutesEl=$i('focus__minutes'); //user's input for minutes
+    const checkmarkEl=$i('focus__finish-editing-time-left');
 
     function setCompletePercent(percent /** out of 100 */) {
         const scaledAmount=percent/100*circumference;
@@ -118,6 +119,7 @@
             'focus__running-icon',
             'focus__paused-icon',
             'focus__smiley-face',
+            'focus__finish-editing-time-left'
         ].forEach($i_hide);
     }
     
@@ -137,7 +139,7 @@
             const inputNumChars=uMinutesEl.value.length || 1; //change width to match input size
             uMinutesEl.style.width=`${inputNumChars+5}ch`;
             document.querySelector('label[for="focus__minutes"]').innerHTML=e.target.value==='1' ? 'minute' : 'minutes'; //minute or minutes reflects u_input
-        })
+        });
 
         // For middle
         // Editing time left (click on time)
@@ -156,13 +158,16 @@
                 
                 editableTextEl.classList.remove('focus__hidden');
                 pausedStartedAt=Date.now(); //start pausing
+                editableTextEl.focus();
+                $i_show('focus__finish-editing-time-left');
             } else { //done editing time left
                 const newValue=editableTextEl.value;
                 textEl.classList.remove('focus__hidden');
                 editableTextEl.classList.add('focus__hidden');
 
                 const ogDuration=(endTime-startTime)/60/1000; //minutes left
-                const newMinutesLeft=(+editableTextEl.value)
+                const newMinutesLeft=+editableTextEl.value;
+                $i_hide('focus__finish-editing-time-left');
 
                 if (newMinutesLeft>ogDuration) { //increased time left beyond original
                     startTime=Date.now(); //start from now
@@ -189,12 +194,14 @@
             if (e.key==='Enter') //finished because hit enter key
                 setIsEditingTimeLeft(false);
         });
+        $i('focus__finish-editing-time-left').addEventListener('click', ()=>{ //clicking checkmark causes to be finished editing time
+            setIsEditingTimeLeft(false);
+        });
 
         //     running
         $i('focus__middle-hover-status').addEventListener('mouseup', ()=>{
-            if (status==='running') {
+            if (status==='running')
                 setStatus('paused');
-            }
             else if (status==='paused') {
                 const pausedForMillis=Date.now()-pausedStartedAt;
                 startTime+=pausedForMillis;
@@ -235,7 +242,7 @@
             }
         });
         //# Mouse Leave
-        $i('focus__focus-app').addEventListener('mouseleave', ()=>{
+        $i('focus__app').addEventListener('mouseleave', ()=>{
             // Hide all hover overlays
             [
                 'focus__start-hover',

@@ -2,7 +2,7 @@
 
 
 <!-- BEGIN Focus HTML -->
-<div id="focus__focus-app">
+<div id="focus__app">
     <!-- pomo timer -->
     <div id="focus__pomodoro-container">
         <svg id="focus__pomodoro" viewbox="0 0 100 100"> <!-- rotate so time starts upright -->
@@ -39,6 +39,11 @@
     </div>
 
     <input type="number" min="0" max="9999" id="focus__time-left-editable" class="focus__hidden" />
+    <div id="focus__finish-editing-time-left" class="focus__hidden">
+        <svg height="17px" viewBox="0 0 512 512" width="17px">
+            <path fill="white" d="M461.6,109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4c-2.4,0-4.6,1-6.3,2.5L194.5,323c0,0-78.5-75.5-80.7-77.7  c-2.2-2.2-5.1-5.9-9.5-5.9c-4.4,0-6.4,3.1-8.7,5.4c-1.7,1.8-29.7,31.2-43.5,45.8c-0.8,0.9-1.3,1.4-2,2.1c-1.2,1.7-2,3.6-2,5.7  c0,2.2,0.8,4,2,5.7l2.8,2.6c0,0,139.3,133.8,141.6,136.1c2.3,2.3,5.1,5.2,9.2,5.2c4,0,7.3-4.3,9.2-6.2L462,121.8  c1.2-1.7,2-3.6,2-5.8C464,113.5,463,111.4,461.6,109.6z" />
+        </svg>
+    </div>
 
     <!-- hover overlays -->
     <div id="focus__start-hover">
@@ -111,6 +116,7 @@
     const textEl=$i('focus__time-left-text');
     const editableTextEl=$i('focus__time-left-editable');
     const uMinutesEl=$i('focus__minutes'); //user's input for minutes
+    const checkmarkEl=$i('focus__finish-editing-time-left');
 
     function setCompletePercent(percent /** out of 100 */) {
         const scaledAmount=percent/100*circumference;
@@ -200,6 +206,7 @@
             'focus__running-icon',
             'focus__paused-icon',
             'focus__smiley-face',
+            'focus__finish-editing-time-left'
         ].forEach($i_hide);
     }
     
@@ -219,7 +226,7 @@
             const inputNumChars=uMinutesEl.value.length || 1; //change width to match input size
             uMinutesEl.style.width=`${inputNumChars+5}ch`;
             document.querySelector('label[for="focus__minutes"]').innerHTML=e.target.value==='1' ? 'minute' : 'minutes'; //minute or minutes reflects u_input
-        })
+        });
 
         // For middle
         // Editing time left (click on time)
@@ -238,13 +245,16 @@
                 
                 editableTextEl.classList.remove('focus__hidden');
                 pausedStartedAt=Date.now(); //start pausing
+                editableTextEl.focus();
+                $i_show('focus__finish-editing-time-left');
             } else { //done editing time left
                 const newValue=editableTextEl.value;
                 textEl.classList.remove('focus__hidden');
                 editableTextEl.classList.add('focus__hidden');
 
                 const ogDuration=(endTime-startTime)/60/1000; //minutes left
-                const newMinutesLeft=(+editableTextEl.value)
+                const newMinutesLeft=+editableTextEl.value;
+                $i_hide('focus__finish-editing-time-left');
 
                 if (newMinutesLeft>ogDuration) { //increased time left beyond original
                     startTime=Date.now(); //start from now
@@ -271,12 +281,14 @@
             if (e.key==='Enter') //finished because hit enter key
                 setIsEditingTimeLeft(false);
         });
+        $i('focus__finish-editing-time-left').addEventListener('click', ()=>{ //clicking checkmark causes to be finished editing time
+            setIsEditingTimeLeft(false);
+        });
 
         //     running
         $i('focus__middle-hover-status').addEventListener('mouseup', ()=>{
-            if (status==='running') {
+            if (status==='running')
                 setStatus('paused');
-            }
             else if (status==='paused') {
                 const pausedForMillis=Date.now()-pausedStartedAt;
                 startTime+=pausedForMillis;
@@ -317,7 +329,7 @@
             }
         });
         //# Mouse Leave
-        $i('focus__focus-app').addEventListener('mouseleave', ()=>{
+        $i('focus__app').addEventListener('mouseleave', ()=>{
             // Hide all hover overlays
             [
                 'focus__start-hover',
