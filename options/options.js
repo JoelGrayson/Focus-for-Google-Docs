@@ -1,7 +1,8 @@
 const defaultSettings={ //copied from background.ts:10 //for restoring default settings
     fullScreen: false,
     printLayout: false,
-    pomodoroEnabled: true
+    pomodoroEnabled: true,
+    zoom: '1'
 };
 const $i=query=>document.getElementById(query);
 
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('fullScreen').checked=settings.fullScreen;
         $i('printLayout').checked=settings.printLayout;
         $i('pomodoroEnabled').checked=settings.pomodoroEnabled;
+        $i('zoom').value=settings.zoom;
     });
 });
 
@@ -17,7 +19,8 @@ function saveSettings() { //update storage with DOM
     chrome.storage.sync.set({settings: {
         fullScreen: $i('fullScreen').checked,
         printLayout: $i('printLayout').checked,
-        pomodoroEnabled: $i('pomodoroEnabled').checked
+        pomodoroEnabled: $i('pomodoroEnabled').checked,
+        zoom: $i('zoom').value
     }}, ()=>{
         setStatus('Settings saved', 'green');
     });
@@ -38,6 +41,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('fullScreen').checked=defaultSettings.fullScreen;
     $i('printLayout').checked=defaultSettings.printLayout;
     $i('pomodoroEnabled').checked=defaultSettings.pomodoroEnabled;
+    $i('zoom').value=defaultSettings.zoom;
 });
 
 
@@ -45,3 +49,4 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
 $i('fullScreen').addEventListener('click', saveSettings);
 $i('printLayout').addEventListener('click', saveSettings);
 $i('pomodoroEnabled').addEventListener('click', saveSettings);
+$i('zoom').addEventListener('change', saveSettings);

@@ -25,7 +25,7 @@
         if (settings.pomodoroEnabled) {
             (()=>{
                 const focusEl=document.createElement('focus-extension');
-                focusEl.innerHTML=` //copied from developing/pomodoro/index.html
+                focusEl.innerHTML=` ${''/* copied from developing/pomodoro/index.html */}
                     POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH
                 `;
                 document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
@@ -33,11 +33,14 @@
                 // Start pomodoro.js
                 /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
                 // End pomodoro.js
-                document.getElementById('focus__pomodoro')!.addEventListener('click', ()=>{
-                    if (status==='start') {
+
+                // Enhancements to pomodoro linked with the extension (side effects)
+                document.getElementById('focus__pomodoro')!.addEventListener('click', ()=>{ //toggle focus status when pomodoro clicked
+                    if (status==='start')
                         setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle focus status
-                    }
-                })
+                });
+                // set pomodoro size
+                (document.getElementById('focus__app')!.style as any).zoom=settings.zoom;
             })();
         }
     });
