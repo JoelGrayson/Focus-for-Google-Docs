@@ -1,3 +1,4 @@
+- [ ] Extension lightbulb icon changes when focus pressed
 - [ ] Click on the focus icon counts as the fullscreen DOM interaction
 - [ ] Changing time causes to setStatus('playing'), not paused
 - [ ] Show checkmark next to changing time
