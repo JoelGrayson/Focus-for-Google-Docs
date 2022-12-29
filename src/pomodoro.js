@@ -145,7 +145,7 @@
         function setIsEditingTimeLeft(newIsEditingTimeLeft) {
             isEditingTimeLeft=newIsEditingTimeLeft;
             hideAll();
-            if (isEditingTimeLeft) { //setting to true
+            if (isEditingTimeLeft) { //start editing time left. pause for now
                 textEl.classList.add('focus__hidden');
                 // start with current timer value
                 const currValue=textEl.innerHTML;
@@ -156,13 +156,31 @@
                 
                 editableTextEl.classList.remove('focus__hidden');
                 pausedStartedAt=Date.now(); //start pausing
-            } else { //setting to false
+            } else { //done editing time left
                 const newValue=editableTextEl.value;
                 textEl.classList.remove('focus__hidden');
                 editableTextEl.classList.add('focus__hidden');
-                startTime=Date.now();
-                endTime=Date.now()+newValue*60*1000; //user's input minutes ahead of now
-                pausedStartedAt=-1;
+
+                const ogDuration=(endTime-startTime)/60/1000; //minutes left
+                const newMinutesLeft=(+editableTextEl.value)
+
+                if (newMinutesLeft>ogDuration) { //increased time left beyond original
+                    startTime=Date.now(); //start from now
+                    endTime=Date.now()+newValue*60*1000; //user's input minutes ahead of now
+                    pausedStartedAt=-1;
+                } else { //modified time left below original duration. need to shift time over to change amount of time until endTime
+                    // Account for paused time
+                    startTime+=Date.now()-pausedStartedAt;
+                    endTime+=Date.now()-pausedStartedAt;
+                    pausedStartedAt=-1;
+
+                    // Shift time over
+                    const ogTimeLeft=endTime-Date.now(); //in millis
+                    const newTimeLeft=newMinutesLeft*60*1000; //in millis
+                    const shiftOverAmount=newTimeLeft-ogTimeLeft;
+                    startTime+=shiftOverAmount;
+                    endTime+=shiftOverAmount;
+                }
             }
         }
         

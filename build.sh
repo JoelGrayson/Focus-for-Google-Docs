@@ -13,7 +13,7 @@ cat background.js.tmp > background.js
 cat injected.js.tmp > injected.js
 rm background.js.tmp injected.js.tmp
 
-# ## Build file
+# ## Push changes from `developing/pomodoro`
 ( cd ../developing/pomodoro && ./push\ changes.pl )
 
 # ## Insert pomodoro.html and pomodoro.js at POMODORO_{JS,HTML}_INSERTED_HERE_BY_BUILD_SH

@@ -1,3 +1,7 @@
+- [ ] Click on the focus icon counts as the fullscreen DOM interaction
+- [x] Adjusting the time left does not change startTime but just changes how far advanced the timer is. If above the limit, then changes the startTime.
+    - [x] Shifts over startTime and endTime to make the timer change %complete
+- [ ] Changing time causes to setStatus('playing'), not paused
 - [ ] Film demo video
 - [ ] Publish
     - [ ] Write as a reply on old extension reviews
