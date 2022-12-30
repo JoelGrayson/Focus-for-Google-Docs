@@ -10,7 +10,7 @@
         chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{ //toggle viewer status and send back status ('on' | 'off') for extension to change its icon
             const settings=message.settings;
 
-            setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle status
+            setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings, false); //toggle status
             console.log(`Turning ${focusStatus} Focus`);
     
             sendResponse({
@@ -36,8 +36,12 @@
 
                 // Enhancements to pomodoro linked with the extension (side effects)
                 document.getElementById('focus__pomodoro')!.addEventListener('click', ()=>{ //toggle focus status when pomodoro clicked
-                    if (status==='start')
-                        setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle focus status
+                    if (status==='start') {
+                        if (focusStatus==='off' && settings.fullScreen) {
+                            document.body.requestFullscreen();
+                        }
+                        setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings, true); //toggle focus status without full screen helper
+                    }
                 });
                 // set pomodoro size
                 (document.getElementById('focus__app')!.style as any).zoom=settings.zoom;
@@ -45,8 +49,8 @@
         }
     });
 
-    // # Helpers
-    function setFocusStatus(newFocusStatus: 'on' | 'off', settings) { //change DOM based on status
+    // # Focus Status Helper
+    function setFocusStatus(newFocusStatus: 'on' | 'off', settings, alreadyInFullScreen) { //change DOM based on status
         focusStatus=newFocusStatus;
         if (focusStatus==='on') {
             //* Hide stuff
@@ -81,7 +85,7 @@
             formatCanvases();
             setInterval(formatCanvases, 1000);
 
-            if (settings.fullScreen) {
+            if (settings.fullScreen && !alreadyInFullScreen) {
                 // Enter full screen only if requested to do so
                 const fullScreenBtn=document.createElement('div');
                 fullScreenBtn.style.position='absolute';
@@ -100,7 +104,7 @@
                 fullScreenBtn.style.boxShadow='0px 2px 12px -1px';
 
                 fullScreenBtn.innerText='Click to go full screen';
-                fullScreenBtn.addEventListener('click', ()=>{ //hide
+                fullScreenBtn.addEventListener('click', ()=>{ //go fullscreen and hide el
                     document.body.requestFullscreen();
                     fullScreenBtn.parentNode?.removeChild(fullScreenBtn);
                 });

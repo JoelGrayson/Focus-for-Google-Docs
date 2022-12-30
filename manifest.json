@@ -1,7 +1,7 @@
 {
     "name": "Focus for Google Docs",
     "short_name": "Focus",
-    "description": "Focus simplifies Google Docs by hiding distracting controls and just showing the text. It is good for minimalists.",
+    "description": "Focus helps you enter the writing flow by decluttering Google Docs and adding a pomodoro timer.",
     "author": "Joel Grayson",
 
     "version": "1.0",

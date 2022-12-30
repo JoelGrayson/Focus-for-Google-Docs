@@ -1,7 +1,6 @@
-- [ ] Extension lightbulb icon changes when focus pressed
-- [ ] Click on the focus icon counts as the fullscreen DOM interaction
-- [ ] Changing time causes to setStatus('playing'), not paused
-- [ ] Show checkmark next to changing time
-- [ ] Film demo video
-- [ ] Publish
-    - [ ] Write as a reply on old extension reviews
+- [ ] Extension lightbulb icon changes when focus button pressed
+- [ ] Dark mode:
+    * filter: invert(0.95);
+
+### Publishing
+- [ ] Write as a reply on old extension reviews
