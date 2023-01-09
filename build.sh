@@ -39,3 +39,8 @@ mv background.js ../dist
 
 # # Pomodoro
 cp pomodoro.css ../dist
+
+cd ..
+
+# Zip
+( cd .. && zip -rq 'Focus for Google Docs.zip' './Focus for Google Docs' )
