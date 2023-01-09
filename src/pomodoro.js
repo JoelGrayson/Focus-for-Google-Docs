@@ -185,6 +185,7 @@
                     const shiftOverAmount=newTimeLeft-ogTimeLeft;
                     startTime+=shiftOverAmount;
                     endTime+=shiftOverAmount;
+                    setStatus('running');
                 }
             }
         }

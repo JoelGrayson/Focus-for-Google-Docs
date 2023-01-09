@@ -22,6 +22,29 @@
     
     //# Pomodoro Timer
     chrome.storage.sync.get('settings', ({settings})=>{
+        if (settings==undefined) { //need to update browser to make this work
+            const updateBrowserEl=document.createElement('div');
+            updateBrowserEl.style.position='absolute';
+            updateBrowserEl.style.bottom='25px';
+            updateBrowserEl.style.right='25px';
+            updateBrowserEl.style.width='290px';
+            updateBrowserEl.style.height='60px';
+            updateBrowserEl.style.backgroundColor='#fff6d8';
+            updateBrowserEl.style.border='2px solid black';
+            updateBrowserEl.style.borderRadius='12px';
+            updateBrowserEl.style.cursor='pointer';
+            updateBrowserEl.style.display='flex';
+            updateBrowserEl.style.justifyContent='center';
+            updateBrowserEl.style.alignItems='center';
+            updateBrowserEl.style.fontSize='20px';
+            updateBrowserEl.style.boxShadow='0px 2px 12px -1px';
+            updateBrowserEl.style.padding='5px 20px';
+            updateBrowserEl.style.zIndex='99999';
+            updateBrowserEl.innerText='Please update Chrome beyond version 102 to make Focus work';
+            updateBrowserEl.addEventListener('click', _=>updateBrowserEl.parentNode?.removeChild(updateBrowserEl)); //hide el on click
+            document.body.appendChild(updateBrowserEl);
+        }
+
         if (settings.pomodoroEnabled) {
             (()=>{
                 const focusEl=document.createElement('focus-extension');

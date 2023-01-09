@@ -13,3 +13,5 @@ Click the pomodoro timer in the bottom-right of the Google Doc to start a pomodo
 Right-click the extension icon and select "Options" to open the Options page for configuring settings.
 
 Right-click the extension and select "Report a Bug" or "Feedback" to leave feedback. Thank you!
+
+Note: Chrome version of at least 102 is required. Before Chrome version 94, Focus does not work.
