@@ -4,8 +4,9 @@
     "description": "Focus helps you enter the writing flow by decluttering Google Docs and adding a pomodoro timer.",
     "author": "Joel Grayson",
 
-    "version": "1.0",
+    "version": "1.1",
     "manifest_version": 3,
+    "minimum_chrome_version": "102",
 
     "homepage_url": "https://joelgrayson.com/focus",
     "options_page": "options/index.html",
