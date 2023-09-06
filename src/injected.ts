@@ -1,5 +1,13 @@
 /// <reference types="chrome"/>
 
+type settingsT={
+    fullScreen: boolean;
+    printLayout: boolean;
+    pomodoroEnabled: boolean;
+    showPageSeparators: boolean;
+    zoom: string;
+};
+
 (async ()=>{ //IIFE to not pollute global namespace with variables
     let focusStatus: 'on' | 'off'='off'; // 'on' | 'off'
     const version='VERSION_INSERTED_HERE_BY_BUILD_SH';
@@ -20,57 +28,69 @@
         });
     })();
     
+    
+    //# Get Settings
+    const settings: settingsT=await new Promise((resolve, reject)=>
+        chrome.storage.sync.get('settings', ({settings})=>resolve(settings))
+    );
+
+
     //# Pomodoro Timer
-    chrome.storage.sync.get('settings', ({settings})=>{
-        if (settings==undefined) { //need to update browser to make this work
-            const updateBrowserEl=document.createElement('div');
-            updateBrowserEl.style.position='absolute';
-            updateBrowserEl.style.bottom='25px';
-            updateBrowserEl.style.right='25px';
-            updateBrowserEl.style.width='290px';
-            updateBrowserEl.style.height='60px';
-            updateBrowserEl.style.backgroundColor='#fff6d8';
-            updateBrowserEl.style.border='2px solid black';
-            updateBrowserEl.style.borderRadius='12px';
-            updateBrowserEl.style.cursor='pointer';
-            updateBrowserEl.style.display='flex';
-            updateBrowserEl.style.justifyContent='center';
-            updateBrowserEl.style.alignItems='center';
-            updateBrowserEl.style.fontSize='20px';
-            updateBrowserEl.style.boxShadow='0px 2px 12px -1px';
-            updateBrowserEl.style.padding='5px 20px';
-            updateBrowserEl.style.zIndex='99999';
-            updateBrowserEl.innerText='Please update Chrome beyond version 102 to make Focus work';
-            updateBrowserEl.addEventListener('click', _=>updateBrowserEl.parentNode?.removeChild(updateBrowserEl)); //hide el on click
-            document.body.appendChild(updateBrowserEl);
-        }
+    if (settings==undefined) { //need to update browser to make this work
+        const updateBrowserEl=document.createElement('div');
+        updateBrowserEl.style.position='absolute';
+        updateBrowserEl.style.bottom='25px';
+        updateBrowserEl.style.right='25px';
+        updateBrowserEl.style.width='290px';
+        updateBrowserEl.style.height='60px';
+        updateBrowserEl.style.backgroundColor='#fff6d8';
+        updateBrowserEl.style.border='2px solid black';
+        updateBrowserEl.style.borderRadius='12px';
+        updateBrowserEl.style.cursor='pointer';
+        updateBrowserEl.style.display='flex';
+        updateBrowserEl.style.justifyContent='center';
+        updateBrowserEl.style.alignItems='center';
+        updateBrowserEl.style.fontSize='20px';
+        updateBrowserEl.style.boxShadow='0px 2px 12px -1px';
+        updateBrowserEl.style.padding='5px 20px';
+        updateBrowserEl.style.zIndex='99999';
+        updateBrowserEl.innerText='Please update Chrome beyond version 102 to make Focus work';
+        updateBrowserEl.addEventListener('click', _=>updateBrowserEl.parentNode?.removeChild(updateBrowserEl)); //hide el on click
+        document.body.appendChild(updateBrowserEl);
+    }
 
-        if (settings.pomodoroEnabled) {
-            (()=>{
-                const focusEl=document.createElement('focus-extension');
-                focusEl.innerHTML=` ${''/* copied from developing/pomodoro/index.html */}
-                    POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH
-                `;
-                document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
+    if (settings.pomodoroEnabled) {
+        (()=>{
+            const focusEl=document.createElement('focus-extension');
+            focusEl.innerHTML=` ${''/* copied from developing/pomodoro/index.html */}
+                POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH
+            `;
+            document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
 
-                // Start pomodoro.js
-                /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
-                // End pomodoro.js
+            // Start pomodoro.js
+            /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
+            // End pomodoro.js
 
-                // Enhancements to pomodoro linked with the extension (side effects)
-                document.getElementById('focus__pomodoro')!.addEventListener('click', ()=>{ //toggle focus status when pomodoro clicked
-                    if (status==='start') {
-                        if (focusStatus==='off' && settings.fullScreen) {
-                            document.body.requestFullscreen();
-                        }
-                        setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings, true); //toggle focus status without full screen helper
-                    }
-                });
-                // set pomodoro size
-                (document.getElementById('focus__app')!.style as any).zoom=settings.zoom;
-            })();
-        }
-    });
+            // Enhancements to pomodoro linked with the extension (side effects)
+            document.getElementById('focus__pomodoro')!.addEventListener('click', (e: MouseEvent)=>{ //toggle focus status when pomodoro clicked
+                if (e.altKey) { //pressing alt/option makes enter full screen or not
+                    if (document.fullscreenElement==null) //if not full screen
+                        document.body.requestFullscreen();
+                    else
+                        document.exitFullscreen();
+                    return;
+                }
+
+                if (focusStatus==='off' && settings.fullScreen)
+                    document.body.requestFullscreen();
+
+                setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings, true); //toggle focus status without full screen helper
+            });
+            // set pomodoro size
+            (document.getElementById('focus__app')!.style as any).zoom=settings.zoom;
+        })();
+    }
+
 
     // # Focus Status Helper
     function setFocusStatus(newFocusStatus: 'on' | 'off', settings, alreadyInFullScreen) { //change DOM based on status
@@ -101,9 +121,16 @@
 
             //* Make pages look seamless
             function formatCanvases() {
-                const canvasEls=document.querySelectorAll('.kix-canvas-tile-content') as NodeListOf<HTMLCanvasElement>;
-                for (let canvasEl of canvasEls)
-                    canvasEl.style.outline='4px solid #fff'; //cover up black border of canvas to make it look like the doc is seamless
+                // Old Way: Add White Outline Around Pages to Cover the Gray Marks
+                // const canvasEls=document.querySelectorAll('.kix-canvas-tile-content') as NodeListOf<HTMLCanvasElement>;
+                // for (let canvasEl of canvasEls)
+                    // canvasEl.style.outline='4px solid #fff'; //cover up black border of canvas to make it look like the doc is seamless
+                
+                for (let pageEl of <NodeListOf<HTMLCanvasElement>>document.querySelectorAll('.kix-page-paginated'))
+                    pageEl.style.outline='unset';
+
+                if (settings!==undefined && !settings.showPageSeparators)
+                    document.querySelectorAll('.kix-page-canvas-compact-mode').forEach((el: any)=>el.style.borderTop='unset');
             }
             formatCanvases();
             setInterval(formatCanvases, 1000);

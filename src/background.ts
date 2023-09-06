@@ -11,6 +11,7 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
             fullScreen: false,
             printLayout: false,
             pomodoroEnabled: true,
+            showPageSeparators: false,
             zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
         }
     });

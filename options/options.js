@@ -2,8 +2,10 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     fullScreen: false,
     printLayout: false,
     pomodoroEnabled: true,
-    zoom: '1'
+    showPageSeparators: false,
+    zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
 };
+
 const $i=query=>document.getElementById(query);
 
 document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
@@ -11,6 +13,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('fullScreen').checked=settings.fullScreen;
         $i('printLayout').checked=settings.printLayout;
         $i('pomodoroEnabled').checked=settings.pomodoroEnabled;
+        $i('showPageSeparators').checked=settings.showPageSeparators,
         $i('zoom').value=settings.zoom;
     });
 });
@@ -20,6 +23,7 @@ function saveSettings() { //update storage with DOM
         fullScreen: $i('fullScreen').checked,
         printLayout: $i('printLayout').checked,
         pomodoroEnabled: $i('pomodoroEnabled').checked,
+        showPageSeparators: $i('showPageSeparators').checked,
         zoom: $i('zoom').value
     }}, ()=>{
         setStatus('Settings saved', 'green');
@@ -41,6 +45,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('fullScreen').checked=defaultSettings.fullScreen;
     $i('printLayout').checked=defaultSettings.printLayout;
     $i('pomodoroEnabled').checked=defaultSettings.pomodoroEnabled;
+    $i('showPageSeparators').checked=defaultSettings.showPageSeparators;
     $i('zoom').value=defaultSettings.zoom;
 });
 
@@ -50,3 +55,4 @@ $i('fullScreen').addEventListener('click', saveSettings);
 $i('printLayout').addEventListener('click', saveSettings);
 $i('pomodoroEnabled').addEventListener('click', saveSettings);
 $i('zoom').addEventListener('change', saveSettings);
+
