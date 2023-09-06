@@ -3,46 +3,48 @@
 <head>
     <title>Focus for Google Docs Options</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <link rel="stylesheet" href="./ucjg.v2.css" />
+    <link rel="stylesheet" href="./ucjg.v4.css" />
 </head>
 <body>
-    <h1>Focus for Google Docs Options</h1>
-    <p>Version 1.1</p>
-
-    <h3>General</h3>
-    <div>
-        <label for="fullScreen">Enters full screen</label>
-        <input type="checkbox" id="fullScreen"/>
-    </div>
-    <div>
-        <label for="printLayout">Show print layout instead of seamless page transitions.</label>
-        <input type="checkbox" id="printLayout"/>
-    </div>
-    <div>
-        <label for="printLayout">Show page separators (hidden by default).</label>
-        <input type="checkbox" id="showPageSeparators"/>
-    </div>
-    <br/>
-    <h3>Pomodoro 🍅</h3>
-    <div>
-        <label for="pomodoroEnabled">Pomodoro timer enabled</label>
-        <input type="checkbox" id="pomodoroEnabled" />
-    </div>
-    <div>
-        <label for="zoom">Pomodoro size</label>
-        <select id="zoom">
-            <option value="0.85">Small</option>
-            <option value="1">Normal</option>
-            <option value="1.15">Large</option>
-            <option value="1.3">Extra Large</option>
-        </select>
-    </div>
+    <div class="j_container">
+        <h1>Focus for Google Docs Options</h1>
+        <p>Version 1.1</p>
     
-    <br/><br/>
-
-    <button id="restoreDefaults">Restore Defaults</button>
-    <div id="status"></div>
-
-    <script src="./options.js"></script>
+        <h3>General</h3>
+        <div>
+            <label for="fullScreen">Enters full screen when focusing</label>
+            <input type="checkbox" id="fullScreen"/>
+        </div>
+        <div>
+            <label for="printLayout">Show print layout instead of seamless page transitions in focus mode.</label>
+            <input type="checkbox" id="printLayout"/>
+        </div>
+        <div>
+            <label for="printLayout">Show page separators (hidden by default) in focus mode.</label>
+            <input type="checkbox" id="showPageSeparators"/>
+        </div>
+        <br/>
+        <h3>Pomodoro 🍅</h3>
+        <div>
+            <label for="pomodoroEnabled">Pomodoro timer enabled</label>
+            <input type="checkbox" id="pomodoroEnabled" />
+        </div>
+        <div>
+            <label for="zoom">Pomodoro size</label>
+            <select id="zoom">
+                <option value="0.85">Small</option>
+                <option value="1">Normal</option>
+                <option value="1.15">Large</option>
+                <option value="1.3">Extra Large</option>
+            </select>
+        </div>
+        
+        <br/><br/>
+    
+        <button id="restoreDefaults">Restore default options</button>
+        <div id="status"></div>
+    
+        <script src="./options.js"></script>
+    </div>
 </body>
 </html>

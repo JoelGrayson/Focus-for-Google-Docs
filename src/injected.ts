@@ -55,7 +55,7 @@ type settingsT={
         updateBrowserEl.style.padding='5px 20px';
         updateBrowserEl.style.zIndex='99999';
         updateBrowserEl.innerText='Please update Chrome beyond version 102 to make Focus work';
-        updateBrowserEl.addEventListener('click', _=>updateBrowserEl.parentNode?.removeChild(updateBrowserEl)); //hide el on click
+        updateBrowserEl.addEventListener('click', ()=>updateBrowserEl.parentNode?.removeChild(updateBrowserEl)); //hide el on click
         document.body.appendChild(updateBrowserEl);
     }
 
