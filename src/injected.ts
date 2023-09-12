@@ -73,6 +73,8 @@ type settingsT={
 
             // Enhancements to pomodoro linked with the extension (side effects)
             document.getElementById('focus__pomodoro')!.addEventListener('click', (e: MouseEvent)=>{ //toggle focus status when pomodoro clicked
+                if (status!=='start') return; //status is defined in pomodoro.js, which is inserted above
+
                 if (e.altKey) { //pressing alt/option makes enter full screen or not
                     if (document.fullscreenElement==null) //if not full screen
                         document.body.requestFullscreen();

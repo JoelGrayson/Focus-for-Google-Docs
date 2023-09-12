@@ -123,6 +123,12 @@
         ].forEach($i_hide);
     }
     
+    function setText(text) {
+        ['focus__focus-text', 'focus__click-to-focus-text', 'focus__click-to-unfocus-text', 'focus__exit-fullscreen-logo', 'focus__fullscreen-logo']
+            .forEach($i_hide);
+        $i_show(text);
+    }
+    
     function addEventListeners() { // adds event listeners to elements
         //# Mouseup
         // For start
@@ -140,6 +146,27 @@
             uMinutesEl.style.width=`${inputNumChars+5}ch`;
             document.querySelector('label[for="focus__minutes"]').innerHTML=e.target.value==='1' ? 'minute' : 'minutes'; //minute or minutes reflects u_input
         });
+        // Option key changes the logo to fullscreen or exit fullscreen button
+        const showFullScreenOrNot=showFocusUnfocus=>e=>{
+            if (e.altKey)
+                if (document.fullscreenElement==null)
+                    setText('focus__fullscreen-logo');
+                else
+                    setText('focus__exit-fullscreen-logo');
+            else
+                if (showFocusUnfocus)
+                    if (focusStatus==='on')
+                        setText('focus__click-to-unfocus-text');
+                    else if (focusStatus==='off')
+                        setText('focus__click-to-focus-text');
+                else
+                    setText('focus__focus-text');
+        };
+        document.addEventListener('keydown', showFullScreenOrNot(false));
+        document.addEventListener('keyup', e=>e.key==='Alt' && setText('focus__focus-text'));
+        pomodoroEl.addEventListener('keydown', showFullScreenOrNot(true));
+        pomodoroEl.addEventListener('keyup', e=>e.key==='Alt' && setText('focus__focus-text'));
+        
 
         // For middle
         // Editing time left (click on time)
@@ -226,7 +253,9 @@
 
         
         //# Hover
-        pomodoroEl.addEventListener('mouseenter', ()=>{
+        pomodoroEl.addEventListener('mouseenter', e=>{
+            showFullScreenOrNot(true)(e);
+
             if (!isEditingTimeLeft && (status==='running' || status==='paused'))
                 $i_show('focus__middle-hover');
             
@@ -244,6 +273,7 @@
         });
         //# Mouse Leave
         $i('focus__app').addEventListener('mouseleave', ()=>{
+            setText('focus__focus-text');
             // Hide all hover overlays
             [
                 'focus__start-hover',

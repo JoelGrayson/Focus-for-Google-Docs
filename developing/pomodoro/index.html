@@ -21,12 +21,34 @@
             </g>
     
             <g id="focus__status-dependent">
-                <!-- start -->
+                <!-- Start of timer -->
+                <!-- Normal text: Focus -->
                 <g id='focus__focus-text' class="focus__hidden">
                     <text x="50" y="56" text-anchor="middle" font-size="23px" font-family="helvetica">Focus</text>
                 </g>
+                
+                <!-- Hovered text: Click to focus -->
+                <g id='focus__click-to-focus-text' class="focus__hidden">
+                    <text x="50" y="48" text-anchor="middle" font-size="20px" font-family="helvetica">Click to</text>
+                    <text x="50" y="69" text-anchor="middle" font-size="20px" font-family="helvetica">focus</text>
+                </g>
 
-                <!-- end -->
+                <!-- Hovered text: Click to unfocus -->
+                <g id='focus__click-to-unfocus-text' class="focus__hidden">
+                    <text x="50" y="47" text-anchor="middle" font-size="18px" font-family="helvetica">Click to</text>
+                    <text x="50" y="64" text-anchor="middle" font-size="18px" font-family="helvetica">unfocus</text>
+                </g>
+
+                <!-- Option key triggered logo: Fullscreen -->
+                <g id='focus__fullscreen-logo' class="focus__hidden">
+                    <path d="M 30 59.5 L 22 59.5 L 22 79.5 L 42 79.5 L 42 71.5 L 30 71.5 L 30 59.5 L 30 59.5 Z M 22 43.5 L 30 43.5 L 30 31.5 L 42 31.5 L 42 23.5 L 22 23.5 L 22 43.5 L 22 43.5 Z M 70 71.5 L 58 71.5 L 58 79.5 L 78 79.5 L 78 59.5 L 70 59.5 L 70 71.5 L 70 71.5 Z M 58 23.5 L 58 31.5 L 70 31.5 L 70 43.5 L 78 43.5 L 78 23.5 L 58 23.5 L 58 23.5 Z" />
+                    <!-- x translate 22 y translate 23.5 -->
+                </g>
+                <g id='focus__exit-fullscreen-logo' class="focus__hidden">
+                    <path d="M 22 67.5 L 34 67.5 L 34 79.5 L 42 79.5 L 42 59.5 L 22 59.5 L 22 67.5 L 22 67.5 Z M 34 35.5 L 22 35.5 L 22 43.5 L 42 43.5 L 42 23.5 L 34 23.5 L 34 35.5 L 34 35.5 Z M 58 79.5 L 66 79.5 L 66 67.5 L 78 67.5 L 78 59.5 L 58 59.5 L 58 79.5 L 58 79.5 Z M 66 35.5 L 66 23.5 L 58 23.5 L 58 43.5 L 78 43.5 L 78 35.5 L 66 35.5 L 66 35.5 Z" />
+                </g>
+
+                <!-- End of timer -->
                 <g id="focus__smiley-face" class="focus__hidden">
                     <circle cx="40" cy="40" r='4' fill="#00943c" stroke="none" />
                     <circle cx="60" cy="40" r='4' fill="#00943c" stroke="none" />
@@ -210,6 +232,12 @@
         ].forEach($i_hide);
     }
     
+    function setText(text) {
+        ['focus__focus-text', 'focus__click-to-focus-text', 'focus__click-to-unfocus-text', 'focus__exit-fullscreen-logo', 'focus__fullscreen-logo']
+            .forEach($i_hide);
+        $i_show(text);
+    }
+    
     function addEventListeners() { // adds event listeners to elements
         //# Mouseup
         // For start
@@ -227,6 +255,27 @@
             uMinutesEl.style.width=`${inputNumChars+5}ch`;
             document.querySelector('label[for="focus__minutes"]').innerHTML=e.target.value==='1' ? 'minute' : 'minutes'; //minute or minutes reflects u_input
         });
+        // Option key changes the logo to fullscreen or exit fullscreen button
+        const showFullScreenOrNot=showFocusUnfocus=>e=>{
+            if (e.altKey)
+                if (document.fullscreenElement==null)
+                    setText('focus__fullscreen-logo');
+                else
+                    setText('focus__exit-fullscreen-logo');
+            else
+                if (showFocusUnfocus)
+                    if (focusStatus==='on')
+                        setText('focus__click-to-unfocus-text');
+                    else if (focusStatus==='off')
+                        setText('focus__click-to-focus-text');
+                else
+                    setText('focus__focus-text');
+        };
+        document.addEventListener('keydown', showFullScreenOrNot(false));
+        document.addEventListener('keyup', e=>e.key==='Alt' && setText('focus__focus-text'));
+        pomodoroEl.addEventListener('keydown', showFullScreenOrNot(true));
+        pomodoroEl.addEventListener('keyup', e=>e.key==='Alt' && setText('focus__focus-text'));
+        
 
         // For middle
         // Editing time left (click on time)
@@ -313,7 +362,9 @@
 
         
         //# Hover
-        pomodoroEl.addEventListener('mouseenter', ()=>{
+        pomodoroEl.addEventListener('mouseenter', e=>{
+            showFullScreenOrNot(true)(e);
+
             if (!isEditingTimeLeft && (status==='running' || status==='paused'))
                 $i_show('focus__middle-hover');
             
@@ -331,6 +382,7 @@
         });
         //# Mouse Leave
         $i('focus__app').addEventListener('mouseleave', ()=>{
+            setText('focus__focus-text');
             // Hide all hover overlays
             [
                 'focus__start-hover',
