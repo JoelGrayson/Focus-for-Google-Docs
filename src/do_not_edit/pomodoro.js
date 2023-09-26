@@ -219,8 +219,15 @@
         }
         
         textEl.addEventListener('mouseup',e=>{
-            if (e.altKey) return; //don't edit time left if alt key is pressed. Instead, toggle fullscreen
-            setIsEditingTimeLeft(true)
+            if (e.altKey) { //don't edit time left if alt key is pressed. Instead, toggle fullscreen
+                // Toggle fullscreen
+                if (document.fullscreenElement==null) //if not full screen
+                    document.body.requestFullscreen();
+                else
+                    document.exitFullscreen();
+            } else {
+                setIsEditingTimeLeft(true);
+            }
         });
         editableTextEl.addEventListener('keypress', e=>{
             if (e.key==='Enter') //finished because hit enter key
