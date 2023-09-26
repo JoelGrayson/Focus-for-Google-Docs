@@ -126,7 +126,8 @@
     function setText(text) {
         ['focus__focus-text', 'focus__click-to-focus-text', 'focus__click-to-unfocus-text', 'focus__exit-fullscreen-logo', 'focus__fullscreen-logo']
             .forEach($i_hide);
-        $i_show(text);
+        if (status==='start' || status==='done')
+            $i_show(text);
     }
     
     function addEventListeners() { // adds event listeners to elements
@@ -217,7 +218,10 @@
             }
         }
         
-        textEl.addEventListener('mouseup', _=>setIsEditingTimeLeft(true));
+        textEl.addEventListener('mouseup',e=>{
+            if (e.altKey) return; //don't edit time left if alt key is pressed. Instead, toggle fullscreen
+            setIsEditingTimeLeft(true)
+        });
         editableTextEl.addEventListener('keypress', e=>{
             if (e.key==='Enter') //finished because hit enter key
                 setIsEditingTimeLeft(false);
