@@ -67,9 +67,9 @@ type settingsT={
             `;
             document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
 
-            // Start pomodoro.js
+            // BEGIN pomodoro.js
             /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
-            // End pomodoro.js
+            // END pomodoro.js
 
             // Enhancements to pomodoro linked with the extension (side effects)
             document.getElementById('focus__pomodoro')!.addEventListener('click', (e: MouseEvent)=>{ //toggle focus status when pomodoro clicked

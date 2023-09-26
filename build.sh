@@ -26,9 +26,9 @@ echo '''
 open(FH, "<", "injected.js") or die "No file injected.js found";
 while (my $line = <FH>) {
     if ($line=~"POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH") {
-        system("cat pomodoro.html");
+        system("cat do_not_edit/pomodoro.html");
     } elsif ($line=~"POMODORO_JS_INSERTED_HERE_BY_BUILD_SH") {
-        system("cat pomodoro.js");
+        system("cat do_not_edit/pomodoro.js");
     } else {
         print $line;
     }
@@ -43,7 +43,7 @@ mv injected.js ../dist
 mv background.js ../dist
 
 # # Pomodoro
-cp pomodoro.css ../dist
+cp 'do_not_edit/pomodoro.css' ../dist
 
 cd ..
 
