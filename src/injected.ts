@@ -62,7 +62,7 @@ type settingsT={
     if (settings.pomodoroEnabled) {
         (()=>{
             const focusEl=document.createElement('focus-extension');
-            focusEl.innerHTML=` ${''/* copied from developing/pomodoro/index.html */}
+            focusEl.innerHTML=`${''/* copied from developing/pomodoro/index.html */}
                 POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH
             `;
             document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
