@@ -8,7 +8,7 @@ const VERSION='VERSION_INSERTED_HERE_BY_BUILD_SH';
 chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default settings
     chrome.storage.sync.set({
         settings: {
-            fullScreen: false,
+            fullScreen: true,
             printLayout: false,
             pomodoroEnabled: true,
             showPageSeparators: false,

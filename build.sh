@@ -49,3 +49,4 @@ cd ..
 
 # Zip
 ( cd .. && zip -rq 'Focus for Google Docs.zip' './Focus for Google Docs' )
+open -R ../'Focus for Google Docs.zip'
