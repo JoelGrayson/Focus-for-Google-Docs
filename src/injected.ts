@@ -153,6 +153,7 @@ type settingsT={
                 fullScreenBtn.style.justifyContent='center';
                 fullScreenBtn.style.alignItems='center';
                 fullScreenBtn.style.fontSize='20px';
+                fullScreenBtn.style.position='relative';
                 fullScreenBtn.style.boxShadow='0px 2px 12px -1px';
 
                 fullScreenBtn.innerText='Click to go full screen';
@@ -160,6 +161,21 @@ type settingsT={
                     document.body.requestFullscreen();
                     fullScreenBtn.parentNode?.removeChild(fullScreenBtn);
                 });
+                const closeBtn=document.createElement('div');
+                closeBtn.style.position='absolute';
+                closeBtn.style.top='5px';
+                closeBtn.style.right='5px';
+                closeBtn.style.width='20px';
+                closeBtn.style.height='20px';
+                closeBtn.style.backgroundColor='black';
+                closeBtn.style.color='white';
+                closeBtn.style.borderRadius='50%';
+                closeBtn.style.display='flex';
+                closeBtn.style.justifyContent='center';
+                closeBtn.style.alignItems='center';
+                closeBtn.style.cursor='pointer';
+                closeBtn.innerText='X';
+                fullScreenBtn.appendChild(closeBtn);
                 document.body.appendChild(fullScreenBtn);
             }
         }
