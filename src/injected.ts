@@ -1,5 +1,7 @@
 /// <reference types="chrome"/>
 
+const gray='#e5e5e5';
+
 type settingsT={
     fullScreen: boolean;
     printLayout: boolean;
@@ -110,7 +112,8 @@ type settingsT={
 
             document.getElementById('kix-horizontal-ruler-container')!.style.display='none'; //horizontal ruler
             document.getElementById('kix-vertical-ruler-container')!.style.display='none'; //horizontal ruler
-            (document.querySelector('.left-sidebar-container-content') as HTMLElement).style.display='none'; //TOC widget
+            (document.querySelector('.left-sidebar-container') as HTMLElement).style.background=gray; //TOC widget
+            // (document.querySelector('.left-sidebar-container-content') as HTMLElement).style.display='none'; //TOC widget
 
             const explorerWidget=document.querySelector('.docs-explore-widget') as HTMLElement;
             if (explorerWidget) explorerWidget.style.display='none'; //hide explore icon

@@ -34,7 +34,7 @@ code.dark {
     width: 100%;
     margin: 0 auto;
     line-height: 1.75rem;
-    padding: 0 2.5rem;
+    max-width: 800px;
 }
 
 .j_max-w { /* page width */
