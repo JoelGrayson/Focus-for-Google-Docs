@@ -12,7 +12,7 @@ type settingsT={
     let focusStatus: 'on' | 'off'='off'; // 'on' | 'off'
     const version='VERSION_INSERTED_HERE_BY_BUILD_SH';
 
-    const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
+    const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds*1000));
     const $=(querySelector: string)=>document.querySelector(querySelector) as HTMLElement;
     const $$=(querySelectorAll: string)=>document.querySelectorAll(querySelectorAll) as NodeListOf<HTMLElement>;
 
@@ -77,7 +77,7 @@ type settingsT={
             // END pomodoro.js
 
             // Enhancements to pomodoro linked with the extension (side effects)
-            document.getElementById('focus__pomodoro')!.addEventListener('click', (e: MouseEvent)=>{ //toggle focus status when pomodoro clicked
+            $('#focus__pomodoro')!.addEventListener('click', (e: MouseEvent)=>{ //toggle focus status when pomodoro clicked
                 if (e.altKey) { //pressing alt/option makes enter full screen or not
                     if (document.fullscreenElement==null) //if not full screen
                         document.body.requestFullscreen();
@@ -93,10 +93,10 @@ type settingsT={
 
                 if (focusStatus==='on' && settings.fullScreen) {
                     if (document.fullscreenElement) {
-                        setTimeout(()=>document.exitFullscreen(), 500);
+                        setTimeout(()=>document.exitFullscreen(), 100);
                     } else {
                         console.log('Failed to exit full screen so defaulting to reloading page');
-                        // window.location.reload();
+                        window.location.reload();
                     }
                 }
                 
@@ -105,7 +105,7 @@ type settingsT={
                 setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle focus status
             });
             // set pomodoro size
-            (document.getElementById('focus__app')!.style as any).zoom=settings.zoom;
+            ($('#focus__app')!.style as any).zoom=settings.zoom;
         })();
     }
 
@@ -152,6 +152,35 @@ type settingsT={
         const makeGrayItems=()=>makeGrayItemsQuerySelectors.forEach(makeGray);
         const undoMakeGrayItems=()=>makeGrayItemsQuerySelectors.forEach(undoMakeGray);
         
+        //* Make pages look seamless
+        function formatCanvases() {
+            // Old Way: Add White Outline Around Pages to Cover the Gray Marks
+            // const canvasEls=$$('.kix-canvas-tile-content') as NodeListOf<HTMLCanvasElement>;
+            // for (let canvasEl of canvasEls)
+                // canvasEl.style.outline='4px solid #fff'; //cover up black border of canvas to make it look like the doc is seamless
+            
+            for (let pageEl of <NodeListOf<HTMLCanvasElement>>$$('.kix-page-paginated'))
+                pageEl.classList.add('focus__hide_outline');
+
+            if (settings!==undefined && !settings.showPageSeparators) {
+                for (let pageEl of <NodeListOf<HTMLCanvasElement>>$$('.kix-page-canvas-compact-mode'))
+                    pageEl.classList.add('focus__hide_border_top');
+            }
+        }
+        function undoFormatCanvases() {
+            for (let pageEl of <NodeListOf<HTMLCanvasElement>>$$('.kix-page-paginated'))
+                pageEl.classList.remove('focus__hide_outline');
+
+            if (settings!==undefined && !settings.showPageSeparators) {
+                for (let pageEl of <NodeListOf<HTMLCanvasElement>>$$('.kix-page-canvas-compact-mode'))
+                    pageEl.classList.remove('focus__hide_border_top');
+            }
+        }
+        function doNowAndAfterASecond(fn) {
+            fn();
+            setTimeout(fn, 1000);
+        }
+        
         focusStatus=newFocusStatus;
         if (focusStatus==='on') { //turning on focus mode
             //* Hide stuff
@@ -169,42 +198,33 @@ type settingsT={
             const editor=$('.kix-appview-editor') as HTMLElement;
                 editor.style.height='100vh'; //make app full screen
 
-            //* Make pages look seamless
-            function formatCanvases() {
-                // Old Way: Add White Outline Around Pages to Cover the Gray Marks
-                // const canvasEls=$$('.kix-canvas-tile-content') as NodeListOf<HTMLCanvasElement>;
-                // for (let canvasEl of canvasEls)
-                    // canvasEl.style.outline='4px solid #fff'; //cover up black border of canvas to make it look like the doc is seamless
-                
-                for (let pageEl of <NodeListOf<HTMLCanvasElement>>$$('.kix-page-paginated'))
-                    pageEl.style.outline='unset';
-
-                if (settings!==undefined && !settings.showPageSeparators)
-                    $$('.kix-page-canvas-compact-mode').forEach((el: any)=>el.style.borderTop='unset');
-            }
-            formatCanvases();
-            setInterval(formatCanvases, 1000);
+            doNowAndAfterASecond(formatCanvases);
         }
+
+        
+
         if (focusStatus==='off') { //turn off full screen and reload page
+            undoHideItems();
+            undoMakeGrayItems();
+            doNowAndAfterASecond(undoFormatCanvases);
+
             setFullScreenStatus('off', settings)
                 .then(()=>{
                     // Old method: window.location.reload();
-                    undoHideItems();
-                    undoMakeGrayItems();
                 });
         }
 
         async function setFullScreenStatus(focusStatus, settings) { //Hide/show header by navigating menu: View > Full screen
             async function clickElement(element) { //google docs elements are triggered by mousedown and mouseup
                 element.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
-                await sleep(5);
+                await sleep(0.005);
                 element.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
             }
     
             // Full Screen
             const fullScreenEl=$('span[aria-label*="Full screen"]') as HTMLSpanElement;
             const isInFullScreen=(()=>{
-                const display=(document.getElementById('docs-header') as HTMLDivElement).style.display;
+                const display=($('#docs-header') as HTMLDivElement).style.display;
                 if (display==='none')
                     return true;
                 else if (display==='') {
@@ -239,12 +259,12 @@ type settingsT={
                     (focusStatus==='off' && !isInPrintLayout)
                 ) {
                     //turn off print layout, meaning there is a seamless page transition
-                    await sleep(50);
+                    await sleep(0.05);
                     await clickElement(printLayoutEl);
                 }
             }
     
-            await sleep(1000); //give time for changes
+            await sleep(1); //give time for changes
             return;
         }
     }

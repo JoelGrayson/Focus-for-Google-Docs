@@ -35,6 +35,14 @@
     filter: brightness(0.9) !important;
 }
 
+.focus__hide_outline {
+    outline: unset !important;
+}
+
+.focus__hide_border_top {
+    border-top: unset !important;
+}
+
 .focus__btn {
     border: 2px solid #444;
     cursor: pointer;
