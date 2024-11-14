@@ -12,8 +12,8 @@ sed "s/'VERSION_INSERTED_HERE_BY_BUILD_SH'/$version/g" < injected.js > injected.
 cat background.js.tmp > background.js
 cat injected.js.tmp > injected.js
 rm background.js.tmp injected.js.tmp
-( #Make sure that the version in options/index.html is as up-to-date as possible
-    cd ../options
+( #Make sure that the version in popup/index.html is as up-to-date as possible
+    cd ../popup
     sed -E "s;<p>Version .+</p>;<p>Version $(echo $version | cut -d '"' -f 2)</p>;g" < index.html > index.html.tmp
     mv ./index.html.tmp ./index.html
 )

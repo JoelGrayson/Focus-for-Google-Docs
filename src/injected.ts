@@ -1,7 +1,5 @@
 /// <reference types="chrome"/>
 
-const gray='#e5e5e5';
-
 type settingsT={
     fullScreen: boolean;
     printLayout: boolean;
@@ -13,14 +11,17 @@ type settingsT={
 (async ()=>{ //IIFE to not pollute global namespace with variables
     let focusStatus: 'on' | 'off'='off'; // 'on' | 'off'
     const version='VERSION_INSERTED_HERE_BY_BUILD_SH';
+
     const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds));
+    const $=(querySelector: string)=>document.querySelector(querySelector) as HTMLElement;
+    const $$=(querySelectorAll: string)=>document.querySelectorAll(querySelectorAll) as NodeListOf<HTMLElement>;
 
     //# Toggle Fullscreen
     (async ()=>{
         chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{ //toggle viewer status and send back status ('on' | 'off') for extension to change its icon
             const settings=message.settings;
 
-            setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings, false); //toggle status
+            setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle status
             console.log(`Turning ${focusStatus} Focus`);
     
             sendResponse({
@@ -37,7 +38,7 @@ type settingsT={
     );
 
 
-    //# Pomodoro Timer
+    //# Update Browser if Chrome version is too old
     if (settings==undefined) { //need to update browser to make this work
         const updateBrowserEl=document.createElement('div');
         updateBrowserEl.style.position='absolute';
@@ -61,13 +62,15 @@ type settingsT={
         document.body.appendChild(updateBrowserEl);
     }
 
+
+    //# Pomodoro Timer
     if (settings.pomodoroEnabled) {
         (()=>{
             const focusEl=document.createElement('focus-extension');
             focusEl.innerHTML=`${''/* copied from developing/pomodoro/index.html */}
                 POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH
             `;
-            document.querySelector('.kix-appview-editor-container')!.appendChild(focusEl);
+            $('.kix-appview-editor-container')!.appendChild(focusEl);
 
             // BEGIN pomodoro.js
             /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
@@ -75,8 +78,6 @@ type settingsT={
 
             // Enhancements to pomodoro linked with the extension (side effects)
             document.getElementById('focus__pomodoro')!.addEventListener('click', (e: MouseEvent)=>{ //toggle focus status when pomodoro clicked
-                if (status!=='start') return; //status is defined in pomodoro.js, which is inserted above
-
                 if (e.altKey) { //pressing alt/option makes enter full screen or not
                     if (document.fullscreenElement==null) //if not full screen
                         document.body.requestFullscreen();
@@ -85,10 +86,23 @@ type settingsT={
                     return;
                 }
 
+                if (status!=='start') return; //status is defined in pomodoro.js, which is inserted above
+
                 if (focusStatus==='off' && settings.fullScreen)
                     document.body.requestFullscreen();
 
-                setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings, true); //toggle focus status without full screen helper
+                if (focusStatus==='on' && settings.fullScreen) {
+                    if (document.fullscreenElement) {
+                        setTimeout(()=>document.exitFullscreen(), 500);
+                    } else {
+                        console.log('Failed to exit full screen so defaulting to reloading page');
+                        // window.location.reload();
+                    }
+                }
+                
+                console.log('focusStatus', focusStatus, 'settings.fullScreen', settings.fullScreen);
+                
+                setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle focus status
             });
             // set pomodoro size
             (document.getElementById('focus__app')!.style as any).zoom=settings.zoom;
@@ -97,95 +111,86 @@ type settingsT={
 
 
     // # Focus Status Helper
-    function setFocusStatus(newFocusStatus: 'on' | 'off', settings, alreadyInFullScreen) { //change DOM based on status
+    function setFocusStatus(newFocusStatus: 'on' | 'off', settings) { //change DOM based on status
+        // focus__hidden
+
+        const hideItemsQuerySelectors=[ //query selectors
+            // horizontal ruler
+            '#kix-horizontal-ruler-container',
+            '#kix-vertical-ruler-container',
+            
+            // explorer widget
+            '.docs-explore-widget',
+
+            // TOC widget
+            '.left-sidebar-container-content'
+        ];
+        const makeGrayItemsQuerySelectors=[
+            // TOC widget
+            '.left-sidebar-container',
+            '.kix-appview-editor'
+        ];
+
+        const hideItem=querySelector=>{
+            const el=$(querySelector);
+            if (el) el.classList.add('focus__hidden');
+        };
+        const undoHideItem=querySelector=>{
+            const el=$(querySelector);
+            if (el) el.classList.remove('focus__hidden');
+        };
+        const makeGray=querySelector=>{
+            const el=$(querySelector) as HTMLElement;
+            if (el) el.classList.add('focus__gray');
+        };
+        const undoMakeGray=querySelector=>{
+            const el=$(querySelector) as HTMLElement;
+            if (el) el.classList.remove('focus__gray');
+        };
+        const hideItems=()=>hideItemsQuerySelectors.forEach(hideItem);
+        const undoHideItems=()=>hideItemsQuerySelectors.forEach(undoHideItem);
+        const makeGrayItems=()=>makeGrayItemsQuerySelectors.forEach(makeGray);
+        const undoMakeGrayItems=()=>makeGrayItemsQuerySelectors.forEach(undoMakeGray);
+        
         focusStatus=newFocusStatus;
-        if (focusStatus==='on') {
+        if (focusStatus==='on') { //turning on focus mode
             //* Hide stuff
             setFullScreenStatus('on', settings)
                 .then(()=>{ //hide `Controls hidden. Press ESC to show controls.` Google Docs message
                     setTimeout(()=>{
-                        const messageEl=document.querySelector('.jfk-butterBar') as HTMLElement;
-                        if (messageEl)
-                            messageEl.style.display='none';
+                        hideItem('.jfk-butterBar');
                     }, 300);
                 });
-
-            document.getElementById('kix-horizontal-ruler-container')!.style.display='none'; //horizontal ruler
-            document.getElementById('kix-vertical-ruler-container')!.style.display='none'; //horizontal ruler
-            (document.querySelector('.left-sidebar-container') as HTMLElement).style.background=gray; //TOC widget
-            // (document.querySelector('.left-sidebar-container-content') as HTMLElement).style.display='none'; //TOC widget
-
-            const explorerWidget=document.querySelector('.docs-explore-widget') as HTMLElement;
-            if (explorerWidget) explorerWidget.style.display='none'; //hide explore icon
-        
+            
+            hideItems();
+            makeGrayItems();
+            
             //* Editor
-            const editor=document.querySelector('.kix-appview-editor') as HTMLElement;
+            const editor=$('.kix-appview-editor') as HTMLElement;
                 editor.style.height='100vh'; //make app full screen
-                editor.style.backgroundColor='#fff'; //whatever background color
-                editor.style.filter='brightness(0.9)';
 
             //* Make pages look seamless
             function formatCanvases() {
                 // Old Way: Add White Outline Around Pages to Cover the Gray Marks
-                // const canvasEls=document.querySelectorAll('.kix-canvas-tile-content') as NodeListOf<HTMLCanvasElement>;
+                // const canvasEls=$$('.kix-canvas-tile-content') as NodeListOf<HTMLCanvasElement>;
                 // for (let canvasEl of canvasEls)
                     // canvasEl.style.outline='4px solid #fff'; //cover up black border of canvas to make it look like the doc is seamless
                 
-                for (let pageEl of <NodeListOf<HTMLCanvasElement>>document.querySelectorAll('.kix-page-paginated'))
+                for (let pageEl of <NodeListOf<HTMLCanvasElement>>$$('.kix-page-paginated'))
                     pageEl.style.outline='unset';
 
                 if (settings!==undefined && !settings.showPageSeparators)
-                    document.querySelectorAll('.kix-page-canvas-compact-mode').forEach((el: any)=>el.style.borderTop='unset');
+                    $$('.kix-page-canvas-compact-mode').forEach((el: any)=>el.style.borderTop='unset');
             }
             formatCanvases();
             setInterval(formatCanvases, 1000);
-
-            if (settings.fullScreen && !alreadyInFullScreen) {
-                // Enter full screen only if requested to do so
-                const fullScreenBtn=document.createElement('div');
-                fullScreenBtn.style.position='absolute';
-                fullScreenBtn.style.top='25%';
-                fullScreenBtn.style.left='calc(50% - 125px)';
-                fullScreenBtn.style.width='250px';
-                fullScreenBtn.style.height='60px';
-                fullScreenBtn.style.backgroundColor='#fff6d8';
-                fullScreenBtn.style.border='2px solid black';
-                fullScreenBtn.style.borderRadius='12px';
-                fullScreenBtn.style.cursor='pointer';
-                fullScreenBtn.style.display='flex';
-                fullScreenBtn.style.justifyContent='center';
-                fullScreenBtn.style.alignItems='center';
-                fullScreenBtn.style.fontSize='20px';
-                fullScreenBtn.style.position='relative';
-                fullScreenBtn.style.boxShadow='0px 2px 12px -1px';
-
-                fullScreenBtn.innerText='Click to go full screen';
-                fullScreenBtn.addEventListener('click', ()=>{ //go fullscreen and hide el
-                    document.body.requestFullscreen();
-                    fullScreenBtn.parentNode?.removeChild(fullScreenBtn);
-                });
-                const closeBtn=document.createElement('div');
-                closeBtn.style.position='absolute';
-                closeBtn.style.top='5px';
-                closeBtn.style.right='5px';
-                closeBtn.style.width='20px';
-                closeBtn.style.height='20px';
-                closeBtn.style.backgroundColor='black';
-                closeBtn.style.color='white';
-                closeBtn.style.borderRadius='50%';
-                closeBtn.style.display='flex';
-                closeBtn.style.justifyContent='center';
-                closeBtn.style.alignItems='center';
-                closeBtn.style.cursor='pointer';
-                closeBtn.innerText='X';
-                fullScreenBtn.appendChild(closeBtn);
-                document.body.appendChild(fullScreenBtn);
-            }
         }
         if (focusStatus==='off') { //turn off full screen and reload page
             setFullScreenStatus('off', settings)
                 .then(()=>{
-                    window.location.reload();
+                    // Old method: window.location.reload();
+                    undoHideItems();
+                    undoMakeGrayItems();
                 });
         }
 
@@ -197,7 +202,7 @@ type settingsT={
             }
     
             // Full Screen
-            const fullScreenEl=document.querySelector('span[aria-label*="Full screen"]') as HTMLSpanElement;
+            const fullScreenEl=$('span[aria-label*="Full screen"]') as HTMLSpanElement;
             const isInFullScreen=(()=>{
                 const display=(document.getElementById('docs-header') as HTMLDivElement).style.display;
                 if (display==='none')
@@ -218,7 +223,7 @@ type settingsT={
     
             // Print Layout
             if (settings.printLayout===false) { // need to change print layout status
-                const printLayoutEl=document.querySelector('span[aria-label*="Show print layout"]')!.parentNode!.parentNode as HTMLElement;
+                const printLayoutEl=$('span[aria-label*="Show print layout"]')!.parentNode!.parentNode as HTMLElement;
     
                 const isInPrintLayout=(()=>{ //ariaChecked means print layout is on. Turn status on means turn off ariaChecked
                     if (printLayoutEl.ariaChecked==='true')

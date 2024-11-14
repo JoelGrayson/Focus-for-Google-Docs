@@ -6,12 +6,9 @@
 Focus is a Chrome extension that simplifies Google Docs by hiding distracting controls to just show the text. It is good for minimalists or those who get easily distracted. It includes a pomodoro timer to motivate you to write continuously for a period of time (e.g. 15 minutes).
 
 ## How to Use
-Click the extension icon to toggle focus mode.
+Click the pomodoro timer in the bottom-right of the Google Doc to enter focus mode or start a pomodoro session.
 
-Click the pomodoro timer in the bottom-right of the Google Doc to start a pomodoro session.
+Click the extension icon to modify the settings.
 
-Right-click the extension icon and select "Options" to open the Options page for configuring settings.
+Note: Chrome version of at least 102 is required. If you have Chrome version 94 or earlier, you will have to upgrade Chrome for Focus to work.
 
-Right-click the extension and select "Report a Bug" or "Feedback" to leave feedback. Thank you!
-
-Note: Chrome version of at least 102 is required. Before Chrome version 94, Focus does not work.
