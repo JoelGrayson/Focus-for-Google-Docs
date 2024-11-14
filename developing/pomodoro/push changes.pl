@@ -7,10 +7,16 @@ use strict;
 use File::Slurp;
 
 # Pomodoro.css
-my $css_file_contents=read_file('./pomodoro.css');
+my $pomodoro_css_contents=read_file('./pomodoro.css');
 open(FH, '>', '../../src/do_not_edit/pomodoro.css');
-my $pomodoro_css="/*! Copied from developing/pomodoro/pomodoro.css */\n\n$css_file_contents";
+my $pomodoro_css="/*! Copied from developing/pomodoro/pomodoro.css */\n\n$pomodoro_css_contents";
 print FH $pomodoro_css;
+
+# Focus.css
+my $focus_css_contents=read_file('./focus.css');
+open(FH, '>', '../../src/do_not_edit/focus.css');
+my $focus_css="/*! Copied from developing/pomodoro/focus.css */\n\n$focus_css_contents";
+print FH $focus_css;
 
 # Pomodoro.html
 my $file_contents=read_file("./index.html");

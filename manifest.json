@@ -24,7 +24,7 @@
         {
             "matches": ["https://docs.google.com/document/*"],
             "js": ["dist/injected.js"],
-            "css": ["dist/pomodoro.css"]
+            "css": ["dist/pomodoro.css", "dist/focus.css"]
         }
     ],
     "permissions":[

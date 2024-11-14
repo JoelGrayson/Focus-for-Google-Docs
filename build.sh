@@ -44,6 +44,7 @@ mv background.js ../dist
 
 # # Pomodoro
 cp 'do_not_edit/pomodoro.css' ../dist
+cp 'do_not_edit/focus.css' ../dist
 
 cd ..
 

@@ -1,0 +1,20 @@
+/* Modifiers that are added/removed from classList by injected.ts */
+
+.focus__hidden {
+    display: none !important;
+    z-index: -1;
+}
+
+.focus__gray {
+    /* background-color: #e5e5e5 !important; */
+    background-color: #fff !important;
+    filter: brightness(0.9) !important;
+}
+
+.focus__hide_outline {
+    outline: unset !important;
+}
+
+.focus__hide_border_top {
+    border-top: unset !important;
+}
