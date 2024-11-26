@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('fullScreen').checked=settings.fullScreen;
         $i('printLayout').checked=settings.printLayout;
         $i('pomodoroEnabled').checked=settings.pomodoroEnabled;
-        $i('showPageSeparators').checked=settings.showPageSeparators,
+        $i('showPageSeparators').checked=settings.showPageSeparators;
         $i('zoom').value=settings.zoom;
     });
 });
@@ -31,8 +31,10 @@ function saveSettings() { //update storage with DOM
 }
 
 function setStatus(msg, color='black') {
-    $i('status').style.color=color;
-    $i('status').innerHTML=msg;
+    document.querySelectorAll('.status-text').forEach(el=>{
+        el.style.color=color;
+        el.innerHTML=msg;
+    });
     setTimeout(()=>{
         setStatus('');
     }, 3000);
@@ -56,6 +58,7 @@ $i('fullScreen').addEventListener('click', saveSettings);
 $i('printLayout').addEventListener('click', saveSettings);
 $i('pomodoroEnabled').addEventListener('click', saveSettings);
 $i('zoom').addEventListener('change', saveSettings);
+$i('showPageSeparators').addEventListener('click', saveSettings);
 
 
 
