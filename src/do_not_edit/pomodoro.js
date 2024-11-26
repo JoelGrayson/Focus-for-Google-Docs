@@ -247,10 +247,20 @@
         });
 
         //     paused
-        $i('focus__middle-hover-end-btn').addEventListener('mouseup', ()=>{
+        $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
         });
+
+        $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
+            runTimer(uMinutesEl.value);
+            setStatus('running');
+        });
+        $i('focus-exit-focus-mode-btn').addEventListener('mouseup', ()=>{
+            setStatus('start');
+            setFocusStatus('off');
+        });
+
 
         
         // end (done)
@@ -278,6 +288,10 @@
                 throw new Error(`Invalid timer status: ^${status}$`);
             }
         });
+        $i('focus__middle-hover-more-btn').addEventListener('mouseenter', ()=>{
+            $i_show('more-items-container');
+        });
+
         //# Mouse Leave
         $i('focus__app').addEventListener('mouseleave', ()=>{
             setText('focus__focus-text');

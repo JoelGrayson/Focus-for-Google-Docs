@@ -87,7 +87,7 @@
     border-right-width: 1px;
     outline: none;
 }
-#focus__middle-hover-status, #focus__middle-hover-end-btn { /* children of middle items*/
+#focus__middle-hover-status, #focus__middle-hover-more-btn { /* children of middle items*/
     height: 20px;
     width: 25px;
     cursor: pointer;
@@ -114,11 +114,11 @@
     border-right-width: 1px;
     border-radius: 5px 0 0 5px;
 }
-#focus__middle-hover-end-btn {
+#focus__middle-hover-more-btn {
     border-left-width: 1px;
     border-radius: 0 5px 5px 0;
 }
-#focus__middle-hover-end-btn>span {
+#focus__middle-hover-more-btn>span {
     position: relative;
     top: 1.2px;
 }

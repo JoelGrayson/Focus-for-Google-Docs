@@ -92,9 +92,91 @@
                 <polygon points="36 30, 36 70, 73 50" fill='#111' />
             </g>
         </svg>
-        <div id="focus__middle-hover-end-btn" class="focus__btn">
-            <span>End</span>
+        <div id="focus__middle-hover-more-btn" class="focus__btn" style='display: flex; align-items: start; justify-content: center;'>
+            <div style='font-size: 1.2em; font-weight: bold; position: relative; bottom: 4px;'>...</div>
         </div>
+
+        <style>
+            .more-item {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                border: 1px solid #222;
+                border-bottom: none;
+                padding: 3px 5px;
+                cursor: pointer;
+            }
+            .more-item:hover {
+                background-color: #eee;
+            }
+            .more-item.first {
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+            }
+            .more-item.last {
+                border-bottom: 1px solid #222;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+            #more-items-container {
+                position: absolute;
+                bottom: 120px;
+                right: -11px;
+                width: fit-content;
+                height: 100%;
+            }
+            #more-items-bottom-triangle {
+                position: absolute;
+                bottom: 25px;
+                right: 6px;
+                width: 15px;
+                height: 11px;
+                /* Make triangle */
+                clip-path: polygon(0 0, 100% 0, 50% 100%);
+                background-color: #222;
+            }
+            #more-items-bottom-triangle-white {
+                position: absolute;
+                bottom: 27px;
+                right: 6.9px;
+                width: 13px;
+                height: 12px;
+                clip-path: polygon(0 0, 100% 0, 50% 100%);
+                background-color: #fafafa;
+            }
+            #dont-lose-hover {
+                position: absolute;
+                bottom: 12px;
+                right: -20px;
+                width: 163px;
+                height: 147px;
+                /* background-color: rgba(1, 0, 0, .5); */
+                background: transparent;
+                z-index: -1;
+            }
+        </style>
+        <div id='more-items-container'>
+            <div id='focus-exit-fullscreen-btn' style='width: 130px' class='more-item first'>
+                <!-- <svg height="20" width="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h48v48h-48z" fill="none"/><path d="M10 32h6v6h4v-10h-10v4zm6-16h-6v4h10v-10h-4v6zm12 22h4v-6h6v-4h-10v10zm4-22v-6h-4v10h10v-4h-6z"/></svg> -->
+                <svg width="20" height="20" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect width="50" height="50" /> <path d="M20 2V20H2" stroke="black" stroke-width="5"/> <path d="M20 47V29H2" stroke="black" stroke-width="5"/> <path d="M30 2V20H48" stroke="black" stroke-width="5"/> <path d="M30 47V29H48" stroke="black" stroke-width="5"/> </svg>
+                Exit fullscreen
+            </div>
+            <div id='focus-stop-timer-btn' class='more-item'>
+                <svg width="20" height="20" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect width="50" height="50" /> <path d="M7.5 7L41 40.5" stroke="black" stroke-width="5"/> <path d="M41 7L7.5 40.5" stroke="black" stroke-width="5"/> </svg>
+                Stop timer
+            </div>
+            <div id='focus-restart-timer-btn' class='more-item'>
+                <svg width="20" height="20" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect width="50" height="50" /> <path d="M28.1365 10.5487C31.6117 11.4799 34.6716 13.5551 36.8222 16.4394C38.9728 19.3236 40.0886 22.8485 39.9893 26.4448C39.8901 30.0412 38.5817 33.4992 36.2753 36.2605C33.9689 39.0217 30.7992 40.9251 27.278 41.6632C23.7568 42.4013 20.0895 41.9311 16.8684 40.3285C13.6473 38.726 11.0603 36.0845 9.52513 32.8308C7.98996 29.577 7.59622 25.9008 8.40749 22.3957" stroke="black" stroke-width="5"/> <path d="M38.7942 5.49998L26.5 8.79421L29.7942 21.0884" stroke="black" stroke-width="5"/> </svg>
+                Restart timer
+            </div>
+            <div id='focus-exit-focus-mode-btn' class='more-item last'>
+                <svg width="20" height="20" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect width="50" height="50" /> <path d="M18 10H44V41H18" stroke="black" stroke-width="5"/> <path d="M31.5 25.5H7M7 25.5L12.5 31M7 25.5L12.5 20" stroke="black" stroke-width="5"/> </svg>
+                Exit focus mode
+            </div>
+        </div>
+        <div id='more-items-bottom-triangle'></div>
+        <div id='more-items-bottom-triangle-white'></div>
+        <div id='dont-lose-hover'></div>
     </div>
 
     <!-- ending message -->
@@ -357,10 +439,20 @@
         });
 
         //     paused
-        $i('focus__middle-hover-end-btn').addEventListener('mouseup', ()=>{
+        $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
         });
+
+        $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
+            runTimer(uMinutesEl.value);
+            setStatus('running');
+        });
+        $i('focus-exit-focus-mode-btn').addEventListener('mouseup', ()=>{
+            setStatus('start');
+            setFocusStatus('off');
+        });
+
 
         
         // end (done)
@@ -388,6 +480,10 @@
                 throw new Error(`Invalid timer status: ^${status}$`);
             }
         });
+        $i('focus__middle-hover-more-btn').addEventListener('mouseenter', ()=>{
+            $i_show('more-items-container');
+        });
+
         //# Mouse Leave
         $i('focus__app').addEventListener('mouseleave', ()=>{
             setText('focus__focus-text');
