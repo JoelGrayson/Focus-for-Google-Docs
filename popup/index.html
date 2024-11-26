@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="./ucjg.v4.css" />
 </head>
 <body>
-    <div class="j_container" style="min-width: 350px;">
-        <h1 style='text-align: center'>Focus for Google Docs Options</h1>
+    <div class="j_container" style="min-width: 350px;" id='normalSettings'>
+        <h1 style='text-align: center'>Focus for Google Docs</h1>
     
         <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%;'>
             <label for="pomodoroEnabled">Pomodoro timer enabled 🍅</label>
@@ -31,30 +31,73 @@
             <label for="fullScreen">Enters full screen when focusing</label>
             <div><input type="checkbox" id="fullScreen"/></div>
 
-            <label for="printLayout">Show print layout instead of seamless page transitions in focus mode</label>
-            <div><input type="checkbox" id="printLayout"/></div>
-
-            <label for="showPageSeparators">Show page separators in focus mode (hidden by default)</label>
-            <div><input type="checkbox" id="showPageSeparators"/></div>
+            <!-- TODO: dark mode -->
         </div>
-        
-        <br/>
+
+        <br>
     
         <div style='display: flex; justify-content: center; flex-direction: column; align-items: center;'>
-            <button id="restoreDefaults">Restore default options</button>
+            <div style='display: flex; justify-content: center; min-width: 350px;'>
+                <button id="advancedOptionsBtn">Advanced Options</button>
+            </div>
 
-            <div id="status"></div>
+            <br><br>
+            <div style='display: flex; justify-content: center; gap: 5px;'>
+                <span>Help by</span>
+                <a href="https://chromewebstore.google.com/detail/focus-for-google-docs/djnloioaddlnmagobbcnjpppmbelfocf/reviews" target="_blank" class='unstyled button' style='display: flex; align-items: center; gap: 5px; width: fit-content; margin-bottom: 10px; font-size: 14px; padding: 0 7px;'>
+                    Giving a Rating ★★★★★
+                </a>
+            </div>
 
-            <div style='margin-top: 10px;'>
+            <div style='margin-block: 10px;'>
                 <a href="https://forms.gle/A5t9ikLAe47gbNgj7" target="_blank">
                     <button>Give Feedback</button>
                 </a>
             </div>
+
+
+            <div id="status"></div>
+        </div>
+    </div>
+
+    
+    <div class="j_container" style="min-width: 350px; display: none;" id='advancedSettings'>
+        <button id='backBtn' style='width: fit-content'>
+            &lt; Back
+        </button>
+
+        <h2 style='text-align: center;'>Advanced Options</h2>
+        <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%;'>
+            <!-- TODO: enter focus mode when timer starts -->
+            
+            
+            <label for="printLayout">Show print layout instead of seamless page transitions in focus mode</label>
+            <div><input type="checkbox" id="printLayout"/></div>
+
+            <!-- TODO: rename to hide page separators -->
+            <label for="showPageSeparators">Show page separators in focus mode (hidden by default)</label>
+            <div><input type="checkbox" id="showPageSeparators"/></div>
         </div>
 
-        <p style='text-align: center;'>Version 1.5</p>
+        <div style='display: flex; justify-content: center; margin-block: 10px;'>
+            <button id="restoreDefaults">Restore default options</button>
+        </div>
+        <div id="status"></div>
+
+        <br>
         
-        <script src="./options.js"></script>
+        <div style='display: flex; justify-content: center;'>
+            <a href="https://github.com/JoelGrayson/Focus" target="_blank" class='unstyled button' style='display: flex; align-items: center; gap: 5px; width: fit-content; margin-bottom: 10px'>
+                <svg width='18px' height='17px' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.95263 16.9123L8.59323 18.3608L2.03082 12.2016L8.18994 5.63922L9.64826 7.00791L4.85783 12.112L9.95212 16.8932L9.95263 16.9123Z" fill="currentColor"/><path d="M14.0474 16.9123L15.4068 18.3608L21.9692 12.2016L15.8101 5.63922L14.3517 7.00791L19.1422 12.112L14.0479 16.8932L14.0474 16.9123Z" fill="currentColor"/></svg>
+                View Source Code
+            </a>
+        </div>
+        
+        <div style='display: flex; justify-content: center;'>Made by&nbsp;<a href="https://joelgrayson.com" target="_blank">Joel Grayson</a></div>
+
+        <div style='text-align: center;'>Version 1.5</>
     </div>
+
+    <script src="./options.js"></script>
 </body>
 </html>

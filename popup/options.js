@@ -38,6 +38,7 @@ function setStatus(msg, color='black') {
     }, 3000);
 }
 
+console.log($i('restoreDefaults'));
 $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button clickedd. update storage and DOM
     chrome.storage.sync.set({settings: defaultSettings}, ()=>{
         setStatus('Settings restored to defaults', 'green');
@@ -55,4 +56,19 @@ $i('fullScreen').addEventListener('click', saveSettings);
 $i('printLayout').addEventListener('click', saveSettings);
 $i('pomodoroEnabled').addEventListener('click', saveSettings);
 $i('zoom').addEventListener('change', saveSettings);
+
+
+
+// Advanced Options Toggle
+const advancedOptionsBtn=$i('advancedOptionsBtn');
+const normalSettings=$i('normalSettings');
+const advancedSettings=$i('advancedSettings');
+advancedOptionsBtn.addEventListener('click', ()=>{
+    normalSettings.style.display='none';
+    advancedSettings.style.display='block';
+});
+$i('backBtn').addEventListener('click', ()=>{
+    advancedSettings.style.display='none';
+    normalSettings.style.display='block';
+});
 

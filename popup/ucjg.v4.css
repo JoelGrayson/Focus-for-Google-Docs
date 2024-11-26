@@ -63,13 +63,21 @@ code.dark {
 a {
     cursor: pointer;
 }
-a.styled, .j_link {
+a.unstyled {
+    text-decoration: none;
+    color: black;
+}
+a.button {
+    font-size: 14px;
+    padding: 0 7px;
+}
+a.styled:not(.unstyled), .j_link {
     color: #0000e1;
 }
-a.styled:not(.nounderline) {
+a.styled:not(.unstyled) {
     text-decoration: underline;
 }
-a.styled:hover,
+a.styled:hover:not(.unstyled),
 .gradient-text,
 .gradient-text * { /* gradient text onHover */
     color: #fa00f2; /* backup for browsers not supporting text gradient */
@@ -109,8 +117,9 @@ input:focus, textarea:focus {
 }
 
 
-/* Button.v2.css */
-button {
+/* button.v2.css */
+:where(button, .button) {
+    cursor: pointer;
     border: 1.1px solid #000;
     border-radius: 3px;
     padding: 5px 10px;
@@ -122,17 +131,17 @@ button {
     transition: top;
     transition-duration: .1s;
 }
-button:hover {
+:where(button, .button):hover {
     outline: 2.1px solid #111;
     outline-offset: -2px;
     filter: brightness(0.85) saturate(1.4);
 }
-button:active {
+:where(button, .button):active {
     border-radius: 2px;
 	top: 1.1px;
     filter: brightness(0.8) saturate(1.4);
 }
-button:disabled {
+:where(button, .button):disabled {
     outline: none;
 }
 .btn-red   { background-color: #ff8f8f; }
