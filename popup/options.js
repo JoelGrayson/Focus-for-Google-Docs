@@ -32,7 +32,7 @@ function saveSettings() { //update storage with DOM
         enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked,
         darkMode: $i('darkMode').checked
     }}, ()=>{
-        setStatus('Settings saved', 'green');
+        setStatus('Settings saved. Reload page to see changes.', 'green');
     });
 }
 

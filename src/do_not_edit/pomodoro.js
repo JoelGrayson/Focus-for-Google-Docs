@@ -247,6 +247,12 @@
         });
 
         //     paused
+        $i('focus-enter-fullscreen-btn').addEventListener('mouseup', ()=>{
+            document.body.requestFullscreen();
+        });
+        $i('focus-exit-fullscreen-btn').addEventListener('mouseup', ()=>{
+            document.exitFullscreen();
+        });
         $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
@@ -256,8 +262,10 @@
             runTimer(uMinutesEl.value);
             setStatus('running');
         });
+        $i('focus-enter-focus-mode-btn').addEventListener('mouseup', ()=>{
+            setFocusStatus('on');
+        });
         $i('focus-exit-focus-mode-btn').addEventListener('mouseup', ()=>{
-            setStatus('start');
             setFocusStatus('off');
         });
 
@@ -290,6 +298,23 @@
         });
         $i('focus__middle-hover-more-btn').addEventListener('mouseenter', ()=>{
             $i_show('more-items-container');
+            $i_show('more-items-container-helpers');
+
+            // Make sure correct items shown
+            if (focusStatus==='on') {
+                $i_hide('focus-enter-focus-mode-btn');
+                $i_show('focus-exit-focus-mode-btn');
+            } else {
+                $i_show('focus-enter-focus-mode-btn');
+                $i_hide('focus-exit-focus-mode-btn');
+            }
+            if (document.fullscreenElement==null) {
+                $i_show('focus-enter-fullscreen-btn');
+                $i_hide('focus-exit-fullscreen-btn');
+            } else {
+                $i_hide('focus-enter-fullscreen-btn');
+                $i_show('focus-exit-fullscreen-btn');
+            }
         });
 
         //# Mouse Leave
@@ -300,7 +325,9 @@
                 'focus__start-hover',
                 'focus__middle-hover',
                 'focus__done-message',
-                'focus__smiley-face'
+                'focus__smiley-face',
+                'more-items-container',
+                'more-items-container-helpers'
             ].forEach($i_hide);
             
             if (status==='done')
@@ -334,6 +361,8 @@
 
     function main() {
         addEventListeners();
+        $i_hide('more-items-container');
+        $i_hide('more-items-container-helpers');
         setStatus('start');
     }
 

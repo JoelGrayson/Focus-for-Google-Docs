@@ -285,7 +285,7 @@ type settingsT={
                 await clickElement(fullScreenEl);
     
             // Print Layout
-            if (settings.printLayout===false) { // need to change print layout status
+            if (settings?.printLayout===false) { // need to change print layout status
                 const printLayoutEl=$('span[aria-label*="Show print layout"]')!.parentNode!.parentNode as HTMLElement;
     
                 const isInPrintLayout=(()=>{ //ariaChecked means print layout is on. Turn status on means turn off ariaChecked
