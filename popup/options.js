@@ -4,6 +4,7 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     pomodoroEnabled: true,
     showPageSeparators: false,
     enterFocusModeOnTimerStart: true,
+    darkMode: false,
     zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
 };
 
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('showPageSeparators').checked=settings.showPageSeparators;
         $i('zoom').value=settings.zoom;
         $i('enterFocusModeOnTimerStart').checked=settings.enterFocusModeOnTimerStart;
+        $i('darkMode').checked=settings.darkMode;
     });
 });
 
@@ -27,7 +29,8 @@ function saveSettings() { //update storage with DOM
         pomodoroEnabled: $i('pomodoroEnabled').checked,
         showPageSeparators: $i('showPageSeparators').checked,
         zoom: $i('zoom').value,
-        enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked
+        enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked,
+        darkMode: $i('darkMode').checked
     }}, ()=>{
         setStatus('Settings saved', 'green');
     });
@@ -54,6 +57,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('showPageSeparators').checked=defaultSettings.showPageSeparators;
     $i('zoom').value=defaultSettings.zoom;
     $i('enterFocusModeOnTimerStart').checked=defaultSettings.enterFocusModeOnTimerStart;
+    $i('darkMode').checked=defaultSettings.darkMode;
 });
 
 
@@ -64,7 +68,7 @@ $i('pomodoroEnabled').addEventListener('click', saveSettings);
 $i('zoom').addEventListener('change', saveSettings);
 $i('showPageSeparators').addEventListener('click', saveSettings);
 $i('enterFocusModeOnTimerStart').addEventListener('click', saveSettings);
-
+$i('darkMode').addEventListener('click', saveSettings);
 
 // Advanced Options Toggle
 const advancedOptionsBtn=$i('advancedOptionsBtn');

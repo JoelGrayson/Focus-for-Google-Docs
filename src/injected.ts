@@ -7,6 +7,7 @@ type settingsT={
     showPageSeparators: boolean;
     zoom: string;
     enterFocusModeOnTimerStart: boolean;
+    darkMode: boolean;
 };
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
@@ -37,6 +38,24 @@ type settingsT={
     const settings: settingsT=await new Promise((resolve, reject)=>
         chrome.storage.sync.get('settings', ({settings})=>resolve(settings))
     );
+
+    if (settings.darkMode) {
+        console.log("Enabling dark mode");
+        let attemptNumber=1;
+        const id=setInterval(()=>{
+            const el=$('.kix-appview-editor') as HTMLElement;
+            attemptNumber++;
+            if (attemptNumber>10) {
+                console.log('Failed to enable dark mode after 10 attempts');
+                clearInterval(id);
+                return;
+            }
+            if (el) {
+                el.classList.add('focus__dark-mode');
+                clearInterval(id);
+            }
+        }, 100);
+    }
 
 
     //# Update Browser if Chrome version is too old

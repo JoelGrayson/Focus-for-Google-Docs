@@ -18,3 +18,8 @@
 .focus__hide_border_top {
     border-top: unset !important;
 }
+
+
+.focus__dark-mode {
+    filter: invert(0.92) !important;
+}
