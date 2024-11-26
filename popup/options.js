@@ -3,6 +3,7 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     printLayout: false,
     pomodoroEnabled: true,
     showPageSeparators: false,
+    enterFocusModeOnTimerStart: true,
     zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
 };
 
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('pomodoroEnabled').checked=settings.pomodoroEnabled;
         $i('showPageSeparators').checked=settings.showPageSeparators;
         $i('zoom').value=settings.zoom;
+        $i('enterFocusModeOnTimerStart').checked=settings.enterFocusModeOnTimerStart;
     });
 });
 
@@ -24,7 +26,8 @@ function saveSettings() { //update storage with DOM
         printLayout: $i('printLayout').checked,
         pomodoroEnabled: $i('pomodoroEnabled').checked,
         showPageSeparators: $i('showPageSeparators').checked,
-        zoom: $i('zoom').value
+        zoom: $i('zoom').value,
+        enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked
     }}, ()=>{
         setStatus('Settings saved', 'green');
     });
@@ -50,6 +53,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('pomodoroEnabled').checked=defaultSettings.pomodoroEnabled;
     $i('showPageSeparators').checked=defaultSettings.showPageSeparators;
     $i('zoom').value=defaultSettings.zoom;
+    $i('enterFocusModeOnTimerStart').checked=defaultSettings.enterFocusModeOnTimerStart;
 });
 
 
@@ -59,7 +63,7 @@ $i('printLayout').addEventListener('click', saveSettings);
 $i('pomodoroEnabled').addEventListener('click', saveSettings);
 $i('zoom').addEventListener('change', saveSettings);
 $i('showPageSeparators').addEventListener('click', saveSettings);
-
+$i('enterFocusModeOnTimerStart').addEventListener('click', saveSettings);
 
 
 // Advanced Options Toggle

@@ -138,10 +138,6 @@
             runTimer(uMinutesEl.value);
             setStatus('running');
         });
-        uMinutesEl.addEventListener('keypress', e=>{ //enter key triggers start
-            if (e.key==='Enter') //enter key -> simulate mouseup on start button
-                $i('focus__start-btn').dispatchEvent(new Event('mouseup'));
-        });
         uMinutesEl.addEventListener('input', e=>{
             const inputNumChars=uMinutesEl.value.length || 1; //change width to match input size
             uMinutesEl.style.width=`${inputNumChars+5}ch`;

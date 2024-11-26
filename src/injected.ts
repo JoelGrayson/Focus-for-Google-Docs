@@ -6,6 +6,7 @@ type settingsT={
     pomodoroEnabled: boolean;
     showPageSeparators: boolean;
     zoom: string;
+    enterFocusModeOnTimerStart: boolean;
 };
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
@@ -106,6 +107,16 @@ type settingsT={
             });
             // set pomodoro size
             ($('#focus__app')!.style as any).zoom=settings.zoom;
+
+
+            $('#focus__start-btn').addEventListener('mouseup', ()=>{
+                // console.log('mouseup on start button', settings.enterFocusModeOnTimerStart, settings);
+                if (settings.enterFocusModeOnTimerStart) {
+                    setFocusStatus('on', settings);
+                    if (settings.fullScreen)
+                        document.body.requestFullscreen();    
+                }
+            });
         })();
     }
 
