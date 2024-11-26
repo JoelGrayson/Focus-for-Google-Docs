@@ -44,6 +44,19 @@ type settingsT={
         let attemptNumber=1;
         const id=setInterval(()=>{
             const el=$('.kix-appview-editor') as HTMLElement;
+            const otherEls=[
+                '.docs-companion-app-switcher-container',
+                '#docs-chrome',
+                '#kix-horizontal-ruler-container',
+                '#kix-vertical-ruler-container',
+                '.docs-explore-widget',
+                '.left-sidebar-container-content',
+                '.miniChapterSwitcherCore'
+            ];
+            otherEls.forEach(elSelector=>{
+                const el=document.querySelector(elSelector) as HTMLElement;
+                if (el) el.classList.add('focus__dark-mode');
+            });
             attemptNumber++;
             if (attemptNumber>10) {
                 console.log('Failed to enable dark mode after 10 attempts');
