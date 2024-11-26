@@ -71,11 +71,13 @@
 
     
     <div class="j_container" style="min-width: 350px; display: none;" id='advancedSettings'>
-        <button id='backBtn' style='width: fit-content'>
-            &lt; Back
-        </button>
+        <div style='position: relative'>
+            <button id='backBtn' style='position: absolute; left: 0; top: 0; width: fit-content'>
+                &lt;
+            </button>    
+            <h2 style='text-align: center'>Advanced Options</h2>
+        </div>
 
-        <h2 style='text-align: center;'>Advanced Options</h2>
         <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%;'>
             <label for="enterFocusModeOnTimerStart">Enter focus mode when timer starts</label>
             <label class="switch">
