@@ -108,6 +108,8 @@
         topEl.style.stroke=THEME.GREEN;
         bottomEl.style.stroke=THEME.GREEN;
         setStatus('done');
+        if (settings.exitFocusModeOnTimerEnd)
+            setFocusStatus('off');
     }
 
     function hideAll() { //hides all status-dependent elements

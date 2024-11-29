@@ -4,6 +4,7 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     pomodoroEnabled: true,
     showPageSeparators: false,
     enterFocusModeOnTimerStart: true,
+    exitFocusModeOnTimerEnd: true,
     darkMode: false,
     zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
 };
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('showPageSeparators').checked=settings.showPageSeparators;
         $i('zoom').value=settings.zoom;
         $i('enterFocusModeOnTimerStart').checked=settings.enterFocusModeOnTimerStart;
+        $i('exitFocusModeOnTimerEnd').checked=settings.exitFocusModeOnTimerEnd;
         $i('darkMode').checked=settings.darkMode;
     });
 });
@@ -30,6 +32,7 @@ function saveSettings() { //update storage with DOM
         showPageSeparators: $i('showPageSeparators').checked,
         zoom: $i('zoom').value,
         enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked,
+        exitFocusModeOnTimerEnd: $i('exitFocusModeOnTimerEnd').checked,
         darkMode: $i('darkMode').checked
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
@@ -57,6 +60,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('showPageSeparators').checked=defaultSettings.showPageSeparators;
     $i('zoom').value=defaultSettings.zoom;
     $i('enterFocusModeOnTimerStart').checked=defaultSettings.enterFocusModeOnTimerStart;
+    $i('exitFocusModeOnTimerEnd').checked=defaultSettings.exitFocusModeOnTimerEnd;
     $i('darkMode').checked=defaultSettings.darkMode;
 });
 
@@ -68,6 +72,7 @@ $i('pomodoroEnabled').addEventListener('click', saveSettings);
 $i('zoom').addEventListener('change', saveSettings);
 $i('showPageSeparators').addEventListener('click', saveSettings);
 $i('enterFocusModeOnTimerStart').addEventListener('click', saveSettings);
+$i('exitFocusModeOnTimerEnd').addEventListener('click', saveSettings);
 $i('darkMode').addEventListener('click', saveSettings);
 
 // Advanced Options Toggle

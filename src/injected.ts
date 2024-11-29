@@ -7,6 +7,7 @@ type settingsT={
     showPageSeparators: boolean;
     zoom: string;
     enterFocusModeOnTimerStart: boolean;
+    exitFocusModeOnTimerEnd: boolean;
     darkMode: boolean;
 };
 
