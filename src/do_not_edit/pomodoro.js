@@ -249,24 +249,30 @@
         //     paused
         $i('focus-enter-fullscreen-btn').addEventListener('mouseup', ()=>{
             document.body.requestFullscreen();
+            setTimeout(updateMoreOptionsDropdownItems, 500);
         });
         $i('focus-exit-fullscreen-btn').addEventListener('mouseup', ()=>{
             document.exitFullscreen();
+            setTimeout(updateMoreOptionsDropdownItems, 500);
         });
         $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
+            setTimeout(updateMoreOptionsDropdownItems, 100);
         });
 
         $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
             runTimer(uMinutesEl.value);
             setStatus('running');
+            setTimeout(updateMoreOptionsDropdownItems, 100);
         });
         $i('focus-enter-focus-mode-btn').addEventListener('mouseup', ()=>{
             setFocusStatus('on');
+            setTimeout(updateMoreOptionsDropdownItems, 100);
         });
         $i('focus-exit-focus-mode-btn').addEventListener('mouseup', ()=>{
             setFocusStatus('off');
+            setTimeout(updateMoreOptionsDropdownItems, 500);
         });
 
 
@@ -301,20 +307,7 @@
             $i_show('more-items-container-helpers');
 
             // Make sure correct items shown
-            if (focusStatus==='on') {
-                $i_hide('focus-enter-focus-mode-btn');
-                $i_show('focus-exit-focus-mode-btn');
-            } else {
-                $i_show('focus-enter-focus-mode-btn');
-                $i_hide('focus-exit-focus-mode-btn');
-            }
-            if (document.fullscreenElement==null) {
-                $i_show('focus-enter-fullscreen-btn');
-                $i_hide('focus-exit-fullscreen-btn');
-            } else {
-                $i_hide('focus-enter-fullscreen-btn');
-                $i_show('focus-exit-fullscreen-btn');
-            }
+            updateMoreOptionsDropdownItems();
         });
 
         //# Mouse Leave
@@ -333,6 +326,23 @@
             if (status==='done')
                 setStatus('start');
         });
+    }
+    
+    function updateMoreOptionsDropdownItems() {
+        if (focusStatus==='on') {
+            $i_hide('focus-enter-focus-mode-btn');
+            $i_show('focus-exit-focus-mode-btn');
+        } else {
+            $i_show('focus-enter-focus-mode-btn');
+            $i_hide('focus-exit-focus-mode-btn');
+        }
+        if (document.fullscreenElement==null) {
+            $i_show('focus-enter-fullscreen-btn');
+            $i_hide('focus-exit-fullscreen-btn');
+        } else {
+            $i_hide('focus-enter-fullscreen-btn');
+            $i_show('focus-exit-fullscreen-btn');
+        }
     }
     
     //# Timer Main
