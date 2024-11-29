@@ -448,7 +448,7 @@
             }
         });
 
-        //     paused
+        //     selected from more options drop down
         $i('focus-enter-fullscreen-btn').addEventListener('mouseup', ()=>{
             document.body.requestFullscreen();
             setTimeout(updateMoreOptionsDropdownItems, 500);
@@ -460,13 +460,12 @@
         $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
-            setTimeout(updateMoreOptionsDropdownItems, 100);
         });
 
         $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
+            killClock();
             runTimer(uMinutesEl.value);
             setStatus('running');
-            setTimeout(updateMoreOptionsDropdownItems, 100);
         });
         $i('focus-enter-focus-mode-btn').addEventListener('mouseup', ()=>{
             setFocusStatus('on');
