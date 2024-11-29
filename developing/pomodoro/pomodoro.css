@@ -2,6 +2,7 @@
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14px;
     user-select: none;
+    color: black;
 }
 
 #focus__pomodoro-container {
@@ -21,6 +22,9 @@
     transform: rotate(90deg);
     translate: 100px;
 }
+.focus__dark-mode #focus__foreground {
+    filter: brightness(0); /* white */
+}
 
 .focus__btn {
     border: 2px solid #444;
@@ -34,6 +38,7 @@
 .focus__btn:active {
     background-color: #ddd;
 }
+
 
 #focus__start-hover>* {
     z-index: 10000;
@@ -73,7 +78,9 @@
 #focus__time-left-text {
     z-index: 10002;
     cursor: text;
+    color: black;
 }
+
 #focus__time-left-editable { /* appears when editing #focus__time-left-text */
     position: absolute;
     bottom: 38px;
@@ -108,6 +115,9 @@
     border: 2px solid #464646;
     border-left-width: 1px;
 }
+.focus__dark-mode #focus__finish-editing-time-left {
+    filter: invert(1);
+}
 
 /* special button border override */
 #focus__middle-hover-status {
@@ -129,3 +139,73 @@
     right: 10px;
     cursor: pointer;
 }
+
+/* More Options Dropdown */
+.focus__more-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #222;
+    border-bottom: none;
+    padding: 3px 5px;
+    cursor: pointer;
+    background: #fff;
+}
+.focus__more-dropdown-item:hover {
+    background-color: #eee;
+}
+
+.focus__more-dropdown-item.first {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.focus__more-dropdown-item.last {
+    border-bottom: 1px solid #222;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+#focus__more-dropdown-container {
+    position: absolute;
+    bottom: 120px;
+    right: -11px;
+    width: fit-content;
+    height: 100%;
+}
+#focus__more-dropdown-triangle {
+    position: absolute;
+    bottom: 25px;
+    right: 6px;
+    width: 15px;
+    height: 12px;
+    /* Make triangle */
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    background-color: #222;
+}
+#focus__more-dropdown-triangle-outer {
+    position: absolute;
+    bottom: 27px;
+    right: 6.9px;
+    width: 13px;
+    height: 11px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    background-color: #fafafa;
+}
+#focus__more-dropdown-box-underneath { /* for not losing hover */
+    position: absolute;
+    bottom: 12px;
+    right: -20px;
+    width: 163px;
+    height: 147px;
+    /* background-color: rgba(1, 0, 0, .5); */
+    background: transparent;
+    z-index: -1;
+}
+
+/* Dark Mode Extra Elements */
+.focus__dark-mode #enter-focus-mode-svg-icon {
+    filter: invert(1);
+}
+.focus__dark-mode #focus__smiley-face {
+    filter: brightness(0); /* white */
+}
+

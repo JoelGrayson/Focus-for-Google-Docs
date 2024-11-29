@@ -12,6 +12,9 @@
     background-color: #fff !important;
     filter: brightness(0.9) !important;
 }
+.focus__dark-mode .focus__gray {
+    filter: brightness(1) !important;
+}
 
 .focus__hide_outline {
     outline: unset !important;
@@ -22,6 +25,6 @@
 }
 
 
-.focus__dark-mode {
+.focus__invert {
     filter: invert(0.92) !important;
 }

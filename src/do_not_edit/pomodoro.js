@@ -304,8 +304,8 @@
             }
         });
         $i('focus__middle-hover-more-btn').addEventListener('mouseenter', ()=>{
-            $i_show('more-items-container');
-            $i_show('more-items-container-helpers');
+            $i_show('focus__more-dropdown-container');
+            $i_show('focus__more-dropdown-container-helpers');
 
             // Make sure correct items shown
             updateMoreOptionsDropdownItems();
@@ -320,8 +320,8 @@
                 'focus__middle-hover',
                 'focus__done-message',
                 'focus__smiley-face',
-                'more-items-container',
-                'more-items-container-helpers'
+                'focus__more-dropdown-container',
+                'focus__more-dropdown-container-helpers'
             ].forEach($i_hide);
             
             if (status==='done')
@@ -372,8 +372,8 @@
 
     function main() {
         addEventListeners();
-        $i_hide('more-items-container');
-        $i_hide('more-items-container-helpers');
+        $i_hide('focus__more-dropdown-container');
+        $i_hide('focus__more-dropdown-container-helpers');
         setStatus('start');
     }
 
