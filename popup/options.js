@@ -24,8 +24,19 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('darkMode').checked=settings.darkMode;
         $i('darkModeAmount').value=settings.darkModeAmount;
         $i('darkModeAmountValue').innerText=settings.darkModeAmount;
+        showDarkModeAmount(settings.darkMode);
     });
 });
+
+function showDarkModeAmount(bool) {
+    if (bool) {
+        $i('darkModeAmountContainer').style.visibility='visible';
+        $i('darkModeAmountLabel').style.visibility='visible';
+    } else {
+        $i('darkModeAmountContainer').style.visibility='hidden';
+        $i('darkModeAmountLabel').style.visibility='hidden';
+    }
+}
 
 function saveSettings() { //update storage with DOM
     chrome.storage.sync.set({settings: {
@@ -41,6 +52,7 @@ function saveSettings() { //update storage with DOM
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
+    showDarkModeAmount($i('darkMode').checked);
 }
 
 function setStatus(msg, color='black') {
