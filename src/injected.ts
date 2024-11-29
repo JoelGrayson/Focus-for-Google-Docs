@@ -9,6 +9,7 @@ type settingsT={
     enterFocusModeOnTimerStart: boolean;
     exitFocusModeOnTimerEnd: boolean;
     darkMode: boolean;
+    darkModeAmount: number;
 };
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
@@ -42,29 +43,25 @@ type settingsT={
 
     if (settings.darkMode) {
         console.log("Enabling dark mode");
-        setDarkMode(true);
+        turnOnDarkMode();
     }
 
-    function setDarkMode(bool) {
-        if (bool) {
-            document.body.classList.add('focus__invert');
-            let attempts=0;
-            const maxAttempts=20;
-            const id=setInterval(()=>{
-                attempts++;
-                if (attempts>maxAttempts) return clearInterval(id);
+    function turnOnDarkMode() {
+        document.body.style.filter+=`invert(${settings.darkModeAmount})`;
+        
+        let attempts=0;
+        const maxAttempts=20;
+        const id=setInterval(()=>{
+            attempts++;
+            if (attempts>maxAttempts) return clearInterval(id);
 
-                const el=document.getElementById('focus__app');
-                if (!el) return;
+            const el=document.getElementById('focus__app');
+            if (!el) return;
 
-                el.classList.add('focus__dark-mode');
+            el.classList.add('focus__dark-mode');
 
-                clearInterval(id); //finished
-            }, 100);
-
-        } else {
-            document.body.classList.remove('focus__invert');
-        }
+            clearInterval(id); //finished
+        }, 100);
     }
 
 

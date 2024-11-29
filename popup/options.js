@@ -6,6 +6,7 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     enterFocusModeOnTimerStart: true,
     exitFocusModeOnTimerEnd: true,
     darkMode: false,
+    darkModeAmount: 0.92,
     zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
 };
 
@@ -21,6 +22,8 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('enterFocusModeOnTimerStart').checked=settings.enterFocusModeOnTimerStart;
         $i('exitFocusModeOnTimerEnd').checked=settings.exitFocusModeOnTimerEnd;
         $i('darkMode').checked=settings.darkMode;
+        $i('darkModeAmount').value=settings.darkModeAmount;
+        $i('darkModeAmountValue').innerText=settings.darkModeAmount;
     });
 });
 
@@ -33,7 +36,8 @@ function saveSettings() { //update storage with DOM
         zoom: $i('zoom').value,
         enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked,
         exitFocusModeOnTimerEnd: $i('exitFocusModeOnTimerEnd').checked,
-        darkMode: $i('darkMode').checked
+        darkMode: $i('darkMode').checked,
+        darkModeAmount: $i('darkModeAmount').value
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
@@ -62,6 +66,8 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('enterFocusModeOnTimerStart').checked=defaultSettings.enterFocusModeOnTimerStart;
     $i('exitFocusModeOnTimerEnd').checked=defaultSettings.exitFocusModeOnTimerEnd;
     $i('darkMode').checked=defaultSettings.darkMode;
+    $i('darkModeAmount').value=defaultSettings.darkModeAmount;
+    $i('darkModeAmountValue').innerText=defaultSettings.darkModeAmount;
 });
 
 
@@ -74,6 +80,10 @@ $i('showPageSeparators').addEventListener('click', saveSettings);
 $i('enterFocusModeOnTimerStart').addEventListener('click', saveSettings);
 $i('exitFocusModeOnTimerEnd').addEventListener('click', saveSettings);
 $i('darkMode').addEventListener('click', saveSettings);
+$i('darkModeAmount').addEventListener('change', ()=>{
+    $i('darkModeAmountValue').innerText=$i('darkModeAmount').value; //display the value of the range to the user
+    saveSettings();
+});
 
 // Advanced Options Toggle
 const advancedOptionsBtn=$i('advancedOptionsBtn');
