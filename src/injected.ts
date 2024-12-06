@@ -82,7 +82,31 @@ type settingsT={
             focusEl.innerHTML=`${''/* copied from developing/pomodoro/index.html */}
                 POMODORO_HTML_INSERTED_HERE_BY_BUILD_SH
             `;
-            $('.kix-appview-editor-container')!.appendChild(focusEl);
+            function addItem() { //returns whether or not succeeded in adding
+                const el=$('.kix-appview-editor-container');
+                if (el) {
+                    el.appendChild(focusEl);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            if (!addItem()) { //if failed, keep trying
+                console.log('Need to try again to add pomodoro timer');
+                let attempts=1;
+                const maxAttempts=20;
+                const intervalId=setInterval(()=>{
+                    console.log('Need to try again to add pomodoro timer. Attempt', attempts);
+                    attempts++;
+                    if (attempts>maxAttempts)
+                        return clearInterval(intervalId);
+
+                    if (addItem()) { //if succeeded, stop trying
+                        clearInterval(intervalId);
+                        console.warn('Failed to add pomodoro timer');
+                    }
+                }, 100);
+            }
 
             // BEGIN pomodoro.js
             /* POMODORO_JS_INSERTED_HERE_BY_BUILD_SH */
@@ -294,4 +318,22 @@ type settingsT={
     function toggleFocusMode() {
         setFocusStatus(focusStatus==='on' ? 'off' : 'on');
     }
+    
+    // ⌘⇧F to toggle focus mode
+    (document.querySelector('canvas.kix-canvas-tile-content') as HTMLElement).addEventListener('keydown', (e: KeyboardEvent)=>{
+        e.stopPropagation();
+        console.log('keydown', e, (e.ctrlKey || e.metaKey), e.shiftKey, e.key);
+    });
+    // window.addEventListener('keydown', (e: KeyboardEvent)=>{
+    //     // e.stopImmediatePropagation();
+    //     // e.stopPropagation();
+    //     console.log('keydown', e, (e.ctrlKey || e.metaKey), e.shiftKey, e.key);
+    //     if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key==='f') {
+    //         e.preventDefault();
+    //         toggleFocusMode();
+    //     }
+    // }, true);
+    // // }, {
+    // //     capture: true
+    // // });
 })();
