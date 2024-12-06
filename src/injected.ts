@@ -19,21 +19,6 @@ type settingsT={
     const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds*1000));
     const $=(querySelector: string)=>document.querySelector(querySelector) as HTMLElement;
     const $$=(querySelectorAll: string)=>document.querySelectorAll(querySelectorAll) as NodeListOf<HTMLElement>;
-
-    //# Toggle Fullscreen
-    (async ()=>{
-        chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{ //toggle viewer status and send back status ('on' | 'off') for extension to change its icon
-            const settings=message.settings;
-
-            setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle status
-            console.log(`Turning ${focusStatus} Focus`);
-    
-            sendResponse({
-                focusStatus: focusStatus || 'on',
-                version: version || 'unknown'
-            }); //default to on if code is not fully injected yet (loading page)
-        });
-    })();
     
     
     //# Get Settings
@@ -129,7 +114,7 @@ type settingsT={
                 
                 console.log('focusStatus', focusStatus, 'settings.fullScreen', settings.fullScreen);
                 
-                setFocusStatus(focusStatus==='on' ? 'off' : 'on', settings); //toggle focus status
+                toggleFocusMode();
             });
             // set pomodoro size
             ($('#focus__app')!.style as any).zoom=settings.zoom;
@@ -138,7 +123,7 @@ type settingsT={
             $('#focus__start-btn').addEventListener('mouseup', ()=>{
                 // console.log('mouseup on start button', settings.enterFocusModeOnTimerStart, settings);
                 if (settings.enterFocusModeOnTimerStart) {
-                    setFocusStatus('on', settings);
+                    setFocusStatus('on');
                     if (settings.fullScreen)
                         document.body.requestFullscreen();    
                 }
@@ -148,7 +133,7 @@ type settingsT={
 
 
     // # Focus Status Helper
-    function setFocusStatus(newFocusStatus: 'on' | 'off', settings) { //change DOM based on status
+    function setFocusStatus(newFocusStatus: 'on' | 'off') { //change DOM based on status
         // focus__hidden
 
         const hideItemsQuerySelectors=[ //query selectors
@@ -168,19 +153,19 @@ type settingsT={
             '.kix-appview-editor'
         ];
 
-        const hideItem=querySelector=>{
+        const hideItem=(querySelector: string)=>{
             const el=$(querySelector);
             if (el) el.classList.add('focus__hidden');
         };
-        const undoHideItem=querySelector=>{
+        const undoHideItem=(querySelector: string)=>{
             const el=$(querySelector);
             if (el) el.classList.remove('focus__hidden');
         };
-        const makeGray=querySelector=>{
+        const makeGray=(querySelector: string)=>{
             const el=$(querySelector) as HTMLElement;
             if (el) el.classList.add('focus__gray');
         };
-        const undoMakeGray=querySelector=>{
+        const undoMakeGray=(querySelector: string)=>{
             const el=$(querySelector) as HTMLElement;
             if (el) el.classList.remove('focus__gray');
         };
@@ -213,7 +198,7 @@ type settingsT={
                     pageEl.classList.remove('focus__hide_border_top');
             }
         }
-        function doNowAndAfterASecond(fn) {
+        function doNowAndAfterASecond(fn: ()=>void) {
             fn();
             setTimeout(fn, 1000);
         }
@@ -221,7 +206,7 @@ type settingsT={
         focusStatus=newFocusStatus;
         if (focusStatus==='on') { //turning on focus mode
             //* Hide stuff
-            setFullScreenStatus('on', settings)
+            setFullScreenStatus('on')
                 .then(()=>{ //hide `Controls hidden. Press ESC to show controls.` Google Docs message
                     setTimeout(()=>{
                         hideItem('.jfk-butterBar');
@@ -245,14 +230,14 @@ type settingsT={
             undoMakeGrayItems();
             doNowAndAfterASecond(undoFormatCanvases);
 
-            setFullScreenStatus('off', settings)
+            setFullScreenStatus('off')
                 .then(()=>{
                     // Old method: window.location.reload();
                 });
         }
 
-        async function setFullScreenStatus(focusStatus, settings) { //Hide/show header by navigating menu: View > Full screen
-            async function clickElement(element) { //google docs elements are triggered by mousedown and mouseup
+        async function setFullScreenStatus(focusStatus: 'on' | 'off') { //Hide/show header by navigating menu: View > Full screen
+            async function clickElement(element: HTMLElement) { //google docs elements are triggered by mousedown and mouseup
                 element.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
                 await sleep(0.005);
                 element.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
@@ -304,5 +289,9 @@ type settingsT={
             await sleep(1); //give time for changes
             return;
         }
+    }
+
+    function toggleFocusMode() {
+        setFocusStatus(focusStatus==='on' ? 'off' : 'on');
     }
 })();
