@@ -35,12 +35,12 @@
     left: 0; */
     z-index: -1;
 }
-.focus__done-message-container .wrapper {
+.focus__done-message-container .focus__done-message-wrapper {
     position: relative;
     width: 150px;
     height: 116px;
 }
-.focus__done-message-container .dialog-box {
+.focus__done-message-container .focus__done-message-dialog-box {
     position: absolute;
     top: 0;
     left: 0;
@@ -48,7 +48,7 @@
     width: 100%;
     height: 100%;
 }
-.focus__done-message-container .content-wrapper {
+.focus__done-message-container .focus__done-message-content-wrapper {
     position: absolute;
     top: 7px;
     left: 0;

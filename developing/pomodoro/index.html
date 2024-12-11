@@ -133,8 +133,8 @@
 
     <!-- ending message -->
     <div id="focus__done-message" class='focus__done-message-container focus__hidden'>
-        <div class="wrapper">
-            <svg viewBox="0 0 120 75" class='dialog-box'>
+        <div class="focus__done-message-wrapper">
+            <svg viewBox="0 0 120 75" class='focus__done-message-dialog-box'>
                 <polygon points="
                     2 2, 118 2, 118 70,
                     95 70, 85 80, 75 70,
@@ -147,7 +147,7 @@
                     <!-- <text x="12.1" y="42" font-size="13px">Time for a break.</text> -->
                     <!-- <text x="11" y="42" font-size="13px" id='focus__break-button' class='focus__btn'>Take a 5 min break</text> -->
                 </svg>
-            <div class="content-wrapper">
+            <div class="focus__done-message-content-wrapper">
                 <div style='text-align: center; margin-block: 3px;'>Nice job!</div>
                 <button id='focus__start-break-button' class='focus__btn'>Take a 5 min break</button>
                 <button id='focus__skip-break-button' class='focus__btn'>Skip break</button>
@@ -267,7 +267,6 @@
         textEl.innerHTML='';
         // topEl.style.stroke=THEME.GREEN;
         // bottomEl.style.stroke=THEME.GREEN;
-        setStatus('done');
         if (isBreak) {
             setStatus('done-with-break');
             setIsBreak(false);
@@ -465,16 +464,6 @@
             setIsBreak(true);
             setStatus('running');
         });
-        // $i('focus__start-timer-button').addEventListener('mouseup', ()=>{
-        //     runTimer(uMinutesEl.value);
-        //     setIsBreak(false);
-        //     setStatus('running');
-        // });
-        // pomodoroEl.classList.remove('focus__break-mode');
-
-        // ['mouseleave', 'mouseup'].forEach(l=>$i('focus__done-message').addEventListener(l, ()=>{
-        //     $i_hide('focus__done-message');
-        // }));
 
         
         //# Hover
@@ -484,14 +473,14 @@
             if (!isEditingTimeLeft && (status==='running' || status==='paused'))
                 $i_show('focus__middle-hover');
             
-            if (status==='start' || status==='done') { //ready to start
+            if (status==='start' || status==='done-with-break') { //ready to start
                 $i_show('focus__start-hover');
             } else if (status==='running') { //in the middle
                 $i_show('focus__running-icon');
             } else if (status==='paused') { //in the middle
                 $i_show('focus__paused-icon');
             } else if (status==='done') { //finished a session
-                
+                $i_show('focus__done-message');
             } else if (status==='done-with-break') {
                 
             } else {
@@ -519,7 +508,7 @@
                 'focus__done-with-break-message',
                 'focus__smiley-face',
                 'focus__more-dropdown-container',
-                'focus__more-dropdown-container-helpers'
+                'focus__more-dropdown-container-helpers',
             ].forEach($i_hide);
             
             // if (status==='done-with-break')

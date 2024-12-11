@@ -109,7 +109,6 @@
         textEl.innerHTML='';
         // topEl.style.stroke=THEME.GREEN;
         // bottomEl.style.stroke=THEME.GREEN;
-        setStatus('done');
         if (isBreak) {
             setStatus('done-with-break');
             setIsBreak(false);
@@ -307,16 +306,6 @@
             setIsBreak(true);
             setStatus('running');
         });
-        // $i('focus__start-timer-button').addEventListener('mouseup', ()=>{
-        //     runTimer(uMinutesEl.value);
-        //     setIsBreak(false);
-        //     setStatus('running');
-        // });
-        // pomodoroEl.classList.remove('focus__break-mode');
-
-        // ['mouseleave', 'mouseup'].forEach(l=>$i('focus__done-message').addEventListener(l, ()=>{
-        //     $i_hide('focus__done-message');
-        // }));
 
         
         //# Hover
@@ -326,14 +315,14 @@
             if (!isEditingTimeLeft && (status==='running' || status==='paused'))
                 $i_show('focus__middle-hover');
             
-            if (status==='start' || status==='done') { //ready to start
+            if (status==='start' || status==='done-with-break') { //ready to start
                 $i_show('focus__start-hover');
             } else if (status==='running') { //in the middle
                 $i_show('focus__running-icon');
             } else if (status==='paused') { //in the middle
                 $i_show('focus__paused-icon');
             } else if (status==='done') { //finished a session
-                
+                $i_show('focus__done-message');
             } else if (status==='done-with-break') {
                 
             } else {
@@ -361,7 +350,7 @@
                 'focus__done-with-break-message',
                 'focus__smiley-face',
                 'focus__more-dropdown-container',
-                'focus__more-dropdown-container-helpers'
+                'focus__more-dropdown-container-helpers',
             ].forEach($i_hide);
             
             // if (status==='done-with-break')
