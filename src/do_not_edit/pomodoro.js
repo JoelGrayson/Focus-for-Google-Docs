@@ -278,14 +278,6 @@
         });
 
         //     selected from more options drop down
-        $i('focus-enter-fullscreen-btn').addEventListener('mouseup', ()=>{
-            document.body.requestFullscreen();
-            setTimeout(updateMoreOptionsDropdownItems, 500);
-        });
-        $i('focus-exit-fullscreen-btn').addEventListener('mouseup', ()=>{
-            document.exitFullscreen();
-            setTimeout(updateMoreOptionsDropdownItems, 500);
-        });
         $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
@@ -384,13 +376,6 @@
         } else {
             $i_show('focus-enter-focus-mode-btn');
             $i_hide('focus-exit-focus-mode-btn');
-        }
-        if (document.fullscreenElement==null) {
-            $i_show('focus-enter-fullscreen-btn');
-            $i_hide('focus-exit-fullscreen-btn');
-        } else {
-            $i_hide('focus-enter-fullscreen-btn');
-            $i_show('focus-exit-fullscreen-btn');
         }
     }
     
