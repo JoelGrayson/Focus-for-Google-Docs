@@ -84,6 +84,12 @@
         </div>
 
         <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%;'>
+            <label for="breaksEnabled">Enable breaks</label>
+            <label class="switch">
+                <input type="checkbox" id='breaksEnabled'>
+                <span class="slider round"></span>
+            </label>
+            
             <label for="breakDuration">Break duration</label>
             <div style='display: flex; align-items: center; gap: 3px; position: relative; right: 60px;'>
                 <input type="number" id='breakDuration' min="1" max="60" value="5" style='width: fit-content'>

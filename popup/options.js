@@ -8,7 +8,8 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     darkMode: false,
     darkModeAmount: 0.92,
     zoom: '1.15', //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
-    breakDuration: 5
+    breakDuration: 5,
+    breaksEnabled: true
 };
 
 const $i=query=>document.getElementById(query);
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('darkModeAmount').value=settings.darkModeAmount;
         $i('darkModeAmountValue').innerText=settings.darkModeAmount;
         $i('breakDuration').value=settings.breakDuration;
+        $i('breaksEnabled').checked=settings.breaksEnabled;
         showDarkModeAmount(settings.darkMode);
     });
 
@@ -57,7 +59,8 @@ function saveSettings() { //update storage with DOM
         exitFocusModeOnTimerEnd: $i('exitFocusModeOnTimerEnd').checked,
         darkMode: $i('darkMode').checked,
         darkModeAmount: $i('darkModeAmount').value,
-        breakDuration: $i('breakDuration').value
+        breakDuration: $i('breakDuration').value,
+        breaksEnabled: $i('breaksEnabled').checked
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
@@ -90,6 +93,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('darkModeAmount').value=defaultSettings.darkModeAmount;
     $i('darkModeAmountValue').innerText=defaultSettings.darkModeAmount;
     $i('breakDuration').value=defaultSettings.breakDuration;
+    $i('breaksEnabled').checked=defaultSettings.breaksEnabled;
 });
 
 
@@ -107,6 +111,7 @@ $i('darkModeAmount').addEventListener('change', ()=>{
     saveSettings();
 });
 $i('breakDuration').addEventListener('change', saveSettings);
+$i('breaksEnabled').addEventListener('click', saveSettings);
 
 // Advanced Options Toggle
 const advancedOptionsBtn=$i('advancedOptionsBtn');

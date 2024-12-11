@@ -37,10 +37,28 @@
     left: 0; */
     z-index: -1;
 }
+
+#focus__done-message {
+    position: absolute;
+    bottom: 68px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#focus__done-message-breaks-disabled {
+    position: absolute;
+    bottom: 68px;
+    right: 20px;
+}
+
 .focus__done-message-container .focus__done-message-wrapper {
     position: relative;
     width: 150px;
     height: 116px;
+}
+#focus__done-message-breaks-disabled .focus__done-message-wrapper {
+    width: 100px;
+    height: 70px;
 }
 .focus__done-message-container .focus__done-message-dialog-box {
     position: absolute;
@@ -197,12 +215,6 @@
     top: 1.2px;
 }
 
-#focus__done-message {
-    position: absolute;
-    bottom: 60px;
-    right: 10px;
-    cursor: pointer;
-}
 
 /* More Options Dropdown */
 .focus__more-dropdown-item {

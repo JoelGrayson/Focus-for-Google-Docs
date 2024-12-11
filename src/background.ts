@@ -18,7 +18,8 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
             darkMode: false,
             darkModeAmount: 0.92,
             zoom: '1.15', //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
-            breakDuration: 5 //in minutes
+            breakDuration: 5, //in minutes
+            breaksEnabled: true
         }
     });
 });

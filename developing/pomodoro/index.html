@@ -152,6 +152,25 @@
             </div>
         </div>
     </div>
+
+    <div id="focus__done-message-breaks-disabled" class='focus__done-message-container focus__hidden'>
+        <div class="focus__done-message-wrapper">
+            <svg viewBox="0 0 100 50" class='focus__done-message-dialog-box'>
+                <polygon
+                    points="
+                        2 2, 98 2,
+                        98 48, 75 48, 65 58, 55 48, 2 48
+                    "
+                    stroke="#ccc"
+                    stroke-width="2px"
+                    fill="#fafafa"
+                />
+            </svg>
+            <div class="focus__done-message-content-wrapper">
+                <div style='text-align: center; margin-block: 10px;'>Nice job!</div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- END Focus HTML -->
 
@@ -265,11 +284,15 @@
         textEl.innerHTML='';
         // topEl.style.stroke=THEME.GREEN;
         // bottomEl.style.stroke=THEME.GREEN;
-        if (isBreak) {
-            setStatus('done-with-break');
-            setIsBreak(false);
+        if (settings.breaksEnabled) {
+            if (isBreak) {
+                setStatus('done-with-break');
+                setIsBreak(false);
+            } else {
+                setStatus('done');
+            }
         } else {
-            setStatus('done');
+            setStatus('done-with-breaks-disabled');
         }
         if (settings.exitFocusModeOnTimerEnd)
             setFocusStatus('off');
@@ -286,7 +309,8 @@
             'focus__smiley-face',
             'focus__finish-editing-time-left',
             'focus__done-message',
-            'focus__done-with-break-message'
+            'focus__done-with-break-message',
+            'focus__done-message-breaks-disabled'
         ].forEach($i_hide);
     }
     
@@ -468,6 +492,14 @@
             setIsBreak(true);
             setStatus('running');
         });
+        $i('focus__done-message-breaks-disabled').addEventListener('mouseenter', ()=>{
+            setStatus('start');
+            $i_show('focus__focus-text');
+            $i_show('focus__start-hover');
+            setTimeout(()=>{
+                $i_show('focus__start-hover');
+            }, 10);
+        });
 
         
         //# Hover
@@ -477,7 +509,7 @@
             if (!isEditingTimeLeft && (status==='running' || status==='paused'))
                 $i_show('focus__middle-hover');
             
-            if (status==='start' || status==='done-with-break') { //ready to start
+            if (status==='start' || status==='done-with-break' || status==='done-with-breaks-disabled') { //ready to start
                 $i_show('focus__start-hover');
             } else if (status==='running') { //in the middle
                 $i_show('focus__running-icon');
@@ -560,6 +592,9 @@
             $i_show('focus__focus-text');
             $i_show('focus__start-hover');
             $i_show('focus__done-with-break-message');
+        } else if (status==='done-with-breaks-disabled') { //finished a session
+            $i_show('focus__smiley-face');
+            $i_show('focus__done-message-breaks-disabled');
         } else {
             throw new Error(`Invalid timer status: ^${status}$`);
         }
