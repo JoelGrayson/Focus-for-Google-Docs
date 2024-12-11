@@ -152,17 +152,23 @@
     function addEventListeners() { // adds event listeners to elements
         //# Mouseup
         // For start
-        $i('focus__start-btn').addEventListener('mouseup', ()=>{
+        $i('focus__start-btn').addEventListener('mouseup', startTimer);
+        function startTimer() {
             setIsBreak(false);
             resetClockStyling();
             runTimer(uMinutesEl.value);
             setStatus('running');
-        });
+        }
         uMinutesEl.addEventListener('input', e=>{
             const inputNumChars=uMinutesEl.value.length || 1; //change width to match input size
             uMinutesEl.style.width=`${inputNumChars+5}ch`;
             document.querySelector('label[for="focus__minutes"]').innerHTML=e.target.value==='1' ? 'minute' : 'minutes'; //minute or minutes reflects u_input
         });
+        uMinutesEl.addEventListener('keypress', e=>{
+            if (e.key==='Enter') //finished because hit enter key
+                startTimer();
+        });
+
         // Option key changes the logo to fullscreen or exit fullscreen button
         const showFullScreenOrNot=showFocusUnfocus=>e=>{
             if (e.altKey)
