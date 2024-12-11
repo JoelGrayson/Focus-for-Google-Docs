@@ -308,7 +308,7 @@
         
         // end (done)
         $i('focus__start-break-button').addEventListener('mouseup', ()=>{
-            runTimer(5);
+            runTimer(settings.breakDuration);
             setIsBreak(true);
             setStatus('running');
         });
@@ -410,6 +410,7 @@
     }
 
     function main() {
+        $i('focus__break-duration').innerText=`${settings.breakDuration} min`;
         addEventListeners();
         $i_hide('focus__more-dropdown-container');
         $i_hide('focus__more-dropdown-container-helpers');

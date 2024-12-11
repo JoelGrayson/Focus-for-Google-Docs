@@ -7,7 +7,8 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     exitFocusModeOnTimerEnd: false,
     darkMode: false,
     darkModeAmount: 0.92,
-    zoom: '1.15' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
+    zoom: '1.15', //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
+    breakDuration: 5
 };
 
 const $i=query=>document.getElementById(query);
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('darkMode').checked=settings.darkMode;
         $i('darkModeAmount').value=settings.darkModeAmount;
         $i('darkModeAmountValue').innerText=settings.darkModeAmount;
+        $i('breakDuration').value=settings.breakDuration;
         showDarkModeAmount(settings.darkMode);
     });
 
@@ -54,7 +56,8 @@ function saveSettings() { //update storage with DOM
         enterFocusModeOnTimerStart: $i('enterFocusModeOnTimerStart').checked,
         exitFocusModeOnTimerEnd: $i('exitFocusModeOnTimerEnd').checked,
         darkMode: $i('darkMode').checked,
-        darkModeAmount: $i('darkModeAmount').value
+        darkModeAmount: $i('darkModeAmount').value,
+        breakDuration: $i('breakDuration').value
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
@@ -86,6 +89,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('darkMode').checked=defaultSettings.darkMode;
     $i('darkModeAmount').value=defaultSettings.darkModeAmount;
     $i('darkModeAmountValue').innerText=defaultSettings.darkModeAmount;
+    $i('breakDuration').value=defaultSettings.breakDuration;
 });
 
 
@@ -102,6 +106,7 @@ $i('darkModeAmount').addEventListener('change', ()=>{
     $i('darkModeAmountValue').innerText=$i('darkModeAmount').value; //display the value of the range to the user
     saveSettings();
 });
+$i('breakDuration').addEventListener('change', saveSettings);
 
 // Advanced Options Toggle
 const advancedOptionsBtn=$i('advancedOptionsBtn');
