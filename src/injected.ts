@@ -318,22 +318,14 @@ type settingsT={
     function toggleFocusMode() {
         setFocusStatus(focusStatus==='on' ? 'off' : 'on');
     }
-    
-    // ⌘⇧F to toggle focus mode
-    (document.querySelector('canvas.kix-canvas-tile-content') as HTMLElement).addEventListener('keydown', (e: KeyboardEvent)=>{
-        e.stopPropagation();
-        console.log('keydown', e, (e.ctrlKey || e.metaKey), e.shiftKey, e.key);
+
+    // Full screen listen to command indicating command shift f was pressed
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{
+        console.log('received message', message);
+        if (message.command==='toggle-focus') {
+            console.log('Toggling focus');
+            toggleFocusMode();
+        }
+        sendResponse({status: 'success'});
     });
-    // window.addEventListener('keydown', (e: KeyboardEvent)=>{
-    //     // e.stopImmediatePropagation();
-    //     // e.stopPropagation();
-    //     console.log('keydown', e, (e.ctrlKey || e.metaKey), e.shiftKey, e.key);
-    //     if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key==='f') {
-    //         e.preventDefault();
-    //         toggleFocusMode();
-    //     }
-    // }, true);
-    // // }, {
-    // //     capture: true
-    // // });
 })();

@@ -27,6 +27,15 @@
             "css": ["dist/pomodoro.css", "dist/focus.css"]
         }
     ],
+    "commands": {
+        "toggle-focus": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+F",
+                "mac": "Command+Shift+F"
+            },
+            "description": "Toggle Focus"
+        }
+    },
     "permissions":[
         "background",
         "storage"
