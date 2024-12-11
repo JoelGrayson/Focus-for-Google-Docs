@@ -15,6 +15,8 @@
         GREEN: '#00943c'
     };
     
+    let isBreak=false;
+    
     //# SVG API
     const $i=query=>document.getElementById(query);
     const $i_show=query=>$i(query).classList.remove('focus__hidden');
@@ -87,9 +89,9 @@
     }
 
     function resetClockStyling() {
-        // Color
-        topEl.style.stroke=THEME.BLUE;
-        bottomEl.style.stroke=THEME.BLUE;
+        // // Color
+        // topEl.style.stroke=THEME.BLUE;
+        // bottomEl.style.stroke=THEME.BLUE;
 
         $i('focus__background-border-top').style.stroke='#5e73ab';
         $i('focus__background-border-bottom').style.stroke='#5e73ab';
@@ -105,9 +107,15 @@
         killClock();
         setCompletePercent(100);
         textEl.innerHTML='';
-        topEl.style.stroke=THEME.GREEN;
-        bottomEl.style.stroke=THEME.GREEN;
+        // topEl.style.stroke=THEME.GREEN;
+        // bottomEl.style.stroke=THEME.GREEN;
         setStatus('done');
+        if (isBreak) {
+            setStatus('done-with-break');
+            setIsBreak(false);
+        } else {
+            setStatus('done');
+        }
         if (settings.exitFocusModeOnTimerEnd)
             setFocusStatus('off');
     }
@@ -121,7 +129,9 @@
             'focus__running-icon',
             'focus__paused-icon',
             'focus__smiley-face',
-            'focus__finish-editing-time-left'
+            'focus__finish-editing-time-left',
+            'focus__done-message',
+            'focus__done-with-break-message'
         ].forEach($i_hide);
     }
     
@@ -132,10 +142,19 @@
             $i_show(text);
     }
     
+    function setIsBreak(newIsBreak) {
+        isBreak=newIsBreak;
+        if (newIsBreak)
+            pomodoroEl.classList.add('focus__break-mode');
+        else
+            pomodoroEl.classList.remove('focus__break-mode');
+    }
+    
     function addEventListeners() { // adds event listeners to elements
         //# Mouseup
         // For start
         $i('focus__start-btn').addEventListener('mouseup', ()=>{
+            setIsBreak(false);
             resetClockStyling();
             runTimer(uMinutesEl.value);
             setStatus('running');
@@ -275,13 +294,29 @@
             setFocusStatus('off');
             setTimeout(updateMoreOptionsDropdownItems, 500);
         });
+        $i('focus__skip-break-button').addEventListener('mouseup', ()=>{
+            setStatus('start');
+            $i_show('focus__start-hover');
+        });
 
 
         
         // end (done)
-        ['mouseleave', 'mouseup'].forEach(l=>$i('focus__done-message').addEventListener(l, ()=>{
-            $i_hide('focus__done-message');
-        }));
+        $i('focus__start-break-button').addEventListener('mouseup', ()=>{
+            runTimer(5);
+            setIsBreak(true);
+            setStatus('running');
+        });
+        // $i('focus__start-timer-button').addEventListener('mouseup', ()=>{
+        //     runTimer(uMinutesEl.value);
+        //     setIsBreak(false);
+        //     setStatus('running');
+        // });
+        // pomodoroEl.classList.remove('focus__break-mode');
+
+        // ['mouseleave', 'mouseup'].forEach(l=>$i('focus__done-message').addEventListener(l, ()=>{
+        //     $i_hide('focus__done-message');
+        // }));
 
         
         //# Hover
@@ -298,7 +333,9 @@
             } else if (status==='paused') { //in the middle
                 $i_show('focus__paused-icon');
             } else if (status==='done') { //finished a session
-
+                
+            } else if (status==='done-with-break') {
+                
             } else {
                 throw new Error(`Invalid timer status: ^${status}$`);
             }
@@ -312,21 +349,24 @@
         });
 
         //# Mouse Leave
-        $i('focus__app').addEventListener('mouseleave', ()=>{
+        $i('focus__app').addEventListener('mouseleave', mouseLeaveHandler);
+
+        function mouseLeaveHandler() {
             setText('focus__focus-text');
             // Hide all hover overlays
             [
                 'focus__start-hover',
                 'focus__middle-hover',
                 'focus__done-message',
+                'focus__done-with-break-message',
                 'focus__smiley-face',
                 'focus__more-dropdown-container',
                 'focus__more-dropdown-container-helpers'
             ].forEach($i_hide);
             
-            if (status==='done')
-                setStatus('start');
-        });
+            // if (status==='done-with-break')
+            //     setStatus('start');
+        }
     }
     
     function updateMoreOptionsDropdownItems() {
@@ -365,6 +405,10 @@
         } else if (status==='done') { //finished a session
             $i_show('focus__smiley-face');
             $i_show('focus__done-message');
+        } else if (status==='done-with-break') { //finished a session
+            $i_show('focus__focus-text');
+            $i_show('focus__start-hover');
+            $i_show('focus__done-with-break-message');
         } else {
             throw new Error(`Invalid timer status: ^${status}$`);
         }

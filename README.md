@@ -3,7 +3,7 @@
   <h1 align="center">Focus for Google Docs</h1>
 </p>
 
-Focus is a Chrome extension that simplifies Google Docs by hiding distracting controls to just show the text. It is good for minimalists or those who get easily distracted. It includes a pomodoro timer to motivate you to write continuously for a period of time (e.g. 15 minutes).
+Focus is a Chrome extension that simplifies Google Docs by hiding distracting controls to just show the text. It is good for minimalists or those who get easily distracted. It includes a pomodoro timer to motivate you to write continuously for a period of time (e.g. 20 minutes).
 
 ## How to Use
 Click the pomodoro timer in the bottom-right of the Google Doc to enter focus or start a pomodoro session.

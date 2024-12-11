@@ -1,13 +1,13 @@
 const defaultSettings={ //copied from background.ts:10 //for restoring default settings
-    fullScreen: false,
+    fullScreen: true,
     printLayout: false,
     pomodoroEnabled: true,
     showPageSeparators: false,
     enterFocusModeOnTimerStart: true,
-    exitFocusModeOnTimerEnd: true,
+    exitFocusModeOnTimerEnd: false,
     darkMode: false,
     darkModeAmount: 0.92,
-    zoom: '1' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
+    zoom: '1.15' //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
 };
 
 const $i=query=>document.getElementById(query);
