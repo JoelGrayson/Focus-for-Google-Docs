@@ -1,5 +1,5 @@
 <p align='center'>
-  <img src='https://raw.githubusercontent.com/JoelGrayson/focus/main/icons/on-48.png?token=GHSAT0AAAAAAB4ZPD5BSXS6YGVNADXFTYVQY5K7R4A' alt='Focus Logo' />
+  <img src='https://joelgrayson.com/software/focus/logo.png' alt='Focus Logo' />
   <h1 align="center">Focus for Google Docs</h1>
 </p>
 

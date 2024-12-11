@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('darkModeAmountValue').innerText=settings.darkModeAmount;
         showDarkModeAmount(settings.darkMode);
     });
+
+    document.getElementById('keyboardShortcutBtn').addEventListener('click', ()=>{
+        chrome.tabs.create({
+            url: 'chrome://extensions/shortcuts'
+        });
+    });
 });
 
 function showDarkModeAmount(bool) {
