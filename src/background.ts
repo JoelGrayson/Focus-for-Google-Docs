@@ -29,9 +29,7 @@ chrome.commands.onCommand.addListener((command)=>{
     chrome.tabs.query({active: true, currentWindow: true}, (tabs)=>{
         console.log('tabs', tabs);
         if (tabs.length>0 && tabs[0].id) { //will work for all pages, not just the docs
-            chrome.tabs.sendMessage(tabs[0].id, {command}, (response)=>{
-                console.log('response', response);
-            });
+            chrome.tabs.sendMessage(tabs[0].id, {command});
         }
     });
 });

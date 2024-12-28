@@ -168,7 +168,7 @@ type settingsT={
             // explorer widget
             '.docs-explore-widget',
 
-            // TOC widget
+            // tabs
             '.left-sidebar-container-content'
         ];
         const makeGrayItemsQuerySelectors=[
@@ -320,12 +320,11 @@ type settingsT={
     }
 
     // Full screen listen to command indicating command shift f was pressed
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse)=>{
+    chrome.runtime.onMessage.addListener((message, sender)=>{
         console.log('received message', message);
         if (message.command==='toggle-focus') {
             console.log('Toggling focus');
             toggleFocusMode();
         }
-        sendResponse({status: 'success'});
     });
 })();
