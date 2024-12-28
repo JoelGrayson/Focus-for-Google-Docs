@@ -9,7 +9,8 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     darkModeAmount: 0.92,
     zoom: '1.15', //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
     breakDuration: 5,
-    breaksEnabled: true
+    breaksEnabled: true,
+    showDocumentTabs: false
 };
 
 const $i=query=>document.getElementById(query);
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('darkModeAmountValue').innerText=settings.darkModeAmount;
         $i('breakDuration').value=settings.breakDuration;
         $i('breaksEnabled').checked=settings.breaksEnabled;
+        $i('showDocumentTabs').checked=settings.showDocumentTabs;
         showDarkModeAmount(settings.darkMode);
     });
 
@@ -60,7 +62,8 @@ function saveSettings() { //update storage with DOM
         darkMode: $i('darkMode').checked,
         darkModeAmount: $i('darkModeAmount').value,
         breakDuration: $i('breakDuration').value,
-        breaksEnabled: $i('breaksEnabled').checked
+        breaksEnabled: $i('breaksEnabled').checked,
+        showDocumentTabs: $i('showDocumentTabs').checked
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
@@ -94,6 +97,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('darkModeAmountValue').innerText=defaultSettings.darkModeAmount;
     $i('breakDuration').value=defaultSettings.breakDuration;
     $i('breaksEnabled').checked=defaultSettings.breaksEnabled;
+    $i('showDocumentTabs').checked=defaultSettings.showDocumentTabs;
 });
 
 
@@ -112,6 +116,7 @@ $i('darkModeAmount').addEventListener('change', ()=>{
 });
 $i('breakDuration').addEventListener('change', saveSettings);
 $i('breaksEnabled').addEventListener('click', saveSettings);
+$i('showDocumentTabs').addEventListener('click', saveSettings);
 
 // Advanced Options Toggle
 const advancedOptionsBtn=$i('advancedOptionsBtn');

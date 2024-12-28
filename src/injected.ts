@@ -10,6 +10,7 @@ type settingsT={
     exitFocusModeOnTimerEnd: boolean;
     darkMode: boolean;
     darkModeAmount: number;
+    showDocumentTabs: boolean;
 };
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
@@ -160,6 +161,8 @@ type settingsT={
     function setFocusStatus(newFocusStatus: 'on' | 'off') { //change DOM based on status
         // focus__hidden
 
+        const documentTabsSelector='.left-sidebar-container-content';
+        
         const hideItemsQuerySelectors=[ //query selectors
             // horizontal ruler
             '#kix-horizontal-ruler-container',
@@ -167,9 +170,6 @@ type settingsT={
             
             // explorer widget
             '.docs-explore-widget',
-
-            // tabs
-            '.left-sidebar-container-content'
         ];
         const makeGrayItemsQuerySelectors=[
             // TOC widget
@@ -193,8 +193,15 @@ type settingsT={
             const el=$(querySelector) as HTMLElement;
             if (el) el.classList.remove('focus__gray');
         };
-        const hideItems=()=>hideItemsQuerySelectors.forEach(hideItem);
-        const undoHideItems=()=>hideItemsQuerySelectors.forEach(undoHideItem);
+        const hideItems=()=>{
+            if (!settings.showDocumentTabs)
+                hideItem(documentTabsSelector);
+            hideItemsQuerySelectors.forEach(hideItem);
+        };
+        const undoHideItems=()=>{
+            undoHideItem(documentTabsSelector);
+            hideItemsQuerySelectors.forEach(undoHideItem);
+        };
         const makeGrayItems=()=>makeGrayItemsQuerySelectors.forEach(makeGray);
         const undoMakeGrayItems=()=>makeGrayItemsQuerySelectors.forEach(undoMakeGray);
         
