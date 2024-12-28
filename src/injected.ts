@@ -124,10 +124,10 @@ type settingsT={
                     return;
                 }
 
-                if (status!=='start') return; //status is defined in pomodoro.js, which is inserted above
-
-                toggleFocusMode();
-                enterOrExitFullScreenIfAppropriate();
+                // Status is defined in pomodoro.js, which is inserted above
+                // Only enter focus mode when status is appropriate
+                if (status==='start' || status==='done-with-break' || status==='done-with-breaks-disabled')
+                    toggleFocusMode();
             });
             // set pomodoro size
             ($('#focus__app')!.style as any).zoom=settings.zoom;
@@ -329,6 +329,7 @@ type settingsT={
 
     function toggleFocusMode() {
         setFocusStatus(focusStatus==='on' ? 'off' : 'on');
+        enterOrExitFullScreenIfAppropriate();
     }
 
     // Full screen listen to command indicating command shift f was pressed
