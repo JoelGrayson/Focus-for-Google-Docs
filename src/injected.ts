@@ -28,7 +28,6 @@ type settingsT={
     );
 
     if (settings.darkMode) {
-        console.log("Enabling dark mode");
         turnOnDarkMode();
     }
 

@@ -80,7 +80,6 @@ function setStatus(msg, color='black') {
     }, 3000);
 }
 
-console.log($i('restoreDefaults'));
 $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button clickedd. update storage and DOM
     chrome.storage.sync.set({settings: defaultSettings}, ()=>{
         setStatus('Settings restored to defaults', 'green');
