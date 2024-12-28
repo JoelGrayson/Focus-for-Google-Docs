@@ -126,37 +126,38 @@ type settingsT={
 
                 if (status!=='start') return; //status is defined in pomodoro.js, which is inserted above
 
-                if (focusStatus==='off' && settings.fullScreen)
-                    document.body.requestFullscreen();
-
-                if (focusStatus==='on' && settings.fullScreen) {
-                    if (document.fullscreenElement) {
-                        setTimeout(()=>document.exitFullscreen(), 100);
-                    } else {
-                        console.log('Failed to exit full screen so defaulting to reloading page');
-                        window.location.reload();
-                    }
-                }
-                
-                console.log('focusStatus', focusStatus, 'settings.fullScreen', settings.fullScreen);
-                
                 toggleFocusMode();
+                enterOrExitFullScreenIfAppropriate();
             });
             // set pomodoro size
             ($('#focus__app')!.style as any).zoom=settings.zoom;
 
 
             $('#focus__start-btn').addEventListener('mouseup', ()=>{
-                // console.log('mouseup on start button', settings.enterFocusModeOnTimerStart, settings);
                 if (settings.enterFocusModeOnTimerStart) {
                     setFocusStatus('on');
-                    if (settings.fullScreen)
-                        document.body.requestFullscreen();    
+                    enterOrExitFullScreenIfAppropriate();
                 }
             });
         })();
     }
 
+
+    function enterOrExitFullScreenIfAppropriate() {
+        if (!settings.fullScreen) return; //only if full screen setting is enabled
+
+        if (focusStatus==='on')
+            document.body.requestFullscreen();
+
+        else if (focusStatus==='off') {
+            if (document.fullscreenElement) {
+                setTimeout(()=>document.exitFullscreen(), 100);
+            } else {
+                console.log('Failed to exit full screen so defaulting to reloading page');
+                window.location.reload();
+            }
+        }
+    }
 
     // # Focus Status Helper
     function setFocusStatus(newFocusStatus: 'on' | 'off') { //change DOM based on status

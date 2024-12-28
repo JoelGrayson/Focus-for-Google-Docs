@@ -293,10 +293,12 @@
         });
         $i('focus-enter-focus-mode-btn').addEventListener('mouseup', ()=>{
             setFocusStatus('on');
+            enterOrExitFullScreenIfAppropriate();
             setTimeout(updateMoreOptionsDropdownItems, 100);
         });
         $i('focus-exit-focus-mode-btn').addEventListener('mouseup', ()=>{
             setFocusStatus('off');
+            enterOrExitFullScreenIfAppropriate();
             setTimeout(updateMoreOptionsDropdownItems, 500);
         });
         $i('focus__skip-break-button').addEventListener('mouseup', ()=>{
