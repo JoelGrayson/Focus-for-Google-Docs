@@ -15,6 +15,8 @@ type settingsT={
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
     let focusStatus: 'on' | 'off'='off'; // 'on' | 'off'
+    let formatCanvasesIntervalId: number=-1;
+
     const version='VERSION_INSERTED_HERE_BY_BUILD_SH';
 
     const sleep=seconds=>new Promise(resolve=>setTimeout(resolve, seconds*1000));
@@ -250,7 +252,8 @@ type settingsT={
             const editor=$('.kix-appview-editor') as HTMLElement;
                 editor.style.height='100vh'; //make app full screen
 
-            doNowAndAfterASecond(formatCanvases);
+            formatCanvases();
+            formatCanvasesIntervalId=setInterval(formatCanvases, 1000);
         }
 
         
@@ -258,6 +261,8 @@ type settingsT={
         if (focusStatus==='off') { //turn off full screen and reload page
             undoHideItems();
             undoMakeGrayItems();
+            clearInterval(formatCanvasesIntervalId);
+            formatCanvasesIntervalId=-1;
             doNowAndAfterASecond(undoFormatCanvases);
 
             setFullScreenStatus('off')
