@@ -117,11 +117,11 @@ $i('breakDuration').addEventListener('change', saveSettings);
 $i('breaksEnabled').addEventListener('click', saveSettings);
 $i('showDocumentTabs').addEventListener('click', saveSettings);
 
-// Advanced Options Toggle
-const advancedOptionsBtn=$i('advancedOptionsBtn');
+// Advanced Settings Toggle
+const advancedSettingsBtn=$i('advancedSettingsBtn');
 const normalSettings=$i('normalSettings');
 const advancedSettings=$i('advancedSettings');
-advancedOptionsBtn.addEventListener('click', ()=>{
+advancedSettingsBtn.addEventListener('click', ()=>{
     normalSettings.style.display='none';
     advancedSettings.style.display='block';
 });
