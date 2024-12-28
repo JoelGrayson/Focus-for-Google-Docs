@@ -143,7 +143,7 @@
     function setText(text) {
         ['focus__focus-text', 'focus__click-to-focus-text', 'focus__click-to-unfocus-text', 'focus__exit-fullscreen-logo', 'focus__fullscreen-logo']
             .forEach($i_hide);
-        if (status==='start' || status==='done')
+        if (status==='start' || status==='done-with-break' || status==='done-with-breaks-disabled' || status==='done')
             $i_show(text);
     }
     
@@ -337,8 +337,6 @@
                 $i_show('focus__paused-icon');
             } else if (status==='done') { //finished a session
                 $i_show('focus__done-message');
-            } else if (status==='done-with-break') {
-                
             } else {
                 throw new Error(`Invalid timer status: ^${status}$`);
             }
@@ -366,9 +364,6 @@
                 'focus__more-dropdown-container',
                 'focus__more-dropdown-container-helpers',
             ].forEach($i_hide);
-            
-            // if (status==='done-with-break')
-            //     setStatus('start');
         }
     }
     
