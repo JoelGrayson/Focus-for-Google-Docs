@@ -31,7 +31,6 @@
     const textEl=$i('focus__time-left-text');
     const editableTextEl=$i('focus__time-left-editable');
     const uMinutesEl=$i('focus__minutes'); //user's input for minutes
-    const checkmarkEl=$i('focus__finish-editing-time-left');
 
     function setCompletePercent(percent /** out of 100 */) {
         const scaledAmount=percent/100*circumference;
@@ -227,8 +226,7 @@
                 $i_hide('focus__finish-editing-time-left');
 
                 if (newMinutesLeft>ogDuration) { //increased time left beyond original
-                    startTime=Date.now(); //start from now
-                    endTime=Date.now()+newValue*60*1000; //user's input minutes ahead of now
+                    runTimer(newValue);
                     pausedStartedAt=-1;
                 } else { //modified time left below original duration. need to shift time over to change amount of time until endTime
                     // Account for paused time
