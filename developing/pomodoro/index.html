@@ -292,8 +292,11 @@
         } else {
             setStatus('done-with-breaks-disabled');
         }
-        if (settings.exitFocusModeOnTimerEnd)
+        if (settings.exitFocusModeOnTimerEnd) {
             setFocusStatus('off');
+            if (settings.fullScreen)
+                enterOrExitFullScreenIfAppropriate();
+        }
     }
 
     function hideAll() { //hides all status-dependent elements
@@ -453,6 +456,12 @@
         $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
             setStatus('start');
+
+            if (settings.exitFocusModeOnTimerEnd) {
+                setFocusStatus('off');
+                if (settings.fullScreen)
+                    enterOrExitFullScreenIfAppropriate();
+            }
         });
 
         $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
