@@ -68,6 +68,8 @@
                 
                 textEl.style.fontSize='30px';
                 textEl.innerHTML='0:'+secondsLeft;
+            } else {
+                textEl.style.fontSize='40px';
             }
 
             setCompletePercent(percentComplete);
@@ -207,7 +209,7 @@
                 // start with current timer value
                 const currValue=textEl.innerHTML;
                 if (currValue.includes(':'))
-                    editableTextEl.value=currValue.split(':')[0]+1; //just minutes
+                    editableTextEl.value=(Number(currValue.split(':')[0])+1).toString(); //just minutes
                 else
                     editableTextEl.value=currValue;
                 
@@ -285,7 +287,10 @@
 
         $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
             killClock();
-            runTimer(uMinutesEl.value);
+            if (isBreak)
+                runTimer(settings.breakDuration);
+            else
+                runTimer(uMinutesEl.value);
             setStatus('running');
         });
         $i('focus-enter-focus-mode-btn').addEventListener('mouseup', ()=>{
