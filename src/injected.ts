@@ -355,7 +355,30 @@ type settingsT={
         }
         if (message.command==='new-settings') {
             const newSettings=message.newSettings;
-            alert('Settings updated. Please refresh the page to see changes.');
+            const newSettingsSoReloadEl=document.createElement('div');
+            newSettingsSoReloadEl.style.position='absolute';
+            newSettingsSoReloadEl.style.top='25px';
+            newSettingsSoReloadEl.style.right='30%';
+            newSettingsSoReloadEl.style.height='60px';
+            newSettingsSoReloadEl.style.backgroundColor='#fff6d8';
+            newSettingsSoReloadEl.style.border='2px solid black';
+            newSettingsSoReloadEl.style.borderRadius='12px';
+            newSettingsSoReloadEl.style.cursor='pointer';
+            newSettingsSoReloadEl.style.display='flex';
+            newSettingsSoReloadEl.style.justifyContent='center';
+            newSettingsSoReloadEl.style.alignItems='center';
+            newSettingsSoReloadEl.style.fontSize='20px';
+            newSettingsSoReloadEl.style.boxShadow='0px 2px 12px -1px';
+            newSettingsSoReloadEl.style.padding='5px 20px';
+            newSettingsSoReloadEl.style.zIndex='99999';
+            
+            let width='400px';
+            newSettingsSoReloadEl.style.width=width;
+            newSettingsSoReloadEl.style.left=`calc(50vw - ${width} / 2)`;
+            newSettingsSoReloadEl.style.textAlign='center';
+            newSettingsSoReloadEl.innerText='Click here to reload the page for new Focus for Google Docs settings to apply';
+            newSettingsSoReloadEl.addEventListener('click', ()=>{window.location.reload()}); //hide el on click
+            document.body.appendChild(newSettingsSoReloadEl);
             console.log('ns', newSettings);
         }
     });
