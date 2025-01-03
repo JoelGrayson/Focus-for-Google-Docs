@@ -53,7 +53,7 @@ function showDarkModeAmount(bool) {
 }
 
 function saveSettings() { //update storage with DOM
-    chrome.storage.sync.set({settings: {
+    const newSettings={
         fullScreen: $i('fullScreen').checked,
         printLayout: $i('printLayout').checked,
         pomodoroEnabled: $i('pomodoroEnabled').checked,
@@ -67,10 +67,19 @@ function saveSettings() { //update storage with DOM
         breaksEnabled: $i('breaksEnabled').checked,
         showDocumentTabs: $i('showDocumentTabs').checked,
         brightness: getBrightness()
-    }}, ()=>{
+    };
+    chrome.storage.sync.set({settings: newSettings}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
     showDarkModeAmount($i('darkMode').checked);
+
+    // Tell tab the new settings
+    chrome.tabs.query({active: true, currentWindow: true}, tabs=>{
+        chrome.tabs.sendMessage(tabs[0].id, {
+            command: 'new-settings', //shows reload page because new settings
+            newSettings
+        });
+    });
 }
 
 function setStatus(msg, color='black') {

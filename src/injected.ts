@@ -353,5 +353,10 @@ type settingsT={
             console.log('Toggling focus');
             toggleFocusMode();
         }
+        if (message.command==='new-settings') {
+            const newSettings=message.newSettings;
+            alert('Settings updated. Please refresh the page to see changes.');
+            console.log('ns', newSettings);
+        }
     });
 })();
