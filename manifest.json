@@ -4,7 +4,7 @@
     "description": "Focus for Google Docs helps you enter the writing flow by decluttering Google Docs and adding a pomodoro timer.",
     "author": "Joel Grayson",
 
-    "version": "1.5",
+    "version": "1.6",
     "manifest_version": 3,
     "minimum_chrome_version": "102",
 
@@ -38,7 +38,8 @@
     },
     "permissions":[
         "background",
-        "storage"
+        "storage",
+        "tabs"
     ],
     
     "background": {

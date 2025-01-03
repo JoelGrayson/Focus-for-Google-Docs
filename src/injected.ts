@@ -376,7 +376,7 @@ type settingsT={
             newSettingsSoReloadEl.style.width=width;
             newSettingsSoReloadEl.style.left=`calc(50vw - ${width} / 2)`;
             newSettingsSoReloadEl.style.textAlign='center';
-            newSettingsSoReloadEl.innerText='Click here to reload the page for new Focus for Google Docs settings to apply';
+            newSettingsSoReloadEl.innerHTML=`Click here to reload the page for new<br>Focus for Google Docs settings to apply`;
             newSettingsSoReloadEl.addEventListener('click', ()=>{window.location.reload()}); //hide el on click
             document.body.appendChild(newSettingsSoReloadEl);
             console.log('ns', newSettings);

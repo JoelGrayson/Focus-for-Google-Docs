@@ -74,10 +74,12 @@ function saveSettings() { //update storage with DOM
     showDarkModeAmount($i('darkMode').checked);
 
     // Tell tab the new settings
-    chrome.tabs.query({active: true, currentWindow: true}, tabs=>{
-        chrome.tabs.sendMessage(tabs[0].id, {
-            command: 'new-settings', //shows reload page because new settings
-            newSettings
+    chrome.tabs.query({ url: 'https://docs.google.com/document/*' }, tabs=>{
+        tabs.forEach(tab=>{
+            chrome.tabs.sendMessage(tab.id, {
+                command: 'new-settings', //shows reload page because new settings
+                newSettings
+            });
         });
     });
 }
