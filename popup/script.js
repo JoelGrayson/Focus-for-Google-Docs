@@ -10,7 +10,8 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     zoom: '1.15', //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
     breakDuration: 5,
     breaksEnabled: true,
-    showDocumentTabs: false
+    showDocumentTabs: false,
+    brightness: '1'
 };
 
 const $i=query=>document.getElementById(query);
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ //fills in storage options
         $i('breaksEnabled').checked=settings.breaksEnabled;
         $i('showDocumentTabs').checked=settings.showDocumentTabs;
         showDarkModeAmount(settings.darkMode);
+        setBrightness(settings.brightness);
     });
 
     document.getElementById('keyboardShortcutBtn').addEventListener('click', ()=>{
@@ -63,7 +65,8 @@ function saveSettings() { //update storage with DOM
         darkModeAmount: $i('darkModeAmount').value,
         breakDuration: $i('breakDuration').value,
         breaksEnabled: $i('breaksEnabled').checked,
-        showDocumentTabs: $i('showDocumentTabs').checked
+        showDocumentTabs: $i('showDocumentTabs').checked,
+        brightness: getBrightness()
     }}, ()=>{
         setStatus('Settings saved. Reload page to see changes.', 'green');
     });
@@ -97,6 +100,7 @@ $i('restoreDefaults').addEventListener('click', ()=>{ //restore defaults button 
     $i('breakDuration').value=defaultSettings.breakDuration;
     $i('breaksEnabled').checked=defaultSettings.breaksEnabled;
     $i('showDocumentTabs').checked=defaultSettings.showDocumentTabs;
+    setBrightness(defaultSettings.brightness);
 });
 
 
@@ -116,6 +120,61 @@ $i('darkModeAmount').addEventListener('change', ()=>{
 $i('breakDuration').addEventListener('change', saveSettings);
 $i('breaksEnabled').addEventListener('click', saveSettings);
 $i('showDocumentTabs').addEventListener('click', saveSettings);
+$i('brightness-option-1').addEventListener('click', ()=>{
+    setBrightness('1');
+    saveSettings();
+});
+$i('brightness-option-9').addEventListener('click', ()=>{
+    setBrightness('0.9');
+    saveSettings();
+});
+$i('brightness-option-8').addEventListener('click', ()=>{
+    setBrightness('0.8');
+    saveSettings();
+});
+$i('brightness-option-7').addEventListener('click', ()=>{
+    setBrightness('0.7');
+    saveSettings();
+});
+
+
+// Brightness
+function getBrightness() {
+    if ($i('brightness-option-1').classList.contains('selected')) return '1';
+    if ($i('brightness-option-9').classList.contains('selected')) return '0.9';
+    if ($i('brightness-option-8').classList.contains('selected')) return '0.8';
+    if ($i('brightness-option-7').classList.contains('selected')) return '0.7';
+    console.log('Unknown brightness option');
+    return '1';
+}
+
+/**
+ * @param {'1' | '0.9' | '0.8' | '0.7'} option
+ */
+function setBrightness(brightness) {
+    $i('brightness-option-1').classList.remove('selected');
+    $i('brightness-option-9').classList.remove('selected');
+    $i('brightness-option-8').classList.remove('selected');
+    $i('brightness-option-7').classList.remove('selected');
+    
+    switch (brightness) {
+        case '1':
+            $i('brightness-option-1').classList.add('selected');
+            break;
+        case '0.9':
+            $i('brightness-option-9').classList.add('selected');
+            break;
+        case '0.8':
+            $i('brightness-option-8').classList.add('selected');
+            break;
+        case '0.7':
+            $i('brightness-option-7').classList.add('selected');
+            break;
+        default:
+            console.log('Unknown brightness option', brightness);
+    }
+}
+
 
 // Advanced Settings Toggle
 const advancedSettingsBtn=$i('advancedSettingsBtn');

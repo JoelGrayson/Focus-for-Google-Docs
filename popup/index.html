@@ -10,7 +10,7 @@
     <div class="j_container" style="min-width: 350px;" id='normalSettings'>
         <h1 style='text-align: center'>Focus for Google Docs</h1>
     
-        <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%;'>
+        <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%; align-items: center;'>
             <label for="pomodoroEnabled">Enable Pomodoro</label>
             <!-- <div><input type="checkbox" id="pomodoroEnabled" /></div> -->
             <label class="switch">
@@ -19,7 +19,7 @@
             </label>
         </div>
 
-        <div style='display: grid; grid-template-columns: 1fr 80px; gap: 10px; width: 95%; margin-block: 10px'>
+        <div style='display: grid; grid-template-columns: 1fr 80px; gap: 10px; width: 95%; margin-block: 10px; align-items: center;'>
             <label for="zoom">&emsp; ↳ Pomodoro timer size</label>
             <div>
                 <select id="zoom">
@@ -32,14 +32,46 @@
             </div>
         </div>
         
-        <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%;'>
+        <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%; align-items: center;'>
             <label for="fullScreen">Enters full screen when focusing</label>
             <!-- <div><input type="checkbox" id="fullScreen"/></div> -->
             <label class="switch">
                 <input type="checkbox" id='fullScreen'>
                 <span class="slider round"></span>
             </label>
+        </div>
 
+        <div style='display: grid; grid-template-columns: 1fr 130px; gap: 10px; width: 95%; margin-block: 10px; align-items: center'>
+            <!-- Brightness (make gray) -->
+            <label for="zoom">Background color</label>
+            <style>
+                .brightness-options {
+                    display: flex;
+                    gap: 1px;
+                    width: 140px;
+                }
+                .brightness-options>div {
+                    width: 30px;
+                    height: 25px;
+                    cursor: pointer;
+                    border: 1px solid black;
+                    background: #fff;
+                    margin: 4px;
+                }
+                .brightness-options>.selected {
+                    border: 4px solid #000;
+                    margin: 0;
+                }
+            </style>
+            <div class='brightness-options'>
+                <div style='filter: brightness(1)'   id='brightness-option-1'></div>
+                <div style='filter: brightness(0.9)' id='brightness-option-9'></div>
+                <div style='filter: brightness(0.8)' id='brightness-option-8'></div>
+                <div style='filter: brightness(0.7)' id='brightness-option-7'></div>
+            </div>
+        </div>
+        
+        <div style='display: grid; grid-template-columns: 1fr 20px; gap: 10px; width: 95%; align-items: center;'>
             <label for="darkMode">Dark Mode</label>
             <!-- <div><input type="checkbox" id="darkMode"/></div> -->
             <label class="switch">

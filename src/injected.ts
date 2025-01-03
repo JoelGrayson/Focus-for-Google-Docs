@@ -11,6 +11,7 @@ type settingsT={
     darkMode: boolean;
     darkModeAmount: number;
     showDocumentTabs: boolean;
+    brightness: '1.0' | '0.9' | '0.8' | '0.7';
 };
 
 (async ()=>{ //IIFE to not pollute global namespace with variables
@@ -28,6 +29,8 @@ type settingsT={
     const settings: settingsT=await new Promise((resolve, reject)=>
         chrome.storage.sync.get('settings', ({settings})=>resolve(settings))
     );
+
+    console.log('Focus for Google Docs settings', settings);
 
     if (settings.darkMode) {
         turnOnDarkMode();
@@ -190,10 +193,21 @@ type settingsT={
         const makeGray=(querySelector: string)=>{
             const el=$(querySelector) as HTMLElement;
             if (el) el.classList.add('focus__gray');
+
+            if (settings.brightness==='0.9')
+                el.classList.add('focus__gray_9');
+            else if (settings.brightness==='0.8')
+                el.classList.add('focus__gray_8');
+            else if (settings.brightness==='0.7')
+                el.classList.add('focus__gray_7');
         };
         const undoMakeGray=(querySelector: string)=>{
             const el=$(querySelector) as HTMLElement;
             if (el) el.classList.remove('focus__gray');
+
+            el.classList.remove('focus__gray_9');
+            el.classList.remove('focus__gray_8');
+            el.classList.remove('focus__gray_7');
         };
         const hideItems=()=>{
             if (!settings.showDocumentTabs)

@@ -20,7 +20,8 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
                 zoom: '1.15', //'0.85' - small, '1' - normal, '1.15' - large, '1.3' - extra large
                 breakDuration: 5, //in minutes
                 breaksEnabled: true,
-                showDocumentTabs: false
+                showDocumentTabs: false,
+                brightness: '1',
             };
 
             for (const key in defaultSettings) //set 
