@@ -36,22 +36,29 @@ type settingsT={
         turnOnDarkMode();
     }
 
-    function turnOnDarkMode() {
-        document.body.style.filter+=`invert(${settings.darkModeAmount})`;
-        
+    function tryNTimes(n: number, fn: ()=>boolean, delay: number=100) {
         let attempts=0;
-        const maxAttempts=20;
+        const maxAttempts=n;
         const id=setInterval(()=>{
             attempts++;
             if (attempts>maxAttempts) return clearInterval(id);
 
+            if (fn()) {
+                clearInterval(id);
+            }
+        }, delay);
+    }
+    
+    function turnOnDarkMode() {
+        document.body.style.filter+=`invert(${settings.darkModeAmount})`;
+        
+        tryNTimes(20, ()=>{
             const el=document.getElementById('focus__app');
-            if (!el) return;
+            if (!el) return false;
 
             el.classList.add('focus__dark-mode');
-
-            clearInterval(id); //finished
-        }, 100);
+            return true;
+        });
     }
 
 
@@ -254,14 +261,20 @@ type settingsT={
         if (focusStatus==='on') { //turning on focus mode
             //* Hide stuff
             setFullScreenStatus('on')
-                .then(()=>{ //hide `Controls hidden. Press ESC to show controls.` Google Docs message
-                    setTimeout(()=>{
-                        hideItem('.jfk-butterBar');
-                    }, 300);
-                });
             
             hideItems();
             makeGrayItems();
+
+            //hide `Controls hidden. Press ESC to show controls.` Google Docs message
+            console.log('hi');
+            tryNTimes(60, ()=>{
+                console.log('trying')
+                const butterBarEl=$('.jfk-butterBar') as HTMLElement;
+                if (!butterBarEl) return false;
+                if (butterBarEl.innerText.startsWith('Controls hidden'))
+                    butterBarEl.classList.add('focus__hidden');
+                return true;
+            }, 50);
             
             //* Editor
             const editor=$('.kix-appview-editor') as HTMLElement;
