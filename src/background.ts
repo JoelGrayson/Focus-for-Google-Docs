@@ -7,9 +7,7 @@ const VERSION='VERSION_INSERTED_HERE_BY_BUILD_SH';
 
 chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default settings
     chrome.storage.sync.get('settings')
-        .then(obj=>{
-            let settings=obj.settings;
-
+        .then(({ settings })=>{
             const defaultSettings={
                 fullScreen: true,
                 printLayout: false,
@@ -31,8 +29,6 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
                     if (settings[key]===undefined)
                         settings[key]=defaultSettings[key];
                 
-                settings['brightness']='0.9'; //force to 0.9 in this update
-                    
                 chrome.storage.sync.set({
                     version: VERSION, //for debugging and backwards compatibility perhaps in the future
                     settings
