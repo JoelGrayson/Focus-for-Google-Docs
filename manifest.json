@@ -37,12 +37,18 @@
         }
     },
     "permissions":[
-        "background",
         "storage",
         "tabs"
     ],
     
     "background": {
-      "service_worker": "dist/background.js"
+      "scripts": ["dist/background.js"]
+    },
+
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "focusforgoogledocs@joelgrayson.com",
+            "strict_min_version": "102"
+        }
     }
 }

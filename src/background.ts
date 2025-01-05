@@ -1,3 +1,4 @@
+/// <reference types="firefox-webext-browser"/>
 /// <reference types="chrome"/>
 
 type tabStatusT='on' | 'off';
@@ -44,10 +45,11 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
         });
 });
 
-chrome.commands.onCommand.addListener((command)=>{
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs)=>{
+browser.commands.onCommand.addListener((command)=>{
+    browser.tabs.query({active: true, currentWindow: true}).then((tabs)=>{
         if (tabs.length>0 && tabs[0].id) { //will work for all pages, not just the docs
-            chrome.tabs.sendMessage(tabs[0].id, {command});
+            browser.tabs.sendMessage(tabs[0].id, {command});
+            browser.tabs.sendMessage(tabs[0].id, {command});
         }
     });
 });
