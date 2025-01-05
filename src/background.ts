@@ -23,7 +23,7 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
                 breakDuration: 5, //in minutes
                 breaksEnabled: true,
                 showDocumentTabs: false,
-                brightness: '1',
+                brightness: '0.9',
             };
 
             if (settings) { //update settings with keys it doesn't have
@@ -31,6 +31,8 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
                     if (settings[key]===undefined)
                         settings[key]=defaultSettings[key];
                 
+                settings['brightness']='0.9'; //force to 0.9 in this update
+                    
                 chrome.storage.sync.set({
                     version: VERSION, //for debugging and backwards compatibility perhaps in the future
                     settings
