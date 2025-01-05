@@ -7,7 +7,9 @@ const VERSION='VERSION_INSERTED_HERE_BY_BUILD_SH';
 
 chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default settings
     chrome.storage.sync.get('settings')
-        .then(({ settings })=>{
+        .then(obj=>{
+            let settings=obj.settings;
+
             const defaultSettings={
                 fullScreen: true,
                 printLayout: false,
@@ -24,14 +26,21 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
                 brightness: '1',
             };
 
-            for (const key in defaultSettings) //set 
-                if (settings[key]===undefined)
-                    settings[key]=defaultSettings[key];
-
-            chrome.storage.sync.set({
-                version: VERSION, //for debugging and backwards compatibility perhaps in the future
-                settings
-            });
+            if (settings) { //update settings with keys it doesn't have
+                for (const key in defaultSettings) //set 
+                    if (settings[key]===undefined)
+                        settings[key]=defaultSettings[key];
+                
+                chrome.storage.sync.set({
+                    version: VERSION, //for debugging and backwards compatibility perhaps in the future
+                    settings
+                });
+            } else {
+                chrome.storage.sync.set({
+                    version: VERSION,
+                    settings: defaultSettings
+                });
+            }            
         });
 });
 
