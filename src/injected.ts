@@ -182,6 +182,9 @@ type settingsT={
             
             // explorer widget
             '.docs-explore-widget',
+
+            // Show tabs & outlines button. Looks like (...)
+            '.miniChapterSwitcherCore'
         ];
         const makeGrayItemsQuerySelectors=[
             // TOC widget
@@ -266,9 +269,7 @@ type settingsT={
             makeGrayItems();
 
             //hide `Controls hidden. Press ESC to show controls.` Google Docs message
-            console.log('hi');
             tryNTimes(60, ()=>{
-                console.log('trying')
                 const butterBarEl=$('.jfk-butterBar') as HTMLElement;
                 if (!butterBarEl) return false;
                 if (butterBarEl.innerText.startsWith('Controls hidden'))
