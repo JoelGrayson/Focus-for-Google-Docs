@@ -140,6 +140,7 @@
     position: absolute;
     bottom: 65px;
     right: 30px;
+    padding-left: 25px; /* prevent from exiting when hovering to the left */
 }
 #focus__start-btn {
     filter: brightness(0.98); /* slightly darker bg */
@@ -278,7 +279,7 @@
 }
 
 /* Dark Mode Extra Elements */
-.focus__dark-mode #enter-focus-mode-svg-icon {
+.focus__dark-mode #focus__enter-focus-mode-svg-icon {
     filter: invert(1);
 }
 .focus__dark-mode #focus__smiley-face {

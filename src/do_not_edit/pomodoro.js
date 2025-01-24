@@ -159,9 +159,9 @@
     }
     
     function addEventListeners() { // adds event listeners to elements
-        //# Mouseup
+        //# Click
         // For start
-        $i('focus__start-btn').addEventListener('mouseup', startTimer);
+        $i('focus__start-btn').addEventListener('click', startTimer);
         function startTimer() {
             setIsBreak(false);
             resetClockStyling();
@@ -248,7 +248,7 @@
             }
         }
         
-        textEl.addEventListener('mouseup',e=>{
+        textEl.addEventListener('click',e=>{
             if (e.altKey) { //don't edit time left if alt key is pressed. Instead, toggle fullscreen
                 // Toggle fullscreen
                 if (document.fullscreenElement==null) //if not full screen
@@ -268,7 +268,7 @@
         });
 
         //     running
-        $i('focus__middle-hover-status').addEventListener('mouseup', ()=>{
+        $i('focus__middle-hover-status').addEventListener('click', ()=>{
             if (status==='running')
                 setStatus('paused');
             else if (status==='paused') {
@@ -281,7 +281,7 @@
         });
 
         //     selected from more options drop down
-        $i('focus-stop-timer-btn').addEventListener('mouseup', ()=>{
+        $i('focus__stop-timer-btn').addEventListener('click', ()=>{
             killClock();
             setStatus('start');
 
@@ -292,7 +292,7 @@
             }
         });
 
-        $i('focus-restart-timer-btn').addEventListener('mouseup', ()=>{
+        $i('focus__restart-timer-btn').addEventListener('click', ()=>{
             killClock();
             if (isBreak)
                 runTimer(settings.breakDuration);
@@ -300,17 +300,17 @@
                 runTimer(uMinutesEl.value);
             setStatus('running');
         });
-        $i('focus-enter-focus-mode-btn').addEventListener('mouseup', ()=>{
+        $i('focus__enter-focus-mode-btn').addEventListener('click', ()=>{
             setFocusStatus('on');
             enterOrExitFullScreenIfAppropriate();
             setTimeout(updateMoreOptionsDropdownItems, 100);
         });
-        $i('focus-exit-focus-mode-btn').addEventListener('mouseup', ()=>{
+        $i('focus__exit-focus-mode-btn').addEventListener('click', ()=>{
             setFocusStatus('off');
             enterOrExitFullScreenIfAppropriate();
             setTimeout(updateMoreOptionsDropdownItems, 500);
         });
-        $i('focus__skip-break-button').addEventListener('mouseup', ()=>{
+        $i('focus__skip-break-button').addEventListener('click', ()=>{
             setStatus('start');
             $i_show('focus__start-hover');
         });
@@ -318,7 +318,7 @@
 
         
         // end (done)
-        $i('focus__start-break-button').addEventListener('mouseup', ()=>{
+        $i('focus__start-break-button').addEventListener('click', ()=>{
             runTimer(settings.breakDuration);
             setIsBreak(true);
             setStatus('running');
@@ -380,11 +380,11 @@
     
     function updateMoreOptionsDropdownItems() {
         if (focusStatus==='on') {
-            $i_hide('focus-enter-focus-mode-btn');
-            $i_show('focus-exit-focus-mode-btn');
+            $i_hide('focus__enter-focus-mode-btn');
+            $i_show('focus__exit-focus-mode-btn');
         } else {
-            $i_show('focus-enter-focus-mode-btn');
-            $i_hide('focus-exit-focus-mode-btn');
+            $i_show('focus__enter-focus-mode-btn');
+            $i_hide('focus__exit-focus-mode-btn');
         }
     }
     

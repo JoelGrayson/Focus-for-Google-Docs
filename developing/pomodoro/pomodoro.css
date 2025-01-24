@@ -138,6 +138,7 @@
     position: absolute;
     bottom: 65px;
     right: 30px;
+    padding-left: 25px; /* prevent from exiting when hovering to the left */
 }
 #focus__start-btn {
     filter: brightness(0.98); /* slightly darker bg */

@@ -136,7 +136,7 @@ type settingsT={
 
                 // Status is defined in pomodoro.js, which is inserted above
                 // Only enter focus mode when status is appropriate
-                if (status==='start' || status==='done-with-break' || status==='done-with-breaks-disabled')
+                if (status==='start' || status==='done-with-break' || status==='done-with-breaks-disabled' || status==='done')
                     toggleFocusMode();
             });
             // set pomodoro size

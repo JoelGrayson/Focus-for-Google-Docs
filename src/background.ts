@@ -43,7 +43,7 @@ chrome.runtime.onInstalled.addListener(()=>{ //installed, so set default setting
 });
 
 chrome.commands.onCommand.addListener((command)=>{
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs)=>{
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs)=>{
         if (tabs.length>0 && tabs[0].id) { //will work for all pages, not just the docs
             chrome.tabs.sendMessage(tabs[0].id, {command});
         }
