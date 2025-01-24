@@ -276,7 +276,7 @@
 }
 
 /* Dark Mode Extra Elements */
-.focus__dark-mode #enter-focus-mode-svg-icon {
+.focus__dark-mode #focus__enter-focus-mode-svg-icon {
     filter: invert(1);
 }
 .focus__dark-mode #focus__smiley-face {

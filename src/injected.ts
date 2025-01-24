@@ -143,7 +143,7 @@ type settingsT={
             ($('#focus__app')!.style as any).zoom=settings.zoom;
 
 
-            $('#focus__start-btn').addEventListener('mouseup', ()=>{
+            $('#focus__start-btn').addEventListener('click', ()=>{
                 if (settings.enterFocusModeOnTimerStart) {
                     setFocusStatus('on');
                     enterOrExitFullScreenIfAppropriate();
