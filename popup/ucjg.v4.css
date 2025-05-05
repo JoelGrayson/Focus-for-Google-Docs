@@ -1,3 +1,4 @@
+/* Root variables definition */
 :root {
     --primary: #ebc336;
     --secondary: #e9bd30;
@@ -16,6 +17,7 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+/* Dark mode color scheme overrides */
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #0f172a;
@@ -26,6 +28,7 @@
     }
 }
 
+/* Global reset and box model */
 * {
     margin: 0;
     padding: 0;
@@ -33,6 +36,7 @@
     font-family: 'Inter', system-ui, sans-serif;
 }
 
+/* Base body styles */
 body {
     background: var(--background);
     color: var(--text);
@@ -40,6 +44,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Main container styling */
 .j_container {
     background: var(--surface);
     border-radius: var(--radius);
@@ -49,21 +54,25 @@ body {
     border: 1px solid var(--border);
 }
 
+/* Heading styles */
 h1, h2 {
     color: var(--text);
     margin-bottom: 1.5rem;
 }
 
+/* Primary heading */
 h1 {
     font-size: 1.5rem;
     font-weight: 600;
 }
 
+/* Label text styling */
 label {
     font-size: 0.9rem;
     color: var(--text);
 }
 
+/* Custom select dropdown */
 select {
     appearance: none;
     padding: 0.5rem 1.5rem 0.5rem 0.75rem;
@@ -78,6 +87,7 @@ select {
     background-size: 1em;
 }
 
+/* Primary button styling */
 button {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
@@ -94,6 +104,7 @@ button:hover {
     box-shadow: var(--shadow-md);
 }
 
+/* Switch component container */
 .switch {
     position: relative;
     display: inline-block;
@@ -101,12 +112,14 @@ button:hover {
     height: 22px;
 }
 
+/* Hide default checkbox */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
+/* Switch track styling */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -119,6 +132,7 @@ button:hover {
     border-radius: 34px;
 }
 
+/* Switch thumb (slider) */
 .slider:before {
     position: absolute;
     content: "";
@@ -131,24 +145,29 @@ button:hover {
     border-radius: 50%;
 }
 
+/* Active switch track */
 input:checked + .slider {
     background-color: var(--primary);
 }
 
+/* Active thumb position */
 input:checked + .slider:before {
     transform: translateX(18px);
 }
 
+/* Brightness option items */
 .brightness-options > div {
     border-radius: 4px;
     transition: var(--transition);
 }
 
+/* Selected brightness option */
 .brightness-options > div.selected {
     border: 2px solid var(--primary) !important;
     transform: scale(1.1);
 }
 
+/* Status message text */
 .status-text {
     color: var(--text-secondary);
     font-size: 0.8rem;
@@ -156,6 +175,7 @@ input:checked + .slider:before {
     text-align: center;
 }
 
+/* Minimal style button */
 .unstyled.button {
     background: none;
     color: var(--primary);
@@ -168,6 +188,7 @@ input:checked + .slider:before {
     text-decoration: underline;
 }
 
+/* Custom range input */
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
@@ -190,6 +211,7 @@ input[type="range"]::-webkit-slider-runnable-track {
     border-radius: 2px;
 }
 
+/* Dark mode percentage display */
 #darkModeAmountValue {
     font-size: 0.85rem;
     color: var(--text-secondary);
@@ -197,12 +219,14 @@ input[type="range"]::-webkit-slider-runnable-track {
     text-align: right;
 }
 
+/* Link styling */
 a {
     color: var(--primary);
     text-decoration: none;
     transition: var(--transition);
 }
 
+/* Link hover effect */
 a:hover {
     color: var(--secondary);
     text-decoration: underline;
