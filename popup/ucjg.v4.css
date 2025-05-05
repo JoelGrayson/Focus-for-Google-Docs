@@ -231,3 +231,65 @@ a:hover {
     color: var(--secondary);
     text-decoration: underline;
 }
+
+/* Container Alignment Fix */
+label[for="breakDuration"] + div {
+    right: 0 !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Focus State (Match Switch) */
+  #breakDuration:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--secondary);
+  }
+
+  #zoom:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--secondary);
+  }
+  
+  /* Remove Number Spinners */
+  #breakDuration::-webkit-inner-spin-button,
+  #breakDuration::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Mins Label Adjustment */
+  label[for="breakDuration"] + div span {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  
+/* Style the select container */
+select#zoom {
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  
+  /* Custom dropdown options - WebKit browsers */
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    select#zoom option {
+      -webkit-appearance: none;
+      background: var(--background);
+      color: var(--text);
+      padding: 8px;
+      transition: var(--transition);
+    }
+  
+    select#zoom option:hover,
+    select#zoom option:focus {
+      background: var(--primary) !important;
+      color: var(--background) !important;
+      -webkit-text-stroke: 0.45px var(--primary);
+    }
+  }
+  
+  /* Focus state */
+  select#zoom:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
