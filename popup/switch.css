@@ -1,59 +1,103 @@
-/* The switch - the box around the slider */
+/* ========== Switch Component (Enhanced) ========== */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    zoom: 0.58;
-  }
+  --switch-width: 44px;
+  --switch-height: 24px;
+  --slider-size: calc(var(--switch-height) - 4px);
+  --slider-offset: 2px;
   
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-  }
-  
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--switch-width);
+  height: var(--switch-height);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+/* Input element containment */
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: inherit;
+}
+
+/* Slider track */
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: var(--border);
+  transition: var(--transition);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm) inset;
+}
+
+/* Slider thumb */
+.slider:before {
+  content: "";
+  position: absolute;
+  height: var(--slider-size);
+  width: var(--slider-size);
+  left: var(--slider-offset);
+  bottom: var(--slider-offset);
+  background-color: var(--background);
+  border-radius: inherit;
+  transition: var(--transition);
+  will-change: transform;
+  box-shadow: var(--shadow-md);
+}
+
+/* Checked states */
+input:checked + .slider {
+  background-color: var(--primary);
+  box-shadow: none;
+}
+
+input:checked + .slider:before {
+  transform: translateX(calc(var(--switch-width) - var(--slider-size) - (2 * var(--slider-offset))));
+}
+
+/* Focus states */
+input:focus-visible + .slider {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Disabled states */
+input:disabled + .slider {
+  opacity: 0.6;
+  filter: grayscale(0.4);
+  cursor: not-allowed;
+}
+
+/* Rounded variant */
+.slider.round {
+  --radius: calc(var(--switch-height) / 2);
+}
+
+/* Motion reduction */
+@media (prefers-reduced-motion: reduce) {
+  .slider,
   .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
+      transition-duration: 1ms;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .slider {
+      forced-color-adjust: none;
+      background-color: ButtonBorder;
   }
   
   input:checked + .slider {
-    background-color: #2196F3;
+      background-color: Highlight;
   }
   
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+  .slider:before {
+      background-color: ButtonFace;
   }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+}
