@@ -11,7 +11,7 @@ const defaultSettings={ //copied from background.ts:10 //for restoring default s
     breakDuration: 5,
     breaksEnabled: true,
     showDocumentTabs: false,
-    brightness: '1'
+    brightness: '0.9'
 };
 
 const $i=query=>document.getElementById(query);

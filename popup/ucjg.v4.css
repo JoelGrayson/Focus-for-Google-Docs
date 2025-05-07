@@ -1,11 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 /* Root variables definition */
 :root {
     --primary: #ebc336;
     --secondary: #e9bd30;
+    --button-color: #e2e2e2;
     --accent: #ec4899;
     --background: #ffffff;
     --surface: #f8fafc;
-    --text: #1e293b;
+    --text: #000;
+    --link-color: #0014e1;
+    --link-hovered-color: #000c92;
     --text-secondary: #64748b;
     --border: #e2e8f0;
     --success: #22c55e;
@@ -32,7 +37,6 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: 'Inter', system-ui, sans-serif;
 }
 
@@ -89,8 +93,8 @@ select {
 
 /* Primary button styling */
 button {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
+    background: var(--button-color);
+    color: black;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -101,6 +105,7 @@ button {
 
 button:hover {
     transform: translateY(-1px);
+    text-decoration: none;
     box-shadow: var(--shadow-md);
 }
 
@@ -156,15 +161,24 @@ input:checked + .slider:before {
 }
 
 /* Brightness option items */
-.brightness-options > div {
-    border-radius: 4px;
-    transition: var(--transition);
+.brightness-options {
+    display: flex;
+    gap: 1px;
+    width: 140px;
 }
-
-/* Selected brightness option */
-.brightness-options > div.selected {
-    border: 2px solid var(--primary) !important;
-    transform: scale(1.1);
+.brightness-options>div {
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    border: 1px solid black;
+    background: #fff;
+    margin: 4px;
+    border-radius: 4px;
+}
+.brightness-options>.selected {
+    border: 4px solid #000;
+    margin: 0px;
+    transition: var(--transition);
 }
 
 /* Status message text */
@@ -185,7 +199,6 @@ input:checked + .slider:before {
 
 .unstyled.button:hover {
     transform: none;
-    text-decoration: underline;
 }
 
 /* Custom range input */
@@ -221,18 +234,22 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 /* Link styling */
 a {
-    color: var(--primary);
+    color: var(--link-color);
     text-decoration: none;
     transition: var(--transition);
 }
 
 /* Link hover effect */
-a:hover {
-    color: var(--secondary);
+a:hover:not(.unstyled) {
+    color: var(--link-hovered-color);
     text-decoration: underline;
 }
 
 /* Container Alignment Fix */
+#breakDuration {
+    padding: 4px 1ch;
+}
+
 label[for="breakDuration"] + div {
     right: 0 !important;
     justify-content: center !important;

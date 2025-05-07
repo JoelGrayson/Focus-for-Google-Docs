@@ -44,25 +44,6 @@
         <div style='display: grid; grid-template-columns: 1fr 130px; gap: 10px; width: 95%; margin-block: 10px; align-items: center'>
             <!-- Brightness (make gray) -->
             <label for="zoom">Background color</label>
-            <style>
-                .brightness-options {
-                    display: flex;
-                    gap: 1px;
-                    width: 140px;
-                }
-                .brightness-options>div {
-                    width: 30px;
-                    height: 25px;
-                    cursor: pointer;
-                    border: 1px solid black;
-                    background: #fff;
-                    margin: 4px;
-                }
-                .brightness-options>.selected {
-                    border: 4px solid #000;
-                    margin: 0;
-                }
-            </style>
             <div class='brightness-options'>
                 <div style='filter: brightness(1)'   id='brightness-option-1'></div>
                 <div style='filter: brightness(0.9)' id='brightness-option-9'></div>
@@ -89,14 +70,14 @@
 
             <br><br>
             <div style='display: flex; justify-content: center; gap: 5px;'>
-                <span>Help by</span>
+                <span style='position: relative; top: 5px;'>Help by</span>
                 <a href="https://chromewebstore.google.com/detail/focus-for-google-docs/djnloioaddlnmagobbcnjpppmbelfocf/reviews" target="_blank" class='unstyled button' style='display: flex; align-items: center; gap: 5px; width: fit-content; margin-bottom: 10px; font-size: 14px; padding: 0 7px;'>
-                    Giving a Rating ★★★★★
+                    <button>Giving a Rating ★★★★★</button>
                 </a>
             </div>
 
             <div style='margin-block: 10px;'>
-                <a href="https://forms.gle/A5t9ikLAe47gbNgj7" target="_blank">
+                <a href="https://forms.gle/A5t9ikLAe47gbNgj7" target="_blank" class='unstyled'>
                     <button>Give Feedback</button>
                 </a>
             </div>
@@ -186,7 +167,7 @@
         <br>
         
         <div style='display: flex; justify-content: center;'>
-            <a href="https://github.com/JoelGrayson/Focus" target="_blank" class='unstyled button' style='display: flex; align-items: center; gap: 5px; width: fit-content; margin-bottom: 10px'>
+            <a href="https://github.com/JoelGrayson/Focus" target="_blank" class='button' style='display: flex; align-items: center; gap: 5px; width: fit-content; margin-bottom: 10px'>
                 <svg width='18px' height='17px' fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.95263 16.9123L8.59323 18.3608L2.03082 12.2016L8.18994 5.63922L9.64826 7.00791L4.85783 12.112L9.95212 16.8932L9.95263 16.9123Z" fill="currentColor"/><path d="M14.0474 16.9123L15.4068 18.3608L21.9692 12.2016L15.8101 5.63922L14.3517 7.00791L19.1422 12.112L14.0479 16.8932L14.0474 16.9123Z" fill="currentColor"/></svg>
                 View Source Code
             </a>
