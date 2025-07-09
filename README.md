@@ -1,7 +1,7 @@
-<p align='center'>
-  <img src='https://joelgrayson.com/software/focus/logo.png' alt='Focus Logo' />
-  <h1 align="center">Focus for Google Docs</h1>
-</p>
+<h1 align="center">
+    <img src="https://joelgrayson.com/software/focus/logo.png" height="28" />
+    &nbsp;&nbsp;Focus for Google Docs
+</h1>
 
 [Focus for Google Docs](https://chromewebstore.google.com/detail/focus-for-google-docs/djnloioaddlnmagobbcnjpppmbelfocf) helps you enter the writing flow by decluttering Google Docs and adding a pomodoro timer. It is great for minimalists, those who want to avoid getting distracted, and those who want to write for 20-minute blocks with 5-minute breaks in between.
 
